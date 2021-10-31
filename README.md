@@ -1,7 +1,6 @@
-# Tower Defence
+# Tower Defense
 
-This is the template for the projects. Please copy the project description here. 
-You can use Markdown language to render it as formatted **HTML** file.
+Project desription:
 
 # Group
 - Member 1
