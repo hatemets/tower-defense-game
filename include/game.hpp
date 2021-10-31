@@ -2,7 +2,7 @@
 #define GAME_HPP
 
 #include <SFML/Graphics.hpp>
-#include "constants.hpp"
+#include "auxiliary/constants.hpp"
 
 class Game
 {
