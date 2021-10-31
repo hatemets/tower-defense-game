@@ -1,4 +1,4 @@
-# Project Name (replace here!)
+# Tower Defence
 
 This is the template for the projects. Please copy the project description here. 
 You can use Markdown language to render it as formatted **HTML** file.
