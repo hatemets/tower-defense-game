@@ -1,6 +1,19 @@
 CC = g++
 CFLAGS = -g -Wall --std=c++17
 
+ifeq ($(OS),Windows_NT)
+	# Windows specific definitions
+	# NOTE: Change these paths to appropriate libs subdirectories after SMFL library (Windows version) is checked in into libs
+	IFLAGS = -IC:\Users\Niko\git\SFML-test\SFML-2.5.1-windows-gcc-7.3.0-mingw-32-bit\SFML-2.5.1\include
+	LFLAGS = -LC:\Users\Niko\git\SFML-test\SFML-2.5.1-windows-gcc-7.3.0-mingw-32-bit\SFML-2.5.1\lib
+	TARGET = out.exe
+	DELETE = del /Q /S
+else
+	# Linux specific definitions
+	TARGET = out
+	DELETE = rm -rf
+endif
+
 ODIR = build
 
 SRC = $(wildcard test/*.cpp)
@@ -9,7 +22,7 @@ OBJ = $(src:.cpp=.o)
 all: sfml sfml-build
 
 sfml: src/main.cpp src/game.cpp src/World.cpp src/Node.cpp
-	$(CC) $(CFLAGS) -c src/main.cpp src/game.cpp src/World.cpp src/Node.cpp
+	$(CC) $(CFLAGS) $(IFLAGS) -c src/main.cpp src/game.cpp src/World.cpp src/Node.cpp
 
 
 # to compile all files
@@ -18,9 +31,9 @@ sfml: src/main.cpp src/game.cpp src/World.cpp src/Node.cpp
 
 
 sfml-build: main.o game.o World.o Node.o
-		$(CC) main.o game.o World.o Node.o -o out -lsfml-graphics -lsfml-window -lsfml-system
+		$(CC) main.o game.o World.o Node.o -o $(TARGET) $(LFLAGS) -lsfml-graphics -lsfml-window -lsfml-system
 
 .PHONY: clean
 
 clean:
-	rm -rf *.o out sfml
+	$(DELETE) *.o $(TARGET) sfml
