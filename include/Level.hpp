@@ -3,14 +3,14 @@
 
 #include <SFML/Graphics.hpp>
 #include "Node.hpp"
-#include "ResourceHolder.hpp"
+// #include "ResourceHolder.hpp"
 #include "auxiliary/ResourceIdentifiers.hpp"
 
 // Controls the turrets, enemies, map
 class Level
 {
 	public:
-		explicit Level(sf::RenderWindow& window);
+		explicit Level(sf::RenderWindow& window, const std::string& levelName);
 		void update(sf::Time deltaTime);
 		void draw();
 	
@@ -30,8 +30,12 @@ class Level
 
 	private:
 		sf::RenderWindow& window_;
+		std::string levelName_;
 		Node sceneTree_;
-		ResourceHolder<sf::Texture, Textures::ID> textures_;
+		std::vector<std::pair<int, int>> roadTiles_;
+		std::vector<std::pair<int, int>> turretPlaceTiles_;
+		std::vector<std::shared_ptr<sf::RectangleShape>> roadRectangles_; // this probably should be replaced with ResourceHolder
+		// ResourceHolder<sf::Texture, Textures::ID> textures_;
 
 };
 

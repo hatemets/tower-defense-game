@@ -2,7 +2,8 @@
 #include <SFML/System/Time.hpp>
 
 Game::Game()
-	: window_{sf::VideoMode(WindowWidth, WindowHeight), "Tower Defense Game"}
+	: window_{sf::VideoMode(WindowWidth, WindowHeight), "Tower Defense Game"},
+	  world_(window_)
 {
 }
 
@@ -53,11 +54,14 @@ void Game::processEvents()
 // the entities move faster
 void Game::update(sf::Time deltaTime)
 {
+	world_.update(deltaTime);
 }
 
 void Game::render()
 {
-	window_.clear();
+	window_.clear(sf::Color::Black);
+
+	world_.draw();
 
 	window_.display();
 }

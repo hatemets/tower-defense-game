@@ -4,14 +4,16 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/System/NonCopyable.hpp>
 #include "Node.hpp"
-#include "ResourceHolder.hpp"
-#include "ResourceIdentifiers.hpp"
+// #include "ResourceHolder.hpp"
+#include "auxiliary/ResourceIdentifiers.hpp"
+#include "Level.hpp"
 
 class World
 {
 	public:
 		explicit World(sf::RenderWindow& window);
-		void operate(sf::Time deltaTime);
+		void update(sf::Time deltaTime);
+		void draw();
 
 	public:
 		enum class States
@@ -34,6 +36,8 @@ class World
 	private:
 		sf::RenderWindow& window_;
 		States currentState_;
+		std::vector<std::shared_ptr<Level>> levels_;
+		std::shared_ptr<Level> currentLevel_;
 };
 
 #endif
