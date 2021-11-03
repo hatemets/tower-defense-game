@@ -34,7 +34,8 @@ class Level
 		Node sceneTree_;
 		std::vector<std::pair<int, int>> roadTiles_;
 		std::vector<std::pair<int, int>> turretPlaceTiles_;
-		std::vector<std::shared_ptr<sf::RectangleShape>> roadRectangles_; // this probably should be replaced with ResourceHolder
+		std::vector<std::shared_ptr<sf::RectangleShape>> roadPictures_; // this probably should be replaced with ResourceHolder
+		std::vector<std::shared_ptr<sf::CircleShape>> turretPlacePictures_; // this probably should be replaced with ResourceHolder
 		// ResourceHolder<sf::Texture, Textures::ID> textures_;
 
 };
