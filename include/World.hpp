@@ -3,37 +3,26 @@
 
 #include <SFML/Graphics.hpp>
 #include <SFML/System/NonCopyable.hpp>
-#include "Node.hpp"
-#include "ResourceHolder.hpp"
-#include "ResourceIdentifiers.hpp"
+#include <memory>
+#include "auxiliary/ModeIdentifiers.hpp"
+#include "Mode.hpp"
 
 class World
 {
 	public:
-		explicit World(sf::RenderWindow& window);
-		void operate(sf::Time deltaTime);
-
-	public:
-		enum class States
-		{
-			Menu,
-			Pause,
-			Level
-		};
-	
-	private:
-		enum class Layers
-		{
-			Background,
-			Entities,
-			HUD,
-			// total count to get the number of members in the enum
-			totalCount	 
-		};
+		World(sf::RenderWindow& window);
+		void operate();
+		void changeMode(Modes::Type newType);
 
 	private:
 		sf::RenderWindow& window_;
-		States currentState_;
+		Modes::Type currentMode_;
+		sf::FloatRect gameBounds_;
+
+		// A vector containing all the possible modes in the game
+		// NOTE: The container type is subject to change. Array is preferred
+		// for its static size
+		std::vector<std::unique_ptr<Mode>> modes_;
 };
 
 #endif

@@ -3,6 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 #include "auxiliary/constants.hpp"
+#include "World.hpp"
 
 class Game
 {
@@ -21,10 +22,7 @@ class Game
 
 	private:
 		sf::RenderWindow window_;
-		// TODO:
-		// Main menu
-		// (Level Menu)
-		// Levels
+		World world_;
 };
 
 #endif

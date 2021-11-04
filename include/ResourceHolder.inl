@@ -17,14 +17,6 @@ void ResourceHolder<Resource, Identifier>::load(Identifier id, const std::string
 }
 
 template <typename Resource, typename Identifier>
-void void ResourceHolder<Resource, Identifier>::load(Button button)
-{
-	std::unique_ptr<sf::RectangleShape> resource = std::make_unique<sf::RectangleShape>(button.size);
-	resource.get()->setColor(button.color);
-}
-
-
-template <typename Resource, typename Identifier>
 Resource& ResourceHolder<Resource, Identifier>::get(Identifier id)
 {
 	auto found = resources_.find(id);

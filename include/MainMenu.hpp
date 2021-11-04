@@ -5,17 +5,32 @@
 #include "Node.hpp"
 #include "ResourceHolder.hpp"
 #include "auxiliary/ResourceIdentifiers.hpp"
+#include "Mode.hpp"
 
-class MainMenu
+// Controls the turrets, enemies, map
+class MainMenu : public Mode
 {
 	public:
 		MainMenu(sf::RenderWindow& window);
-		void update(sf::Time deltaTime);
-		void draw();
+		virtual void update(sf::Time deltaTime) final;
+		/* virtual void drawSelf(sf::RenderTarget& target, sf::RenderStates states) const final; */
+		/* virtual void draw() final; */
+	
+	private:
+		enum class Layers
+		{
+			Background,
+			/* Buttons, */
+			// total count to get the number of members in the enum
+			totalCount	 
+		};
 
 	private:
-		sf::RenderWindow& window_;
-};
+		virtual void loadTextures() final;
+		virtual void createScene() final;
 
+	private:
+		ResourceHolder<sf::RectangleShape, Textures::ID> textures_;
+};
 
 #endif

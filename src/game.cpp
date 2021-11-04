@@ -2,7 +2,8 @@
 #include <SFML/System/Time.hpp>
 
 Game::Game()
-	: window_{sf::VideoMode(WindowWidth, WindowHeight), "Tower Defense Game"}
+	: window_(sf::VideoMode(WindowWidth, WindowHeight), "Tower Defense Game"),
+	world_(window_)
 {
 }
 
@@ -58,6 +59,8 @@ void Game::update(sf::Time deltaTime)
 void Game::render()
 {
 	window_.clear();
+
+	world_.operate();
 
 	window_.display();
 }

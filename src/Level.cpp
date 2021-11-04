@@ -2,8 +2,7 @@
 
 
 Level::Level(sf::RenderWindow& window) :
-	window_(window),
-	sceneTree_(),
+	Mode(window),
 	textures_()
 {
 }

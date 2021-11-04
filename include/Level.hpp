@@ -5,34 +5,37 @@
 #include "Node.hpp"
 #include "ResourceHolder.hpp"
 #include "auxiliary/ResourceIdentifiers.hpp"
+#include "Mode.hpp"
 
 // Controls the turrets, enemies, map
-class Level
+class Level : public Mode
 {
 	public:
-		explicit Level(sf::RenderWindow& window);
-		void update(sf::Time deltaTime);
-		void draw();
+		Level(sf::RenderWindow& window);
+		virtual void update(sf::Time deltaTime) final;
+		virtual void draw() final;
 	
 	private:
 		enum class Layers
 		{
 			Background,
 			Entities,
+			SideMenu,
 			HUD,
 			// total count to get the number of members in the enum
 			totalCount	 
 		};
 
 	private:
-		void loadTextures();
-		void createScene();
+		virtual void loadTextures() final;
+		virtual void createScene() final;
 
 	private:
-		sf::RenderWindow& window_;
-		Node sceneTree_;
 		ResourceHolder<sf::Texture, Textures::ID> textures_;
-
+		// TODO:
+		// Add turret contaienr
+		// Add enemy container
+		// Load a map from a textfile
 };
 
 #endif
