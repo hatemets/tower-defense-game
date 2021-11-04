@@ -13,14 +13,13 @@ class MainMenu : public Mode
 	public:
 		MainMenu(sf::RenderWindow& window);
 		virtual void update(sf::Time deltaTime) final;
-		virtual void drawSelf(sf::RenderTarget& target, sf::RenderStates states) const;
 	
 	private:
 		enum class Layers
 		{
 			Background,
-			/* Buttons, */
-			// total count to get the number of members in the enum
+			Buttons,
+			// total count of enum values
 			totalCount	 
 		};
 

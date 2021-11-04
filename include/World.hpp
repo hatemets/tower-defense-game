@@ -4,26 +4,31 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/System/NonCopyable.hpp>
 #include <memory>
-#include "auxiliary/ModeIdentifiers.hpp"
 #include "Mode.hpp"
 #include "MainMenu.hpp"
 
 class World
 {
 	public:
+		enum class Type
+		{
+			MainMenu,
+			Level,
+			TotalTypes
+		};
+
+	public:
 		World(sf::RenderWindow& window);
 		void operate();
-		void changeMode(Modes::Type newType);
+		void changeMode(Type newType);
 
 	private:
 		sf::RenderWindow& window_;
-		Modes::Type currentMode_;
+		Type modeType_;
 		sf::FloatRect gameBounds_;
 
-		// A vector containing all the possible modes in the game
-		// NOTE: The container type is subject to change. Array is preferred
-		// for its static size
-		std::vector<std::unique_ptr<Mode>> modes_;
+		// The current mode of the game
+		std::unique_ptr<Mode> mode_;
 };
 
 #endif

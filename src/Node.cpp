@@ -35,3 +35,8 @@ void Node::drawChildren(sf::RenderTarget& target, sf::RenderStates states) const
 		child->draw(target, states);
 	}
 }
+
+
+void Node::update(sf::Time deltaTime)
+{
+}

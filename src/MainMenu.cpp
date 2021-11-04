@@ -41,11 +41,6 @@ void MainMenu::createScene()
 	layers_[i]->addChild(std::move(background));
 }
 
-void MainMenu::drawSelf(sf::RenderTarget& target, sf::RenderStates states) const
-{
-	target.draw(nodeTree_, states);
-}
-
 void MainMenu::update(sf::Time deltaTime)
 {
 }

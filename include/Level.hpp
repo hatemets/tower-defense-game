@@ -13,7 +13,6 @@ class Level : public Mode
 	public:
 		Level(sf::RenderWindow& window);
 		virtual void update(sf::Time deltaTime) final;
-		virtual void draw() final;
 	
 	private:
 		enum class Layers
@@ -22,7 +21,7 @@ class Level : public Mode
 			Entities,
 			SideMenu,
 			HUD,
-			// total count to get the number of members in the enum
+			// total count of enum values
 			totalCount	 
 		};
 
@@ -33,7 +32,7 @@ class Level : public Mode
 	private:
 		ResourceHolder<sf::Texture, Textures::ID> textures_;
 		// TODO:
-		// Add turret contaienr
+		// Add turret container
 		// Add enemy container
 		// Load a map from a textfile
 };

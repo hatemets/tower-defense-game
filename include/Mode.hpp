@@ -12,7 +12,7 @@ class Mode : public Node
 {
 	public:
 		Mode(sf::RenderWindow& window);
-		virtual void update(sf::Time deltaTime) = 0;
+		virtual ~Mode() = default;
 
 	private:
 		virtual void loadTextures() = 0;
