@@ -22,16 +22,16 @@ OBJ = $(src:.cpp=.o)
 
 all: sfml sfml-build
 
-sfml: src/main.cpp src/game.cpp src/World.cpp src/Node.cpp src/Level.cpp
-	$(CC) $(CFLAGS) $(IFLAGS) -c src/main.cpp src/game.cpp src/World.cpp src/Node.cpp src/Level.cpp
+sfml: src/main.cpp src/game.cpp src/World.cpp src/Node.cpp src/Level.cpp src/Turret.cpp
+	$(CC) $(CFLAGS) $(IFLAGS) -c src/main.cpp src/game.cpp src/World.cpp src/Node.cpp src/Level.cpp src/Turret.cpp
 
 
 # to compile all files
 # sfml: $(SRC)
 # 	$(CC) $(CFLAGS) -c $(SRC)
 
-sfml-build: main.o game.o World.o Node.o Level.o
-		$(CC) main.o game.o World.o Node.o Level.o -o $(TARGET) $(LFLAGS) -lsfml-graphics -lsfml-window -lsfml-system
+sfml-build: main.o game.o World.o Node.o Level.o Turret.o
+		$(CC) main.o game.o World.o Node.o Level.o Turret.o -o $(TARGET) $(LFLAGS) -lsfml-graphics -lsfml-window -lsfml-system
 
 .PHONY: clean
 
