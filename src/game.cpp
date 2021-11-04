@@ -50,8 +50,6 @@ void Game::processEvents()
 }
 
 // Update game with fixed timesteps
-// Otherwise, a fast computer would render the game more often and thus have
-// the entities move faster
 void Game::update(sf::Time deltaTime)
 {
 }

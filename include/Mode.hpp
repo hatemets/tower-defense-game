@@ -17,6 +17,7 @@ class Mode : public Node
 	private:
 		virtual void loadTextures() = 0;
 		virtual void createScene() = 0;
+		virtual void drawSelf(sf::RenderTarget& target, sf::RenderStates states) const;
 
 	protected:
 		// Reference to the original window
@@ -27,6 +28,9 @@ class Mode : public Node
 
 		// The root node that all the other nodes stem from
 		Node nodeTree_;
+
+		// Window dimensions
+		sf::FloatRect windowBounds_;
 };
 
 #endif

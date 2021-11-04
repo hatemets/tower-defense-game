@@ -1,7 +1,8 @@
 #include "../include/Node.hpp"
 
 Node::Node()
-	: parent_{nullptr}, children_{}
+	: parent_(nullptr),
+	children_()
 {
 }
 
@@ -21,9 +22,11 @@ void Node::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	drawChildren(target, states);
 }
 
+
 void Node::drawSelf(sf::RenderTarget& target, sf::RenderStates states) const
 {
 }
+
 
 void Node::drawChildren(sf::RenderTarget& target, sf::RenderStates states) const
 {

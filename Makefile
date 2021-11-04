@@ -22,16 +22,16 @@ OBJ = $(src:.cpp=.o)
 
 all: sfml sfml-build
 
-sfml: src/main.cpp src/game.cpp src/World.cpp src/Node.cpp src/Mode.cpp src/MainMenu.cpp src/BackgroundTile.cpp
-	$(CC) $(CFLAGS) $(IFLAGS) -c src/main.cpp src/game.cpp src/World.cpp src/Node.cpp src/Mode.cpp src/MainMenu.cpp src/BackgroundTile.cpp
+sfml: src/main.cpp src/game.cpp src/World.cpp src/Node.cpp src/Mode.cpp src/MainMenu.cpp src/BackgroundSprite.cpp
+	$(CC) $(CFLAGS) $(IFLAGS) -c src/main.cpp src/game.cpp src/World.cpp src/Node.cpp src/Mode.cpp src/MainMenu.cpp src/BackgroundSprite.cpp
 
 
 # to compile all files
 # sfml: $(SRC)
 # 	$(CC) $(CFLAGS) -c $(SRC)
 
-sfml-build: main.o game.o World.o Node.o Mode.o MainMenu.o BackgroundTile.o
-		$(CC) main.o game.o World.o Node.o Mode.o MainMenu.o BackgroundTile.o -o $(TARGET) $(LFLAGS) -lsfml-graphics -lsfml-window -lsfml-system
+sfml-build: main.o game.o World.o Node.o Mode.o MainMenu.o BackgroundSprite.o
+		$(CC) main.o game.o World.o Node.o Mode.o MainMenu.o BackgroundSprite.o -o $(TARGET) $(LFLAGS) -lsfml-graphics -lsfml-window -lsfml-system
 
 .PHONY: clean
 

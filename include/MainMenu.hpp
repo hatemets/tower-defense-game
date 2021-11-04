@@ -13,8 +13,7 @@ class MainMenu : public Mode
 	public:
 		MainMenu(sf::RenderWindow& window);
 		virtual void update(sf::Time deltaTime) final;
-		/* virtual void drawSelf(sf::RenderTarget& target, sf::RenderStates states) const final; */
-		/* virtual void draw() final; */
+		virtual void drawSelf(sf::RenderTarget& target, sf::RenderStates states) const;
 	
 	private:
 		enum class Layers
@@ -30,7 +29,7 @@ class MainMenu : public Mode
 		virtual void createScene() final;
 
 	private:
-		ResourceHolder<sf::RectangleShape, Textures::ID> textures_;
+		ResourceHolder<sf::Texture, Textures::ID> textures_;
 };
 
 #endif

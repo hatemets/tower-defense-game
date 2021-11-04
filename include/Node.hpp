@@ -21,7 +21,6 @@ class Node :
 		virtual void drawSelf(sf::RenderTarget& target, sf::RenderStates states) const;
 		virtual void drawChildren(sf::RenderTarget& target, sf::RenderStates states) const;
 
-
 	private:
 		Node* parent_;
 		std::vector<std::unique_ptr<Node>> children_;

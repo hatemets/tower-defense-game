@@ -6,6 +6,7 @@
 #include <memory>
 #include "auxiliary/ModeIdentifiers.hpp"
 #include "Mode.hpp"
+#include "MainMenu.hpp"
 
 class World
 {
