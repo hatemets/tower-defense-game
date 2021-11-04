@@ -3,9 +3,9 @@
 
 Mode::Mode(sf::RenderWindow& window)
 	: window_(window),
-	windowBounds_(0.f, 0.f, window.getSize().x, window.getSize().y),
 	layers_(),
-	nodeTree_()
+	nodeTree_(),
+	windowBounds_(0.f, 0.f, window_.getSize().x, window_.getSize().y)
 {
 }
 

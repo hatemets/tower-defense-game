@@ -1,5 +1,5 @@
 CC = g++
-CFLAGS = -g -Wall --std=c++17
+CFLAGS = -g -Wall -Wno-switch --std=c++17
 
 ifeq ($(OS),Windows_NT)
 	# Windows specific definitions
