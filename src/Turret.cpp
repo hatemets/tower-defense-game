@@ -17,7 +17,7 @@ Turret::Turret(sf::RenderWindow& window, int row, int col, int price,
 
 void Turret::update(sf::Time deltaTime)
 {
-    rotate();
+    rotate(deltaTime);
     if (nextFire_ <= deltaTime) {
         if (shoot()) {
             nextFire_ = fireInterval();
@@ -40,3 +40,26 @@ sf::Time Turret::fireInterval()
 {
     return sf::seconds(1 / rateOfFire_);
 }
+
+
+SimpleTurret::SimpleTurret(sf::RenderWindow& window, int row, int col) : 
+    Turret(window, row, col, Price, RotationSpeed, RateOfFire, ProjectileRange)
+{
+}
+
+
+void SimpleTurret::rotate(sf::Time deltaTime)
+{
+    currentAngle_ += deltaTime.asSeconds() * rotationSpeed_; // rotate without aiming
+    while (currentAngle_ >= 360) {
+        currentAngle_ -= 360;
+    }
+}
+
+
+bool SimpleTurret::shoot()
+{
+    return true; // shoot always when possible
+}
+
+
