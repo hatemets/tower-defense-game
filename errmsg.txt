@@ -1,0 +1,12 @@
+/usr/bin/ld: Mode.o: in function `Mode::Mode(sf::RenderWindow&)':
+/home/mark/projects/tower-defense-6/src/Mode.cpp:11: undefined reference to `ResourceHolder<sf::Font, Resources::ID>::load(Resources::ID, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)'
+/usr/bin/ld: MainMenu.o: in function `MainMenu::loadResources()':
+/home/mark/projects/tower-defense-6/src/MainMenu.cpp:16: undefined reference to `ResourceHolder<sf::Texture, Resources::ID>::load(Resources::ID, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)'
+/usr/bin/ld: MainMenu.o: in function `MainMenu::createScene()':
+/home/mark/projects/tower-defense-6/src/MainMenu.cpp:32: undefined reference to `GeneralResourceHolder<sf::Texture, Resources::ID>::get(Resources::ID)'
+/usr/bin/ld: Level.o: in function `Level::loadResources()':
+/home/mark/projects/tower-defense-6/src/Level.cpp:17: undefined reference to `ResourceHolder<sf::Texture, Resources::ID>::load(Resources::ID, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)'
+/usr/bin/ld: Level.o: in function `Level::createScene()':
+/home/mark/projects/tower-defense-6/src/Level.cpp:33: undefined reference to `GeneralResourceHolder<sf::Texture, Resources::ID>::get(Resources::ID)'
+collect2: error: ld returned 1 exit status
+make: *** [Makefile:34: sfml-build] Error 1

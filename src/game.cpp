@@ -45,6 +45,19 @@ void Game::processEvents()
 			case sf::Event::Closed:
 				window_.close();
 				break;
+				// NOTE: For testing purposes only
+			case sf::Event::KeyPressed:
+				{
+					if (world_.getMode() == World::Type::Level)
+					{
+						world_.changeMode(World::Type::MainMenu);
+					}
+					else
+					{
+						world_.changeMode(World::Type::Level);
+					}
+					break;
+				}
 		}
 	}
 }
@@ -61,8 +74,4 @@ void Game::render()
 	world_.operate();
 
 	window_.display();
-}
-
-void Game::handleUserInput()
-{
 }

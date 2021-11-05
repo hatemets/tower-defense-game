@@ -4,6 +4,8 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include "Node.hpp"
+#include "auxiliary/ResourceIdentifiers.hpp"
+#include "ResourceHolder.hpp"
 
 // Mode is an abstract class used for representing one "scene" currently
 // displayed on the game window
@@ -15,7 +17,7 @@ class Mode : public Node
 		virtual ~Mode() = default;
 
 	private:
-		virtual void loadTextures() = 0;
+		virtual void loadResources() = 0;
 		virtual void createScene() = 0;
 		virtual void drawSelf(sf::RenderTarget& target, sf::RenderStates states) const;
 
@@ -31,6 +33,8 @@ class Mode : public Node
 
 		// Window dimensions
 		sf::FloatRect windowBounds_;
+
+		ResourceHolder<sf::Font, Resources::ID> fonts_;
 };
 
 #endif

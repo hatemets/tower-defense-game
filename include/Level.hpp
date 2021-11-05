@@ -26,11 +26,11 @@ class Level : public Mode
 		};
 
 	private:
-		virtual void loadTextures() final;
+		virtual void loadResources() final;
 		virtual void createScene() final;
 
 	private:
-		ResourceHolder<sf::Texture, Textures::ID> textures_;
+		ResourceHolder<sf::Texture, Resources::ID> textures_;
 		// TODO:
 		// Add turret container
 		// Add enemy container

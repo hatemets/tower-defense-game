@@ -36,3 +36,7 @@ void World::changeMode(Type newMode)
 			break;
 	}
 }
+
+void World::handleUserInput()
+{
+}

@@ -18,7 +18,6 @@ class Game
 		void processEvents();
 		void update(sf::Time deltaTime);
 		void render();
-		void handleUserInput();
 
 	private:
 		sf::RenderWindow window_;

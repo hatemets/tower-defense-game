@@ -19,8 +19,12 @@ class World
 
 	public:
 		World(sf::RenderWindow& window);
+
 		void operate();
 		void changeMode(Type newType);
+		void handleUserInput();
+
+		Type getMode() const { return modeType_; }
 
 	private:
 		sf::RenderWindow& window_;

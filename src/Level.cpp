@@ -7,14 +7,14 @@ Level::Level(sf::RenderWindow& window)
 	: Mode(window),
 	textures_()
 {
-	loadTextures();
+	loadResources();
 	createScene();
 }
 
 
-void Level::loadTextures()
+void Level::loadResources()
 {
-	textures_.load(Textures::ID::GrassArea, "/home/mark/projects/tower-defense-6/include/images/levelBackground.png");
+	textures_.load(Resources::ID::GrassArea, "/home/mark/projects/tower-defense-6/include/images/levelBackground.png");
 }
 
 
@@ -30,7 +30,7 @@ void Level::createScene()
 	}
 
 
-	sf::Texture& backgroundTexture = textures_.get(Textures::ID::GrassArea);
+	sf::Texture& backgroundTexture = textures_.get(Resources::ID::GrassArea);
 	backgroundTexture.setRepeated(true);
 
 	sf::IntRect bounds(windowBounds_);

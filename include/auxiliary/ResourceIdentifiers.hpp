@@ -1,7 +1,7 @@
 #ifndef RESOURCE_IDENTIFIERS_HPP
 #define RESOURCE_IDENTIFIERS_HPP
 
-namespace Textures
+namespace Resources
 {
 	enum class ID
 	{
@@ -17,7 +17,15 @@ namespace Textures
 		Goblin,
 
 		// Turrets
-		ArrowShooter
+		ArrowShooter,
+
+		// Button names
+		StartButton,
+		QuitButton,
+		PauseButton,
+
+		// Fonts
+		SourceCodePro
 	};
 };
 

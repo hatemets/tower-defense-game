@@ -6,14 +6,14 @@ MainMenu::MainMenu(sf::RenderWindow& window)
 	: Mode(window),
 	textures_()
 {
-	loadTextures();
+	loadResources();
 	createScene();
 }
 
 
-void MainMenu::loadTextures()
+void MainMenu::loadResources()
 {
-	textures_.load(Textures::ID::GrassArea, "/home/mark/projects/tower-defense-6/include/images/background1.jpg");
+	textures_.load(Resources::ID::GrassArea, "/home/mark/projects/tower-defense-6/include/images/background1.jpg");
 }
 
 
@@ -29,16 +29,14 @@ void MainMenu::createScene()
 	}
 
 
-	sf::Texture& backgroundTexture = textures_.get(Textures::ID::GrassArea);
+	sf::Texture& backgroundTexture = textures_.get(Resources::ID::GrassArea);
 	backgroundTexture.setRepeated(true);
 
 	sf::IntRect bounds(windowBounds_);
 
 	auto background = std::make_unique<BackgroundSprite>(BackgroundSprite{backgroundTexture, bounds});
 	background->setPosition(0.f, 0.f);
-
-	std::size_t i = static_cast<std::size_t>(Layers::Background);
-	layers_[i]->addChild(std::move(background));
+	layers_[static_cast<std::size_t>(Layers::Background)]->addChild(std::move(background));
 }
 
 void MainMenu::update(sf::Time deltaTime)
