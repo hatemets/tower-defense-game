@@ -1,39 +1,39 @@
 CC = g++
 CFLAGS = -g -Wall -Wno-switch --std=c++17
 
+TARGET := sfml
+OBJ_DIR := ./obj
+SRC_DIR := ./src
+SRC_FILES := $(shell find $(SRC_DIR) -type f -name *.cpp)
+OBJ_FILES := $(patsubst $(SRC_DIR)/%,$(OBJ_DIR)/%,$(SRC_FILES:.cpp=.o))
+LIBS = -lsfml-graphics -lsfml-window -lsfml-system
+
 ifeq ($(OS),Windows_NT)
 	# Windows specific definitions
 	# NOTE: Change these paths to appropriate libs subdirectories after SMFL library (Windows version) is checked in into libs
 	# NB! Must be revised for general use (in case the project will be used by any Windows users)
 	IFLAGS = -IC:\Users\Niko\git\SFML-test\SFML-2.5.1-windows-gcc-7.3.0-mingw-32-bit\SFML-2.5.1\include
 	LFLAGS = -LC:\Users\Niko\git\SFML-test\SFML-2.5.1-windows-gcc-7.3.0-mingw-32-bit\SFML-2.5.1\lib
-	TARGET = out.exe
+	OUT_FILE = out.exe
 	DELETE = del /Q /S
 else
 	# Linux specific definitions
-	TARGET = out
+	OUT_FILE = out
 	DELETE = rm -rf
 endif
 
-# NB! Use this option once all the files are implemented. Using it before then
-# causes numerous compilation and linker erros
-SRC = $(wildcard test/*.cpp)
-OBJ = $(src:.cpp=.o)
+all: $(TARGET)
 
-all: sfml sfml-build
+# Link
+$(TARGET): $(OBJ_FILES) 
+	$(CC) -o $(OUT_FILE) $^ $(LIBS)
 
-sfml: src/main.cpp src/game.cpp src/World.cpp src/Node.cpp src/Mode.cpp src/MainMenu.cpp src/BackgroundSprite.cpp src/Level.cpp
-	$(CC) $(CFLAGS) $(IFLAGS) -c src/main.cpp src/game.cpp src/World.cpp src/Node.cpp src/Mode.cpp src/MainMenu.cpp src/BackgroundSprite.cpp src/Level.cpp
-
-
-# to compile all files
-# sfml: $(SRC)
-# 	$(CC) $(CFLAGS) -c $(SRC)
-
-sfml-build: main.o game.o World.o Node.o Mode.o MainMenu.o BackgroundSprite.o Level.o
-		$(CC) main.o game.o World.o Node.o Mode.o MainMenu.o BackgroundSprite.o Level.o -o $(TARGET) $(LFLAGS) -lsfml-graphics -lsfml-window -lsfml-system
+# Compile
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
+	@mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) $(IFLAGS) -c -o $@ $<
 
 .PHONY: clean
 
 clean:
-	$(DELETE) *.o $(TARGET) sfml
+	$(DELETE) $(OBJ_DIR)/*.o $(TARGET)
