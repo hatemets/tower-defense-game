@@ -16,6 +16,7 @@ ifeq ($(OS),Windows_NT)
 	IFLAGS = -IC:\Users\Niko\git\SFML-test\SFML-2.5.1-windows-gcc-7.3.0-mingw-32-bit\SFML-2.5.1\include
 	LFLAGS = -LC:\Users\Niko\git\SFML-test\SFML-2.5.1-windows-gcc-7.3.0-mingw-32-bit\SFML-2.5.1\lib
 	OUT_FILE = out.exe
+	TARGET = $(OUT_FILE)
 	CLEAN = del /Q .\obj\*.o $(TARGET)
 	MKDIR_OBJ = -@mkdir .\obj
 else
