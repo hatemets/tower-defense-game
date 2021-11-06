@@ -4,8 +4,11 @@ CFLAGS = -g -Wall -Wno-switch --std=c++17
 TARGET := sfml
 OBJ_DIR := ./obj
 SRC_DIR := ./src
+HEADER_DIR := ./include
 SRC_FILES := $(shell find $(SRC_DIR) -type f -name *.cpp)
 OBJ_FILES := $(patsubst $(SRC_DIR)/%,$(OBJ_DIR)/%,$(SRC_FILES:.cpp=.o))
+CONST_FILES := $(shell find $(HEADER_DIR)/auxiliary/ -type f -name *.hpp)
+HEADER_FILES := $(shell find $(HEADER_DIR) -type f -name *.hpp)
 LIBS = -lsfml-graphics -lsfml-window -lsfml-system
 
 ifeq ($(OS),Windows_NT)
@@ -25,7 +28,7 @@ endif
 all: $(TARGET)
 
 # Link
-$(TARGET): $(OBJ_FILES) 
+$(TARGET): $(OBJ_FILES) $(CONST_FILES)
 	$(CC) -o $(OUT_FILE) $^ $(LIBS)
 
 # Compile
