@@ -13,22 +13,33 @@ class Turret
 		virtual void draw();
 
     protected:
-        sf::Time fireInterval();
-        virtual void rotate(sf::Time deltaTime) = 0;  // note: change this: needs the enemies as a parameter
+        void move(int row, int col);
+        float calculateDistance(float targetRow, float targetCol) const;
+        float calculatetAngle(float targetRow, float targetCol) const;
+        virtual float rotate(sf::Time deltaTime) = 0;  // note: change this: needs the enemies as a parameter
         virtual bool shoot() = 0;  // note: change this: the return value should be a projectile
 
+    public:
+        int getRow() const;  // location tile row
+        int getCol() const;  // location tile column
+        int getPrice() const;  // purchase price
+        float getRotationSpeed() const;  // max degrees per second (i.e. 90 means that full round takes 4 seconds)
+        float getRateOfFire() const;  // max number of shots per second
+        sf::Time getFireInterval() const;  // min time between shots
+        float getProjectileRange() const;  // projectile range as tiles
+        float getCurrentAngle() const;  // 0-359.999...
+        sf::Time getNextFire() const;  // time before can shoot again
 
 	protected:
 		sf::RenderWindow& window_;
-        int row_;  // location tile row
-        int col_;  // location tile column
-        int price_;  // purchase price
-        float rotationSpeed_;  // max degrees per second (i.e. 90 means that full round takes 4 seconds)
-        float rateOfFire_;  // max number of projectiles per second
-        float projectileRange_;  // max projectile range as tiles
-        float currentAngle_;  // 0-359.999...
-        sf::Time nextFire_;  // time before can shoot again
-
+        int row_;  
+        int col_;  
+        int price_;  
+        float rotationSpeed_;  
+        float rateOfFire_;  
+        float projectileRange_;  
+        float currentAngle_; 
+        sf::Time nextFire_;  
 };
 
 
@@ -37,16 +48,58 @@ class SimpleTurret :
 {
     public:
         SimpleTurret(sf::RenderWindow& window, int row, int col);
-        
-        // these are in the header so that buy menu can show the turret info (?)
-        const int Price = 10;
-        const float RotationSpeed = 90;
-        const float RateOfFire = 5;
-        const float ProjectileRange = 5;
     
     protected:
-        virtual void rotate(sf::Time deltaTime);
+        virtual float rotate(sf::Time deltaTime);
         virtual bool shoot();
+};
+
+
+class GunTurret :
+    public Turret
+{
+    public:
+        GunTurret(sf::RenderWindow& window, int row, int col);
+    
+    protected:
+        virtual float rotate(sf::Time deltaTime);
+        virtual bool shoot();
+};
+
+
+class DoubleGunTurret :
+    public Turret
+{
+    public:
+        DoubleGunTurret(sf::RenderWindow& window, int row, int col);
+    
+    protected:
+        virtual float rotate(sf::Time deltaTime);
+        virtual bool shoot();
+};
+
+
+class BombTurret :
+    public Turret
+{
+    public:
+        BombTurret(sf::RenderWindow& window, int row, int col);
+    
+    protected:
+        virtual float rotate(sf::Time deltaTime);
+        virtual bool shoot();   
+};
+
+
+class MissileTurret :
+    public Turret
+{
+    public:
+        MissileTurret(sf::RenderWindow& window, int row, int col);
+    
+    protected:
+        virtual float rotate(sf::Time deltaTime);
+        virtual bool shoot();  
 };
 
 #endif
