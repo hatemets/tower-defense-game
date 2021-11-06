@@ -34,10 +34,10 @@ class Turret
 		sf::RenderWindow& window_;
         int row_;  
         int col_;  
-        int price_;  
-        float rotationSpeed_;  
-        float rateOfFire_;  
-        float projectileRange_;  
+        const int price_;  
+        const float rotationSpeed_;  
+        const float rateOfFire_;  
+        const float projectileRange_;  
         float currentAngle_; 
         sf::Time nextFire_;  
 };
