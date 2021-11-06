@@ -13,7 +13,7 @@ MainMenu::MainMenu(sf::RenderWindow& window)
 
 void MainMenu::loadResources()
 {
-	textures_.load(Resources::ID::GrassArea, "/home/mark/projects/tower-defense-6/include/images/background1.jpg");
+	textures_.load(Resources::ID::GrassArea, "./include/images/background1.jpg");
 }
 
 

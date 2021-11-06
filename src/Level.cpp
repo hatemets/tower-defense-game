@@ -14,7 +14,7 @@ Level::Level(sf::RenderWindow& window)
 
 void Level::loadResources()
 {
-	textures_.load(Resources::ID::GrassArea, "/home/mark/projects/tower-defense-6/include/images/levelBackground.png");
+	textures_.load(Resources::ID::GrassArea, "./include/images/levelBackground.png");
 }
 
 
