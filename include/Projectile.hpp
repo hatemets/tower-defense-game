@@ -3,11 +3,11 @@
 
 #include <SFML/Graphics.hpp>
 
-// The base class of turrets
+// The base class of projectiles
 class Projectile
 {
 	public:
-		Projectile(sf::RenderWindow& window, float row, float col, float direction, float speed, 
+		Projectile(sf::RenderWindow& window, float tileX, float tileY, float direction, float speed, 
                    float flightRange, float explosionRange, float maxDamage);
 		virtual void update(sf::Time deltaTime);
 		virtual void draw();
@@ -19,14 +19,14 @@ class Projectile
         // float calculatetAngle(float targetRow, float targetCol) const; // fix this: use common code with turret
 
     public:
-        float getRow() const;  // location tile row
-        float getCol() const;  // location tile column
+        float getTileX() const;  // location tile row
+        float getTileY() const;  // location tile column
         float getDirection() const; // flight angle
 
 	protected:
 		sf::RenderWindow& window_;
-        float row_;  
-        float col_;  
+        float tileX_;  
+        float tileY_;  
         float direction_;  
         const float speed_;  
         const float explosionRange_;  
@@ -39,7 +39,7 @@ class Bullet :
     public Projectile
 {
     public:
-        Bullet(sf::RenderWindow& window, float row, float col, float direction);
+        Bullet(sf::RenderWindow& window, float tileX, float tileY, float direction);
 };
 
 
@@ -47,7 +47,7 @@ class Bomb :
     public Projectile
 {
     public:
-        Bomb(sf::RenderWindow& window, float row, float col, float directionl);
+        Bomb(sf::RenderWindow& window, float tileX, float tileY, float directionl);
 };
 
 
@@ -55,7 +55,7 @@ class Missile :
     public Projectile
 {
     public:
-        Missile(sf::RenderWindow& window, float row, float col, float direction);
+        Missile(sf::RenderWindow& window, float tileX, float tileY, float direction);
     
     protected:
         virtual bool isHit();

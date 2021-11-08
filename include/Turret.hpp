@@ -14,14 +14,16 @@ class Turret
 
     protected:
         void move(int row, int col);
-        float calculateDistance(float targetRow, float targetCol) const;
-        float calculatetAngle(float targetRow, float targetCol) const;
+        float calculateDistance(float targetX, float targetY) const;
+        float calculatetAngle(float targetX, float targetY) const;
         virtual float rotate(sf::Time deltaTime) = 0;  // note: change this: needs the enemies as a parameter
         virtual bool shoot() = 0;  // note: change this: the return value should be a projectile
 
     public:
         int getRow() const;  // location tile row
         int getCol() const;  // location tile column
+        float getTileX() const;  // turret centre x in tile coordinates
+        float getTileY() const;  // turret centre y in tile coordinates
         int getPrice() const;  // purchase price
         float getRotationSpeed() const;  // max degrees per second (i.e. 90 means that full round takes 4 seconds)
         float getRateOfFire() const;  // max number of shots per second

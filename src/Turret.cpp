@@ -55,22 +55,18 @@ void Turret::move(int row, int col)
 }
 
 
-float Turret::calculateDistance(float targetRow, float targetCol) const
+float Turret::calculateDistance(float targetX, float targetY) const
 {
-    float myRow = row_ + 0.5f; // the centre point
-    float myCol = col_ + 0.5f; // the centre point
-    float deltaRow = targetRow - myRow;
-    float deltaCol = targetCol - myCol;
-    float distance2 = deltaRow * deltaRow + deltaCol * deltaCol;
+    float deltaX = targetX - getTileX();
+    float deltaY = targetY - getTileY();
+    float distance2 = deltaX * deltaX + deltaY * deltaY;
     return sqrtf(distance2);
 }
 
 
-float Turret::calculatetAngle(float targetRow, float targetCol) const
+float Turret::calculatetAngle(float targetX, float targetY) const
 {
-    float myRow = row_ + 0.5f; // the centre point
-    float myCol = col_ + 0.5f; // the centre point
-    float angle = atan2f(myRow - targetRow, myCol - targetCol) * RadiansToDegrees;
+    float angle = atan2f(getTileY() - targetY, getTileX() - targetX) * RadiansToDegrees;
     return angle;
 }
 
@@ -86,6 +82,17 @@ int Turret::getCol() const
     return col_;
 }  
 
+
+float Turret::getTileX() const
+{
+    return row_ + 0.5f;
+}  
+        
+
+float Turret::getTileY() const
+{
+    return col_ + 0.5f;
+}  
 
 int Turret::getPrice() const
 {
