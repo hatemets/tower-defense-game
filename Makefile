@@ -4,6 +4,7 @@ CFLAGS = -g -Wall -Wno-switch --std=c++17
 TARGET := sfml
 OBJ_DIR := ./obj
 SRC_DIR := ./src
+HPP_FILES := ./include/BackgroundSprite.hpp ./include/Button.hpp ./include/game.hpp ./include/Level.hpp ./include/MainMenu.hpp ./include/Mode.hpp ./include/Node.hpp ./include/ResourceHolder.hpp ./include/ResourceHolder.inl ./include/World.hpp ./include/auxiliary/constants.hpp ./include/auxiliary/LayerIdentifiers.hpp ./include/auxiliary/ResourceIdentifiers.hpp
 #SRC_FILES := $(shell find $(SRC_DIR) -type f -name *.cpp)
 SRC_FILES := ./src/BackgroundSprite.cpp ./src/game.cpp ./src/Level.cpp ./src/main.cpp ./src/MainMenu.cpp ./src/Mode.cpp ./src/Node.cpp ./src/World.cpp
 OBJ_FILES := $(patsubst $(SRC_DIR)/%,$(OBJ_DIR)/%,$(SRC_FILES:.cpp=.o))
@@ -18,7 +19,7 @@ ifeq ($(OS),Windows_NT)
 	OUT_FILE = out.exe
 	TARGET = $(OUT_FILE)
 	CLEAN = del /Q .\obj\*.o $(TARGET)
-	MKDIR_OBJ = -@mkdir .\obj
+	MKDIR_OBJ = -@if not exist .\obj mkdir .\obj
 else
 	# Linux specific definitions
 	OUT_FILE = out
@@ -33,7 +34,7 @@ $(TARGET): $(OBJ_FILES)
 	$(CC) -o $(OUT_FILE) $(LFLAGS) $^ $(LIBS)
 
 # Compile
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp $(HPP_FILES)
 	$(MKDIR_OBJ)
 	$(CC) $(CFLAGS) $(IFLAGS) -c -o $@ $<
 
