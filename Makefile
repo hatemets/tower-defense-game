@@ -9,7 +9,7 @@ HEADER_DIR := ./include
 SRC_FILES := ./src/BackgroundSprite.cpp ./src/Button.cpp ./src/game.cpp ./src/Level.cpp ./src/main.cpp ./src/MainMenu.cpp ./src/Mode.cpp ./src/Node.cpp ./src/World.cpp
 OBJ_FILES := $(patsubst $(SRC_DIR)/%,$(OBJ_DIR)/%,$(SRC_FILES:.cpp=.o))
 #CONST_FILES := $(shell find $(HEADER_DIR)/auxiliary/ -type f -name *.hpp)
-CONST_FILES := ./include/auxiliary/constants.hpp ./include/auxiliary/LayerIdentifiers.hpp ./include/auxiliary/ResourceIdentifiers.hpp
+CONST_FILES := ./include/auxiliary/constants.hpp ./include/auxiliary/LayerIdentifiers.hpp ./include/auxiliary/ResourceIdentifiers.hpp ./include/auxiliary/ModeIdentifiers.hpp
 #HPP_FILES := $(shell find $(HEADER_DIR) -type f -name *.hpp)
 HPP_FILES := ./include/BackgroundSprite.hpp ./include/Button.hpp ./include/game.hpp ./include/Level.hpp ./include/MainMenu.hpp ./include/Mode.hpp ./include/Node.hpp ./include/ResourceHolder.hpp ./include/ResourceHolder.inl ./include/World.hpp
 LIBS = -lsfml-graphics -lsfml-window -lsfml-system
