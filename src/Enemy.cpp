@@ -1,4 +1,5 @@
 #include "../include/Enemy.hpp"
+#include "../include/Projectile.hpp"
 #include "../include/auxiliary/constants.hpp"
 #include <math.h>
 
@@ -27,7 +28,7 @@ void Enemy::update(sf::Time deltaTime)
 }
 
 
-void Projectile::draw()
+void Enemy::draw()
 {
     // do we need draw method? Is the enemy responsible of drawing itself?
 }
@@ -72,9 +73,9 @@ void Enemy::hit(int maxDamage)
 {
     int halfDamage = maxDamage / 2;
     if (halfDamage == 0) {
-        hitPoints -= maxDamage;
+        hitPoints_ -= maxDamage;
     } else {
-        hitPoints -= 1 + halfDamage + rand() % halfDamage;
+        hitPoints_ -= 1 + halfDamage + rand() % halfDamage;
     }
 }
 
@@ -106,7 +107,7 @@ int Enemy::getHitPoints() const
  // Goblin
 
  Goblin::Goblin(sf::RenderWindow& window, float tileX, float tileY, sf::Time timeUntilSpawn) :
-    Enemy(window, tileX, tileY, 0.5, 500, timeUntilSpawn)
+    Enemy(window, tileX, tileY, timeUntilSpawn, 0.5, 500)
 {
 }
 
