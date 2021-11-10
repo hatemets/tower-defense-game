@@ -14,7 +14,7 @@ class MainMenu : public Mode
 	public:
 		MainMenu(sf::RenderWindow& window);
 		virtual void update(sf::Time deltaTime) final;
-		virtual ModeState handleInput(sf::Vector2i mousePos) final;
+		/* virtual ModeState handleInput(sf::Vector2i mousePos) final; */
 	
 	private:
 		enum class Layers

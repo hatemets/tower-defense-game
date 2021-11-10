@@ -50,36 +50,3 @@ void Level::createScene()
 void Level::update(sf::Time deltaTime)
 {
 }
-
-ModeState Level::handleInput(sf::Vector2i mousePos)
-{
-	auto found = std::find_if(buttons_.begin(), buttons_.end(), [&](const Button* button)
-			{
-			return button->getButton().getGlobalBounds().contains(sf::Vector2f(mousePos));
-			});
-
-	if (found != buttons_.end())
-	{
-		const Button* button = *found;
-
-		using namespace Resources;
-
-		switch (button->getType())
-		{
-			/* case ID::StartButton: */
-			/* 	return ModeState(Type::Level); */
-			case ID::HomeButton:
-				return ModeState(Type::MainMenu);
-			default:
-				{
-					// NOTE: Internal tasks are implemented here (none for mainmenu)
-					return ModeState();
-				}
-		}
-	}
-	else
-	// No button was clicked
-	{
-		return ModeState();
-	}
-}

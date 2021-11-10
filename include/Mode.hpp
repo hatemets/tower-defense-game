@@ -20,7 +20,7 @@ class Mode : public Node
 		Mode(sf::RenderWindow& window);
 		virtual ~Mode() = default;
 
-		virtual ModeState handleInput(sf::Vector2i mousePos) = 0;
+		virtual ModeState handleInput(sf::Vector2i mousePos);
 
 	private:
 		virtual void loadResources() = 0;

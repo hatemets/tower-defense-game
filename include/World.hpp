@@ -7,7 +7,6 @@
 #include "Mode.hpp"
 #include "MainMenu.hpp"
 #include "auxiliary/ModeIdentifiers.hpp"
-#include "StateChange.hpp"
 
 using namespace Modes;
 
