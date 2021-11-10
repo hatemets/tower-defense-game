@@ -46,15 +46,25 @@ void Game::processEvents()
 				window_.close();
 				break;
 				// NOTE: For testing purposes only
+
+			case sf::Event::MouseButtonPressed:
+				{
+					if (event.mouseButton.button == sf::Mouse::Left)
+					{
+						world_.handleUserInput(sf::Mouse::getPosition(window_));
+					}
+
+					break;
+				}
 			case sf::Event::KeyPressed:
 				{
-					if (world_.getMode() == World::Type::Level)
+					if (world_.getMode() == Type::Level)
 					{
-						world_.changeMode(World::Type::MainMenu);
+						world_.changeMode(Type::MainMenu);
 					}
 					else
 					{
-						world_.changeMode(World::Type::Level);
+						world_.changeMode(Type::Level);
 					}
 					break;
 				}

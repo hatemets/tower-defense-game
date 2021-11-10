@@ -21,6 +21,10 @@ namespace Resources
 
 		// Button names
 		StartButton,
+
+		// NOTE: This button leads the user to main menu
+		// It does NOT belong to main menu itself
+		HomeButton,
 		QuitButton,
 		PauseButton,
 

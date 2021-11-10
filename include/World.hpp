@@ -6,23 +6,19 @@
 #include <memory>
 #include "Mode.hpp"
 #include "MainMenu.hpp"
+#include "auxiliary/ModeIdentifiers.hpp"
+#include "StateChange.hpp"
+
+using namespace Modes;
 
 class World
 {
-	public:
-		enum class Type
-		{
-			MainMenu,
-			Level,
-			TotalTypes
-		};
-
 	public:
 		World(sf::RenderWindow& window);
 
 		void operate();
 		void changeMode(Type newType);
-		void handleUserInput();
+		void handleUserInput(sf::Vector2i mousePos);
 
 		Type getMode() const { return modeType_; }
 

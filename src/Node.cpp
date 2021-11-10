@@ -40,3 +40,16 @@ void Node::drawChildren(sf::RenderTarget& target, sf::RenderStates states) const
 void Node::update(sf::Time deltaTime)
 {
 }
+
+
+std::vector<const Node*> Node::getChildren() const
+{
+	std::vector<const Node*> children;
+
+	for (const std::unique_ptr<Node>& child : children_)
+	{
+		children.push_back(child.get());
+	}
+
+	return children;
+}

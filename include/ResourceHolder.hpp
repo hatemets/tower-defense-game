@@ -30,7 +30,7 @@ class ResourceHolder : public GeneralResourceHolder<Resource, Identifier>
 // NOTE: Identifier is subject to change. ResourceIdentifiers file contents might be
 // grouped into smaller bunches of identifiers to improve readability.
 template <typename Identifier>
-class ShapeHolder : public GeneralResourceHolder<sf::Shape, Identifier>
+class ButtonHolder : public GeneralResourceHolder<sf::RectangleShape, Identifier>
 {
 	public:
 		void load(Identifier id);

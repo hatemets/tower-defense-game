@@ -1,10 +1,11 @@
 #include "../include/World.hpp"
 #include "../include/MainMenu.hpp"
 #include "../include/Level.hpp"
+#include <iostream>
 
 World::World(sf::RenderWindow& window)
 	: window_(window),
-	modeType_(Type::Level),
+	modeType_(Type::MainMenu),
 	gameBounds_(0.f, 0.f, window.getSize().x, window.getSize().y),
 	mode_(std::make_unique<MainMenu>(window))
 {
@@ -21,7 +22,7 @@ void World::changeMode(Type newMode)
 	// Should never happen
 	if (modeType_ == newMode)
 	{
-		throw std::runtime_error("changeMode: newMode is the same as currentMode");
+		throw std::runtime_error("World::changeMode: newMode is the same as currentMode");
 	}
 
 	modeType_ = newMode;
@@ -37,6 +38,12 @@ void World::changeMode(Type newMode)
 	}
 }
 
-void World::handleUserInput()
+void World::handleUserInput(sf::Vector2i mousePos)
 {
+	ModeState newMode = mode_->handleInput(mousePos);
+
+	if (newMode.modeChange)
+	{
+		changeMode(newMode.type);
+	}
 }

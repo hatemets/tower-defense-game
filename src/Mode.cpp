@@ -6,9 +6,12 @@ Mode::Mode(sf::RenderWindow& window)
 	layers_(),
 	nodeTree_(),
 	windowBounds_(0.f, 0.f, window_.getSize().x, window_.getSize().y),
-	fonts_()
+	fonts_(),
+	buttons_(),
+	buttonShapes_()
 {
-	fonts_.load(Resources::ID::SourceCodePro, "include/fonts/SourceCodePro.ttf");
+	// TODO: Create a universal filepath
+	fonts_.load(Resources::ID::SourceCodePro, "./include/fonts/SourceCodePro.ttf");
 }
 
 

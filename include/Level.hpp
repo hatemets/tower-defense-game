@@ -13,6 +13,7 @@ class Level : public Mode
 	public:
 		Level(sf::RenderWindow& window);
 		virtual void update(sf::Time deltaTime) final;
+		virtual ModeState handleInput(sf::Vector2i mousePos) final;
 	
 	private:
 		enum class Layers

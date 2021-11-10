@@ -6,6 +6,10 @@
 #include "Node.hpp"
 #include "auxiliary/ResourceIdentifiers.hpp"
 #include "ResourceHolder.hpp"
+#include "Button.hpp"
+#include "auxiliary/ModeIdentifiers.hpp"
+
+using namespace Modes;
 
 // Mode is an abstract class used for representing one "scene" currently
 // displayed on the game window
@@ -16,9 +20,12 @@ class Mode : public Node
 		Mode(sf::RenderWindow& window);
 		virtual ~Mode() = default;
 
+		virtual ModeState handleInput(sf::Vector2i mousePos) = 0;
+
 	private:
 		virtual void loadResources() = 0;
 		virtual void createScene() = 0;
+
 		virtual void drawSelf(sf::RenderTarget& target, sf::RenderStates states) const;
 
 	protected:
@@ -35,6 +42,12 @@ class Mode : public Node
 		sf::FloatRect windowBounds_;
 
 		ResourceHolder<sf::Font, Resources::ID> fonts_;
+
+		// A container storing button pointers
+		std::vector<const Button*> buttons_;
+
+		// Holds all the shapes (graphics) of buttons
+		ButtonHolder<Resources::ID> buttonShapes_;
 };
 
 #endif

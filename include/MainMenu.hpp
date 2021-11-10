@@ -6,6 +6,7 @@
 #include "ResourceHolder.hpp"
 #include "auxiliary/ResourceIdentifiers.hpp"
 #include "Mode.hpp"
+#include "Button.hpp"
 
 // Controls the turrets, enemies, map
 class MainMenu : public Mode
@@ -13,6 +14,7 @@ class MainMenu : public Mode
 	public:
 		MainMenu(sf::RenderWindow& window);
 		virtual void update(sf::Time deltaTime) final;
+		virtual ModeState handleInput(sf::Vector2i mousePos) final;
 	
 	private:
 		enum class Layers

@@ -23,9 +23,9 @@ template <typename Resource, typename Identifier>
 void ResourceHolder<Resource, Identifier>::load(Identifier id, const std::string& filename)
 {
 	// Allocate memory for the resource
-	std::unique_ptr<Resource> resource = std::make_unique<Resource>();
+	auto res = std::make_unique<Resource>();
 
-	if (!resource->loadFromFile(filename))
+	if (!res->loadFromFile(filename))
 	{
 		throw std::runtime_error("ResourceHolder: loading the file failed: " + filename);
 	}
@@ -33,40 +33,15 @@ void ResourceHolder<Resource, Identifier>::load(Identifier id, const std::string
 	// Move (not copy) the resource to resources map
 	// NOTE: "this" keyword is necessary in this context, since otherwise the
 	// compiler would assume that resources_ should be a global variable
-	auto inserted = this->resources_.insert(std::make_pair(id, std::move(resource)));
-
-	// If the resource does not exist, halt the program
-	// NOTE: Remove after testing
-	assert(inserted.second);
+	this->resources_.insert(std::make_pair(id, std::move(res)));
 }
 
 
-// ShapeHolder
+// ButtonHolder
 template <typename Identifier>
-void ShapeHolder<Identifier>::load(Identifier id)
+void ButtonHolder<Identifier>::load(Identifier id)
 {
-	using namespace Resources;
+	auto res = std::make_unique<sf::RectangleShape>();
 
-	switch (id)
-	{
-		// Rectangular buttons
-		case ID::StartButton:
-		case ID::QuitButton:
-			{
-				auto res = std::make_unique<sf::RectangleShape>();
-				this->resources_.insert(std::make_pair(id, std::move(res)));
-				break;
-			}
-			// Round butttons
-		case ID::PauseButton:
-			{
-				auto res = std::make_unique<sf::CircleShape>();
-				this->resources_.insert(std::make_pair(id, std::move(res)));
-				break;
-			}
-		default:
-			{
-				throw std::runtime_error("ResourceHolder: Identifier did not match any type");
-			}
-	}
+	this->resources_.insert(std::make_pair(id, std::move(res)));
 }
