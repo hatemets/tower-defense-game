@@ -15,7 +15,6 @@ MainMenu::MainMenu(sf::RenderWindow& window)
 
 void MainMenu::loadResources()
 {
-	// TODO: Universal filepath
 	textures_.load(Resources::ID::GrassArea, "./include/images/background1.jpg");
 	buttonShapes_.load(Resources::ID::StartButton);
 }
