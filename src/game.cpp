@@ -47,25 +47,13 @@ void Game::processEvents()
 				break;
 				// NOTE: For testing purposes only
 
-			case sf::Event::MouseButtonPressed:
+			case sf::Event::MouseButtonReleased:
 				{
 					if (event.mouseButton.button == sf::Mouse::Left)
 					{
 						world_.handleUserInput(sf::Mouse::getPosition(window_));
 					}
 
-					break;
-				}
-			case sf::Event::KeyPressed:
-				{
-					if (world_.getMode() == Type::Level)
-					{
-						world_.changeMode(Type::MainMenu);
-					}
-					else
-					{
-						world_.changeMode(Type::Level);
-					}
 					break;
 				}
 		}
