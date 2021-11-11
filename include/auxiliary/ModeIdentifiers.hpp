@@ -6,6 +6,7 @@ namespace Modes
 	enum class Type
 	{
 		MainMenu,
+		LevelMenu,
 		Level,
 		TotalTypes
 	};

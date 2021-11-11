@@ -16,13 +16,13 @@ MainMenu::MainMenu(sf::RenderWindow& window)
 void MainMenu::loadResources()
 {
 	textures_.load(Resources::ID::GrassArea, "./include/images/background1.jpg");
-	buttonShapes_.load(Resources::ID::StartButton);
+	buttonShapes_.load(Resources::ID::LevelMenuButton);
 }
 
 
 void MainMenu::createScene()
 {
-	for (std::size_t i = 0; i < static_cast<std::size_t>(Layers::totalCount); ++i)
+	for (std::size_t i = 0; i < static_cast<std::size_t>(Layers::TotalCount); ++i)
 	{
 		auto layerNode = std::make_unique<Node>();
 
@@ -44,8 +44,7 @@ void MainMenu::createScene()
 
 
 	// Configure the buttons
-	// NOTE: Start button is the one that leads the user to the first level (subject to change)
-	auto startButton = std::make_unique<Button>("Start", fonts_, Resources::ID::SourceCodePro, buttonShapes_, Resources::ID::StartButton);
+	auto startButton = std::make_unique<Button>("Play", fonts_, Resources::ID::SourceCodePro, buttonShapes_, Resources::ID::LevelMenuButton);
 	startButton->setPosition(WindowWidth / 2.f, WindowHeight / 2.f);
 	buttons_.push_back(startButton.get());
 	layers_[static_cast<std::size_t>(Layers::Buttons)]->addChild(std::move(startButton));

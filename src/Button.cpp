@@ -24,6 +24,10 @@ std::pair<sf::Color, sf::Color> getColor(Resources::ID id)
 			{
 				return std::make_pair(sf::Color::Yellow, sf::Color::Black);
 			}
+		case ID::LevelMenuButton:
+			{
+				return std::make_pair(sf::Color::Magenta, sf::Color::White);
+			}
 		default: throw std::runtime_error("Unknown button id");
 	}
 }

@@ -39,6 +39,8 @@ ModeState Mode::handleInput(sf::Vector2i mousePos)
 				return ModeState(Type::Level);
 			case ID::HomeButton:
 				return ModeState(Type::MainMenu);
+			case ID::LevelMenuButton:
+				return ModeState(Type::LevelMenu);
 			default:
 				return ModeState();
 		}

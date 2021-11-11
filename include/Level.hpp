@@ -22,7 +22,7 @@ class Level : public Mode
 			SideMenu,
 			HUD,
 			// total count of enum values
-			totalCount	 
+			TotalCount	 
 		};
 
 	private:

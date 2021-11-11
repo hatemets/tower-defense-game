@@ -21,7 +21,7 @@ void Level::loadResources()
 
 void Level::createScene()
 {
-	for (std::size_t i = 0; i < static_cast<std::size_t>(Layers::totalCount); ++i)
+	for (std::size_t i = 0; i < static_cast<std::size_t>(Layers::TotalCount); ++i)
 	{
 		auto layerNode = std::make_unique<Node>();
 

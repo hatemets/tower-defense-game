@@ -12,6 +12,7 @@ namespace Resources
 		// Path is for enemies
 		GrassArea,
 		SandPath,
+		LevelMenuBackground,
 
 		// Enemies
 		Goblin,
@@ -19,14 +20,14 @@ namespace Resources
 		// Turrets
 		ArrowShooter,
 
-		// Button names
+		// To level menu
 		StartButton,
 
-		// NOTE: This button leads the user to main menu
-		// It does NOT belong to main menu itself
+		// To main menu
 		HomeButton,
 		QuitButton,
 		PauseButton,
+		LevelMenuButton,
 
 		// Fonts
 		SourceCodePro

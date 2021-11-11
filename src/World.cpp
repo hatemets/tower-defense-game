@@ -1,6 +1,7 @@
 #include "../include/World.hpp"
 #include "../include/MainMenu.hpp"
 #include "../include/Level.hpp"
+#include "../include/LevelMenu.hpp"
 #include <iostream>
 
 World::World(sf::RenderWindow& window)
@@ -34,6 +35,9 @@ void World::changeMode(Type newMode)
 			break;
 		case Type::MainMenu:
 			mode_.reset(new MainMenu(window_));
+			break;
+		case Type::LevelMenu:
+			mode_.reset(new LevelMenu(window_));
 			break;
 	}
 }

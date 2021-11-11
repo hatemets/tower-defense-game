@@ -1,5 +1,5 @@
-#ifndef MAIN_MENU_HPP
-#define MAIN_MENU_HPP
+#ifndef LEVEL_MENU_HPP
+#define LEVEL_MENU_HPP
 
 #include <SFML/Graphics.hpp>
 #include "Node.hpp"
@@ -8,11 +8,13 @@
 #include "Mode.hpp"
 #include "Button.hpp"
 
+// TODO: Create a menu class for LevelMenu, MainMenu and BuyMenu
+
 // Controls the turrets, enemies, map
-class MainMenu : public Mode
+class LevelMenu : public Mode
 {
 	public:
-		MainMenu(sf::RenderWindow& window);
+		LevelMenu(sf::RenderWindow& window);
 		virtual void update(sf::Time deltaTime) final;
 	
 	private:
