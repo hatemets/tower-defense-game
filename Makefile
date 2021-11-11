@@ -5,10 +5,13 @@ TARGET := sfml
 OBJ_DIR := ./obj
 SRC_DIR := ./src
 HEADER_DIR := ./include
-SRC_FILES := $(shell find $(SRC_DIR) -type f -name *.cpp)
+#SRC_FILES := $(shell find $(SRC_DIR) -type f -name *.cpp)
+SRC_FILES := ./src/BackgroundSprite.cpp ./src/Button.cpp ./src/game.cpp ./src/Level.cpp ./src/main.cpp ./src/MainMenu.cpp ./src/Mode.cpp ./src/Node.cpp ./src/World.cpp
 OBJ_FILES := $(patsubst $(SRC_DIR)/%,$(OBJ_DIR)/%,$(SRC_FILES:.cpp=.o))
-CONST_FILES := $(shell find $(HEADER_DIR)/auxiliary/ -type f -name *.hpp)
-HEADER_FILES := $(shell find $(HEADER_DIR) -type f -name *.hpp)
+#CONST_FILES := $(shell find $(HEADER_DIR)/auxiliary/ -type f -name *.hpp)
+CONST_FILES := ./include/auxiliary/constants.hpp ./include/auxiliary/LayerIdentifiers.hpp ./include/auxiliary/ResourceIdentifiers.hpp ./include/auxiliary/ModeIdentifiers.hpp
+#HPP_FILES := $(shell find $(HEADER_DIR) -type f -name *.hpp)
+HPP_FILES := ./include/BackgroundSprite.hpp ./include/Button.hpp ./include/game.hpp ./include/Level.hpp ./include/MainMenu.hpp ./include/Mode.hpp ./include/Node.hpp ./include/ResourceHolder.hpp ./include/ResourceHolder.inl ./include/World.hpp
 LIBS = -lsfml-graphics -lsfml-window -lsfml-system
 
 ifeq ($(OS),Windows_NT)
@@ -19,7 +22,7 @@ ifeq ($(OS),Windows_NT)
 	LFLAGS = -LC:\Users\Niko\git\SFML-test\SFML-2.5.1-windows-gcc-7.3.0-mingw-32-bit\SFML-2.5.1\lib
 	OUT_FILE = out.exe
 	TARGET = $(OUT_FILE)
-	CLEAN = del /Q .\obj\*.o $(TARGET)
+	CLEAN = del /Q .\obj\*.o $(OUT_FILE)
 	MKDIR_OBJ = -@if not exist .\obj mkdir .\obj
 else
 	# Linux specific definitions
@@ -31,15 +34,15 @@ endif
 all: $(TARGET)
 
 # Link
-$(TARGET): $(OBJ_FILES) $(CONST_FILES)
+$(TARGET): $(OBJ_FILES)
 	$(CC) -o $(OUT_FILE) $(LFLAGS) $^ $(LIBS)
 
 # Compile
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp $(HPP_FILES)
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp $(HPP_FILES) $(CONST_FILES)
 	$(MKDIR_OBJ)
 	$(CC) $(CFLAGS) $(IFLAGS) -c -o $@ $<
 
 .PHONY: clean
 
 clean:
-	$(CLEAN) $(OBJ_DIR)/*.o $(TARGET)
+	$(CLEAN)
