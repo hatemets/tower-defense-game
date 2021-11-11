@@ -3,6 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 #include "Node.hpp"
+#include "Map.hpp"
 // #include "ResourceHolder.hpp"
 #include "auxiliary/ResourceIdentifiers.hpp"
 
@@ -10,7 +11,7 @@
 class Level
 {
 	public:
-		explicit Level(sf::RenderWindow& window, const std::string& levelName);
+		explicit Level(sf::RenderWindow& window, const std::string& fileName);
 		void update(sf::Time deltaTime);
 		void draw();
 	
@@ -30,14 +31,9 @@ class Level
 
 	private:
 		sf::RenderWindow& window_;
-		std::string levelName_;
+		Map map_;
 		Node sceneTree_;
-		std::vector<std::pair<int, int>> roadTiles_;
-		std::vector<std::pair<int, int>> turretPlaceTiles_;
-		std::vector<std::shared_ptr<sf::RectangleShape>> roadPictures_; // this probably should be replaced with ResourceHolder
-		std::vector<std::shared_ptr<sf::CircleShape>> turretPlacePictures_; // this probably should be replaced with ResourceHolder
 		// ResourceHolder<sf::Texture, Textures::ID> textures_;
-
 };
 
 #endif
