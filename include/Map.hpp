@@ -15,6 +15,11 @@ class Map
 		void draw();
 
     public:
+        static float calculateDistance2(float aX, float aY, float bX, float bY);
+        static float calculateDistance(float aX, float aY, float bX, float bY);
+        static float calculatetAngle(float aX, float aY, float bX, float bY);
+
+    public:
         // these probably will be moved to level
         void update(sf::Time deltaTime);
 	

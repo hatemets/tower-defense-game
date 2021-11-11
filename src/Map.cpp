@@ -1,5 +1,6 @@
 #include "../include/Map.hpp"
 #include "../include/auxiliary/constants.hpp"
+#include <math.h>
 
 
 Map::Map(sf::RenderWindow& window, const std::string& fileName) :
@@ -21,6 +22,27 @@ void Map::draw()
 	// draw objects (move to Level?)
 
 	
+}
+
+
+float Map::calculateDistance2(float aX, float aY, float bX, float bY)
+{
+    float deltaX = aX - bX;
+    float deltaY = aY - bY;
+    return deltaX * deltaX + deltaY * deltaY;
+}
+
+
+float Map::calculateDistance(float aX, float aY, float bX, float bY) 
+{
+    float distance2 = calculateDistance2(aX, aY, bX, bY);
+    return sqrtf(distance2);
+}
+
+
+float Map::calculatetAngle(float aX, float aY, float bX, float bY) 
+{
+    return atan2f(aY - bY, aX - bX) * RadiansToDegrees;
 }
 
 
