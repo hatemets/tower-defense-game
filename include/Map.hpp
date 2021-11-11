@@ -16,8 +16,9 @@ class Map
 
     public:
         static float calculateDistance2(float aX, float aY, float bX, float bY);
-        static float calculateDistance(float aX, float aY, float bX, float bY);
+        static float calculateDistance(float aX, float aY, float bX, float bY); 
         static float calculatetAngle(float aX, float aY, float bX, float bY);
+        static bool isContact(float aX, float aY, float aRadius, float bX, float bY, float bRadius);
 
     public:
         // these probably will be moved to level
@@ -32,12 +33,18 @@ class Map
 	private:
         void loadFile(const std::string& fileName);
 		void loadTextures();
+        bool static isMember(int row, int col, const std::vector<std::pair<int, int>>& container);
+        bool isRoad(int row, int col) const;
+        bool isTurretBase(int row, int col) const;
+        void findPaths();
 
 	private:
 		sf::RenderWindow& window_;
+        // Tiles are listed as row,col pairs
 		std::vector<std::pair<int, int>> roadTiles_;
 		std::vector<std::pair<int, int>> turretBaseTiles_;
 		std::vector<std::shared_ptr<sf::Shape>> mapPictures_; // Shapes probably should be replaced with Textures
+        std::vector<std::vector<std::pair<int, int>>> paths_;
 };
 
 
