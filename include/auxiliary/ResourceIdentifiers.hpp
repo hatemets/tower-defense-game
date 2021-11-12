@@ -1,7 +1,7 @@
 #ifndef RESOURCE_IDENTIFIERS_HPP
 #define RESOURCE_IDENTIFIERS_HPP
 
-namespace Textures
+namespace Resources
 {
 	enum class ID
 	{
@@ -12,12 +12,25 @@ namespace Textures
 		// Path is for enemies
 		GrassArea,
 		SandPath,
+		LevelMenuBackground,
 
 		// Enemies
 		Goblin,
 
 		// Turrets
-		ArrowShooter
+		ArrowShooter,
+
+		// To level menu
+		StartButton,
+
+		// To main menu
+		HomeButton,
+		QuitButton,
+		PauseButton,
+		LevelMenuButton,
+
+		// Fonts
+		SourceCodePro
 	};
 };
 

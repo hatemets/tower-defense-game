@@ -1,81 +1,52 @@
 #include "../include/Level.hpp"
+#include "../include/BackgroundSprite.hpp"
 #include "../include/auxiliary/constants.hpp"
+#include <memory>
 
-
-Level::Level(sf::RenderWindow& window, const std::string& levelName) :
-	window_(window),
-	levelName_(levelName),
-	sceneTree_() //,
-	//textures_()
+Level::Level(sf::RenderWindow& window)
+	: Mode(window),
+	textures_()
 {
-	// load level
-
-	// for testing this simulates loading the road from a file
-	for (int col = 0; col < 10; col++) {
-		roadTiles_.push_back(std::make_pair(col, 10));
-	}
-	for (int row = 11; row < 21; row++) {
-		roadTiles_.push_back(std::make_pair(9, row));
-	}
-	for (int col = 10; col < 40; col++) {
-		roadTiles_.push_back(std::make_pair(col, 20));
-	}
-
-	// for testing this simulates loading the turret places from a file
-	while (turretPlaceTiles_.size() < 30) {
-		int col = rand() % 40;
-		int row = rand() % 30;
-		auto tile = std::make_pair(row, col);
-		if ((std::find(roadTiles_.begin(), roadTiles_.end(), tile) == roadTiles_.end()) && 
-		    (std::find(turretPlaceTiles_.begin(), turretPlaceTiles_.end(), tile) == turretPlaceTiles_.end())) {
-				turretPlaceTiles_.push_back(tile);
-		}
-	}
-	
-	// the graphical presentation of the road
-	for (auto roadTile : roadTiles_) {
-		int col = roadTile.first;
-		int row = roadTile.second;
-		std::shared_ptr<sf::RectangleShape> road(new sf::RectangleShape);
-		road->setSize(sf::Vector2f(TileSize, TileSize));
-		road->setPosition(col * TileSize, row * TileSize);
-    	road->setFillColor(sf::Color::Yellow);
-		roadPictures_.push_back(road);
-	}
-
-	// the graphical presentation of the available turret places
-	for (auto turretPlaceTile : turretPlaceTiles_) {
-		int col = turretPlaceTile.first;
-		int row = turretPlaceTile.second;
-		std::shared_ptr<sf::CircleShape> place(new sf::CircleShape);
-		place->setRadius(TileSize / 2);
-		place->setPosition(col * TileSize, row * TileSize);
-    	place->setFillColor(sf::Color::Red);
-		turretPlacePictures_.push_back(place);
-	}
+	loadResources();
+	createScene();
 }
 
-void Level::loadTextures()
+
+void Level::loadResources()
 {
+	textures_.load(Resources::ID::GrassArea, "./include/images/levelBackground.png");
+	buttonShapes_.load(Resources::ID::HomeButton);
+}
+
+
+void Level::createScene()
+{
+	for (std::size_t i = 0; i < static_cast<std::size_t>(Layers::TotalCount); ++i)
+	{
+		auto layerNode = std::make_unique<Node>();
+
+		layers_.push_back(layerNode.get());
+
+		nodeTree_.addChild(std::move(layerNode));
+	}
+
+
+	sf::Texture& backgroundTexture = textures_.get(Resources::ID::GrassArea);
+	backgroundTexture.setRepeated(true);
+
+	sf::IntRect bounds(windowBounds_);
+
+	auto background = std::make_unique<BackgroundSprite>(BackgroundSprite{backgroundTexture, bounds});
+	background->setPosition(0.f, 0.f);
+	layers_[static_cast<std::size_t>(Layers::Background)]->addChild(std::move(background));
+
+
+	auto homeButton = std::make_unique<Button>("Back to Main Menu", fonts_, Resources::ID::SourceCodePro, buttonShapes_, Resources::ID::HomeButton);
+	homeButton->setPosition(WindowWidth / 2.f, WindowHeight / 2.f);
+	buttons_.push_back(homeButton.get());
+	layers_[static_cast<std::size_t>(Layers::HUD)]->addChild(std::move(homeButton));
 }
 
 void Level::update(sf::Time deltaTime)
 {
-	// move objects
-}
-
-void Level::draw()
-{
-	// draw map
-
-	for (auto road : roadPictures_) {
-		window_.draw(*road);
-	}
-	for (auto place : turretPlacePictures_) {
-		window_.draw(*place);
-	}
-
-	// draw objects
-
-	
 }

@@ -2,8 +2,8 @@
 #include <SFML/System/Time.hpp>
 
 Game::Game()
-	: window_{sf::VideoMode(WindowWidth, WindowHeight), "Tower Defense Game"},
-	  world_(window_)
+	: window_(sf::VideoMode(WindowWidth, WindowHeight), "Tower Defense Game"),
+	world_(window_)
 {
 }
 
@@ -45,27 +45,31 @@ void Game::processEvents()
 			case sf::Event::Closed:
 				window_.close();
 				break;
+				// NOTE: For testing purposes only
+
+			case sf::Event::MouseButtonReleased:
+				{
+					if (event.mouseButton.button == sf::Mouse::Left)
+					{
+						world_.handleUserInput(sf::Mouse::getPosition(window_));
+					}
+
+					break;
+				}
 		}
 	}
 }
 
 // Update game with fixed timesteps
-// Otherwise, a fast computer would render the game more often and thus have
-// the entities move faster
 void Game::update(sf::Time deltaTime)
 {
-	world_.update(deltaTime);
 }
 
 void Game::render()
 {
 	window_.clear(sf::Color::Black);
 
-	world_.draw();
+	world_.operate();
 
 	window_.display();
-}
-
-void Game::handleUserInput()
-{
 }

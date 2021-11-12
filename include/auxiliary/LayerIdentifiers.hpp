@@ -11,7 +11,7 @@ enum class Layers
 	Foreground,
 
 	// total count to get the number of members in the enum
-	totalCount
+	TotalCount
 };
 
 #endif

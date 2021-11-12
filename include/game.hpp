@@ -18,15 +18,10 @@ class Game
 		void processEvents();
 		void update(sf::Time deltaTime);
 		void render();
-		void handleUserInput();
 
 	private:
 		sf::RenderWindow window_;
 		World world_;
-		// TODO:
-		// Main menu
-		// (Level Menu)
-		// Levels
 };
 
 #endif

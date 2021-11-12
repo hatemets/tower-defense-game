@@ -15,9 +15,14 @@ class Node :
 
 	public:
 		void addChild(std::unique_ptr<Node> child);
+		
+		std::vector<const Node*> getChildren() const;
 
 	private:
 		virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const final;
+		virtual void drawSelf(sf::RenderTarget& target, sf::RenderStates states) const;
+		virtual void drawChildren(sf::RenderTarget& target, sf::RenderStates states) const;
+		virtual void update(sf::Time deltaTime);
 
 	private:
 		Node* parent_;

@@ -3,41 +3,31 @@
 
 #include <SFML/Graphics.hpp>
 #include <SFML/System/NonCopyable.hpp>
-#include "Node.hpp"
-// #include "ResourceHolder.hpp"
-#include "auxiliary/ResourceIdentifiers.hpp"
-#include "Level.hpp"
+#include <memory>
+#include "Mode.hpp"
+#include "MainMenu.hpp"
+#include "auxiliary/ModeIdentifiers.hpp"
+
+using namespace Modes;
 
 class World
 {
 	public:
-		explicit World(sf::RenderWindow& window);
-		void update(sf::Time deltaTime);
-		void draw();
+		World(sf::RenderWindow& window);
 
-	public:
-		enum class States
-		{
-			Menu,
-			Pause,
-			Level
-		};
-	
-	private:
-		enum class Layers
-		{
-			Background,
-			Entities,
-			HUD,
-			// total count to get the number of members in the enum
-			totalCount	 
-		};
+		void operate();
+		void changeMode(Type newType);
+		void handleUserInput(sf::Vector2i mousePos);
+
+		Type getMode() const { return modeType_; }
 
 	private:
 		sf::RenderWindow& window_;
-		States currentState_;
-		std::vector<std::shared_ptr<Level>> levels_;
-		std::shared_ptr<Level> currentLevel_;
+		Type modeType_;
+		sf::FloatRect gameBounds_;
+
+		// The current mode of the game
+		std::unique_ptr<Mode> mode_;
 };
 
 #endif
