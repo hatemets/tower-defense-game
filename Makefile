@@ -26,10 +26,11 @@ else
 	CLEAN = rm -rf $(OBJ_DIR)*/.o $(TARGET)
 	MKDIR_OBJ = @mkdir -p $(OBJ_DIR)
 	SRC_FILES := $(shell find $(SRC_DIR) -type f -name *.cpp)
-	OBJ_FILES := $(patsubst $(SRC_DIR)/%,$(OBJ_DIR)/%,$(SRC_FILES:.cpp=.o))
 	CONST_FILES := $(shell find $(HEADER_DIR)/auxiliary/ -type f -name *.hpp)
 	HPP_FILES := $(shell find $(HEADER_DIR) -type f -name *.hpp)
 endif
+
+OBJ_FILES := $(patsubst $(SRC_DIR)/%,$(OBJ_DIR)/%,$(SRC_FILES:.cpp=.o))
 
 all: $(TARGET)
 
