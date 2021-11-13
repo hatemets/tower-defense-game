@@ -3,9 +3,13 @@
 
 // General
 const unsigned int FramesPerSecond = 200;
-const float WindowWidth = 400;
-const float WindowHeight = 300;
-const float TileSize = 10;
+const int TileSize = 40;
+const int TileRows = 20;
+const int TileCols = 20;
+const int WindowWidth = TileSize * TileCols;
+const int WindowHeight = TileSize * TileRows;
+
+// Math
 const float Pi = 3.14159;
 const float RadiansToDegrees = 180 / Pi;
 const float DegreesToRadians = Pi / 180;

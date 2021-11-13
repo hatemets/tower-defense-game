@@ -55,22 +55,6 @@ void Turret::move(int row, int col)
 }
 
 
-float Turret::calculateDistance(float targetX, float targetY) const
-{
-    float deltaX = targetX - getTileX();
-    float deltaY = targetY - getTileY();
-    float distance2 = deltaX * deltaX + deltaY * deltaY;
-    return sqrtf(distance2);
-}
-
-
-float Turret::calculatetAngle(float targetX, float targetY) const
-{
-    float angle = atan2f(getTileY() - targetY, getTileX() - targetX) * RadiansToDegrees;
-    return angle;
-}
-
-
 int Turret::getRow() const
 {
     return row_;

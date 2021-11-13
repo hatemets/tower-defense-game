@@ -3,6 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 #include "Node.hpp"
+#include "Map.hpp"
 // #include "ResourceHolder.hpp"
 #include "auxiliary/ResourceIdentifiers.hpp"
 #include "Mode.hpp"

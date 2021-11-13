@@ -14,8 +14,6 @@ class Turret
 
     protected:
         void move(int row, int col);
-        float calculateDistance(float targetX, float targetY) const;
-        float calculatetAngle(float targetX, float targetY) const;
         virtual float rotate(sf::Time deltaTime) = 0;  // note: change this: needs the enemies as a parameter
         virtual bool shoot() = 0;  // note: change this: the return value should be a projectile
 
