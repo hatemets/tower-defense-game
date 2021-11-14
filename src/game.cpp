@@ -63,6 +63,7 @@ void Game::processEvents()
 // Update game with fixed timesteps
 void Game::update(sf::Time deltaTime)
 {
+	world_.update(deltaTime);
 }
 
 void Game::render()

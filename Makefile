@@ -18,7 +18,7 @@ ifeq ($(OS),Windows_NT)
 	CLEAN = del /Q .\obj\*.o $(OUT_FILE)
 	MKDIR_OBJ = -@if not exist .\obj mkdir .\obj
 
-#these wildcard commands should work also in Linux
+# these wildcard commands should work also in Linux
 	SRC_FILES := $(wildcard ./src/*.cpp)
 	CONST_FILES := $(wildcard ./include/auxiliary/*.hpp)
 	HPP_FILES := $(wildcard ./include/*.hpp)

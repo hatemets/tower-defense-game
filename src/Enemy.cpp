@@ -1,115 +1,115 @@
 #include "../include/Enemy.hpp"
 #include "../include/Projectile.hpp"
+#include "../include/Map.hpp"
 #include "../include/auxiliary/constants.hpp"
 #include <math.h>
 
-
-Enemy::Enemy(sf::RenderWindow& window, float tileX, float tileY, sf::Time timeUntilSpawn, float speed, int hitPoints) : 
-    window_(window),
-    tileX_(tileX), 
-    tileY_(tileY), 
+Enemy::Enemy(std::vector<std::pair<int, int>>::const_iterator pathBegin, std::vector<std::pair<int, int>>::const_iterator pathEnd, float speed, int hitPoints)
+    : pathIterator_(pathBegin),
+    pathEnd_(pathEnd),
+    tileX_(pathBegin->second + 0.5f),
+    tileY_(pathBegin->first + 0.5f),
     direction_(0),
-    timeUntilSpawn_(timeUntilSpawn),
-    speed_(speed),  
+    speed_(speed),
     hitPoints_(hitPoints)
 {
-    setDirection();
-}
+    picture_.setSize(sf::Vector2f(TileSize / 2.f, TileSize / 2.f));
+    picture_.setOrigin(TileSize / 4.f, TileSize / 4.f);
+    picture_.setFillColor(sf::Color::Green);
 
+    update(sf::seconds(0));
+}
 
 void Enemy::update(sf::Time deltaTime)
 {
-    if (!isSpawned()) {
-        timeUntilSpawn_ -= deltaTime;
-    } else if (isAlive() && !hasReachedBase()) {
-        setDirection();
+    if (isAlive() && !hasReachedBase())
+    {
         move(deltaTime);
+        auto target = *pathIterator_;
+        float targetX =  target.second + 0.5f;
+        float targetY = target.first + 0.5f;
+        if (Map::isContact(tileX_, tileY_, 0.f, targetX, targetY, 0.25f)) {
+            pathIterator_++;
+            setDirection();
+        }
+        picture_.setPosition(tileX_ * TileSize, tileY_ * TileSize);
     }
 }
 
-
-void Enemy::draw()
+void Enemy::drawSelf(sf::RenderTarget& target, sf::RenderStates states) const
 {
-    // do we need draw method? Is the enemy responsible of drawing itself?
+    target.draw(picture_, states);
 }
-
 
 void Enemy::setDirection()
 {
-    direction_ = 0;  // fix this: calculate new direction based on current position and path
+    if (!hasReachedBase()) {
+        auto target = *pathIterator_;
+        float targetX =  target.second + 0.5f;
+        float targetY = target.first + 0.5f;
+        direction_ = Map::calculateAngle(tileX_, tileY_, targetX, targetY);
+    }
 }
-
 
 void Enemy::move(sf::Time deltaTime)
 {
     float distance = speed_ * deltaTime.asSeconds();
-    float angle = direction_ * DegreesToRadians;
-    float deltaX = distance * cosf(angle);
-    float deltaY = distance * sinf(angle);
-    tileX_ += deltaX;
-    tileY_ += deltaY;
+    if (distance != 0)
+    {
+        float angle = direction_ * DegreesToRadians;
+        float deltaX = distance * cosf(angle);
+        float deltaY = distance * sinf(angle);
+        tileX_ += deltaX;
+        tileY_ += deltaY;
+    }
 }
-
-
-bool Enemy::isSpawned() const 
-{
-    return timeUntilSpawn_.asSeconds() <= 0;
-}
-
 
 bool Enemy::isAlive() const
 {
-    return isSpawned() && hitPoints_ > 0;
+    return hitPoints_ > 0;
 }
-
 
 bool Enemy::hasReachedBase() const
 {
-    return false;  // fix this: check if enemy is in the base tile
+    return pathIterator_ == pathEnd_; 
 }
-
 
 void Enemy::hit(int maxDamage)
 {
     int halfDamage = maxDamage / 2;
-    if (halfDamage == 0) {
+    if (halfDamage == 0)
+    {
         hitPoints_ -= maxDamage;
-    } else {
+    }
+    else
+    {
         hitPoints_ -= 1 + halfDamage + rand() % halfDamage;
     }
 }
-
 
 float Enemy::getTileX() const
 {
     return tileX_;
 }
 
-
 float Enemy::getTileY() const
 {
     return tileY_;
 }
-
 
 float Enemy::getDirection() const
 {
     return direction_;
 }
 
-
 int Enemy::getHitPoints() const
 {
     return hitPoints_;
 }
 
+// Goblin
 
- // Goblin
-
- Goblin::Goblin(sf::RenderWindow& window, float tileX, float tileY, sf::Time timeUntilSpawn) :
-    Enemy(window, tileX, tileY, timeUntilSpawn, 0.5, 500)
+Goblin::Goblin(std::vector<std::pair<int, int>>::const_iterator pathBegin, std::vector<std::pair<int, int>>::const_iterator pathEnd) 
+    : Enemy(pathBegin, pathEnd, 1.5, 500)
 {
 }
-
-
-

@@ -11,6 +11,7 @@ Map::Map(const std::string &fileName)
 	loadTextures();
 }
 
+
 void Map::drawSelf(sf::RenderTarget &target, sf::RenderStates states) const
 {
 	for (auto pic : mapPictures_)
@@ -19,6 +20,7 @@ void Map::drawSelf(sf::RenderTarget &target, sf::RenderStates states) const
 	}
 }
 
+
 float Map::calculateDistance2(float aX, float aY, float bX, float bY)
 {
 	float deltaX = aX - bX;
@@ -26,16 +28,19 @@ float Map::calculateDistance2(float aX, float aY, float bX, float bY)
 	return deltaX * deltaX + deltaY * deltaY;
 }
 
+
 float Map::calculateDistance(float aX, float aY, float bX, float bY)
 {
 	float distance2 = calculateDistance2(aX, aY, bX, bY);
 	return sqrtf(distance2);
 }
 
-float Map::calculatetAngle(float aX, float aY, float bX, float bY)
+
+float Map::calculateAngle(float aX, float aY, float bX, float bY)
 {
-	return atan2f(aY - bY, aX - bX) * RadiansToDegrees;
+	return atan2f(bY - aY, bX - aX) * RadiansToDegrees;
 }
+
 
 bool Map::isContact(float aX, float aY, float aRadius, float bX, float bY, float bRadius)
 {
@@ -44,10 +49,32 @@ bool Map::isContact(float aX, float aY, float aRadius, float bX, float bY, float
 	return distance2 < (minDistance * minDistance);
 }
 
+
+std::pair<std::vector<std::pair<int, int>>::const_iterator, std::vector<std::pair<int, int>>::const_iterator> Map::getPath() const
+{
+	switch (paths_.size())
+	{
+		case 0:
+			throw std::runtime_error("No paths available!");
+			break;
+
+		case 1:
+			return std::make_pair(paths_[0].cbegin(), paths_[0].cend());
+			break;
+
+		default:
+			int pathIndex = rand() % paths_.size();
+			return std::make_pair(paths_[pathIndex].cbegin(), paths_[pathIndex].cend());
+			break;
+	}
+}
+
+
 void Map::update(sf::Time deltaTime)
 {
 	// move to Level?
 }
+
 
 void Map::loadFile(const std::string &fileName)
 {
@@ -101,30 +128,36 @@ void Map::loadFile(const std::string &fileName)
 	}
 }
 
+
 bool Map::isMember(int row, int col, const std::vector<std::pair<int, int>> &container)
 {
 	return std::find(container.cbegin(), container.cend(), std::make_pair(row, col)) != container.cend();
 }
+
 
 bool Map::isSpawn(int row, int col) const
 {
 	return isMember(row, col, spawnTiles_);
 }
 
+
 bool Map::isRoad(int row, int col) const
 {
 	return isMember(row, col, roadTiles_);
 }
+
 
 bool Map::isBase(int row, int col) const
 {
 	return isMember(row, col, baseTiles_);
 }
 
+
 bool Map::isTurretBase(int row, int col) const
 {
 	return isMember(row, col, turretBaseTiles_);
 }
+
 
 void Map::findPaths()
 {
@@ -215,6 +248,7 @@ void Map::findPaths()
 	paths_.push_back(path);
 }
 
+
 void Map::loadTextures()
 {
 	// the graphical presentation of the road
@@ -225,7 +259,7 @@ void Map::loadTextures()
 		std::shared_ptr<sf::RectangleShape> road(new sf::RectangleShape);
 		road->setSize(sf::Vector2f(TileSize, TileSize));
 		road->setPosition(col * TileSize, row * TileSize);
-		road->setFillColor(sf::Color::Yellow);
+		road->setFillColor(sf::Color::White);
 		mapPictures_.push_back(road);
 	}
 
@@ -237,7 +271,7 @@ void Map::loadTextures()
 		std::shared_ptr<sf::RectangleShape> spawn(new sf::RectangleShape);
 		spawn->setSize(sf::Vector2f(TileSize, TileSize));
 		spawn->setPosition(col * TileSize, row * TileSize);
-		spawn->setFillColor(sf::Color::Green);
+		spawn->setFillColor(sf::Color::Yellow);
 		mapPictures_.push_back(spawn);
 	}
 

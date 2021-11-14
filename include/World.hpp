@@ -15,6 +15,7 @@ class World
 	public:
 		World(sf::RenderWindow& window);
 
+		void update(sf::Time deltaTime);
 		void operate();
 		void changeMode(Type newType);
 		void handleUserInput(sf::Vector2i mousePos);

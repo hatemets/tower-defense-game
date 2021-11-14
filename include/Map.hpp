@@ -9,46 +9,47 @@
 
 class Map : public Node
 {
-public:
-    Map(const std::string &fileName);
+    public:
+        Map(const std::string &fileName);
 
-private:
-    virtual void drawSelf(sf::RenderTarget &target, sf::RenderStates states) const;
+    private:
+        virtual void drawSelf(sf::RenderTarget &target, sf::RenderStates states) const;
 
-public:
-    static float calculateDistance2(float aX, float aY, float bX, float bY);
-    static float calculateDistance(float aX, float aY, float bX, float bY);
-    static float calculatetAngle(float aX, float aY, float bX, float bY);
-    static bool isContact(float aX, float aY, float aRadius, float bX, float bY, float bRadius);
+    public:
+        static float calculateDistance2(float aX, float aY, float bX, float bY);
+        static float calculateDistance(float aX, float aY, float bX, float bY);
+        static float calculateAngle(float aX, float aY, float bX, float bY);
+        static bool isContact(float aX, float aY, float aRadius, float bX, float bY, float bRadius);
 
-public:
-    // these probably will be moved to level
-    void update(sf::Time deltaTime);
+    public:
+        std::pair<std::vector<std::pair<int, int>>::const_iterator, std::vector<std::pair<int, int>>::const_iterator> getPath() const;
+        // these probably will be moved to level
+        void update(sf::Time deltaTime);
 
-private:
-    // these probably will be moved to level
-    std::vector<std::shared_ptr<Turret>> turrets_;
-    std::vector<std::shared_ptr<Projectile>> projectiles_;
-    std::vector<std::shared_ptr<Enemy>> enemies_;
+    private:
+        // these probably will be moved to level
+        std::vector<std::shared_ptr<Turret>> turrets_;
+        std::vector<std::shared_ptr<Projectile>> projectiles_;
+        std::vector<std::shared_ptr<Enemy>> enemies_;
 
-private:
-    void loadFile(const std::string &fileName);
-    void loadTextures();
-    bool static isMember(int row, int col, const std::vector<std::pair<int, int>> &container);
-    bool isSpawn(int row, int col) const;
-    bool isRoad(int row, int col) const;
-    bool isBase(int row, int col) const;
-    bool isTurretBase(int row, int col) const;
-    void findPaths();
+    private:
+        void loadFile(const std::string &fileName);
+        void loadTextures();
+        bool static isMember(int row, int col, const std::vector<std::pair<int, int>> &container);
+        bool isSpawn(int row, int col) const;
+        bool isRoad(int row, int col) const;
+        bool isBase(int row, int col) const;
+        bool isTurretBase(int row, int col) const;
+        void findPaths();
 
-private:
-    // Tiles are listed as row,col pairs
-    std::vector<std::pair<int, int>> spawnTiles_;
-    std::vector<std::pair<int, int>> roadTiles_;
-    std::vector<std::pair<int, int>> baseTiles_;
-    std::vector<std::pair<int, int>> turretBaseTiles_;
-    std::vector<std::vector<std::pair<int, int>>> paths_;
-    std::vector<std::shared_ptr<sf::Shape>> mapPictures_; // Shapes probably should be replaced with Textures or Sprites
+    private:
+        // Tiles are listed as row,col pairs
+        std::vector<std::pair<int, int>> spawnTiles_;
+        std::vector<std::pair<int, int>> roadTiles_;
+        std::vector<std::pair<int, int>> baseTiles_;
+        std::vector<std::pair<int, int>> turretBaseTiles_;
+        std::vector<std::vector<std::pair<int, int>>> paths_;
+        std::vector<std::shared_ptr<sf::Shape>> mapPictures_; // Shapes probably should be replaced with Textures or Sprites
 };
 
 #endif

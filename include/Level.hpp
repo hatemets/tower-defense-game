@@ -7,6 +7,7 @@
 // #include "ResourceHolder.hpp"
 #include "auxiliary/ResourceIdentifiers.hpp"
 #include "Mode.hpp"
+#include "Enemy.hpp"
 
 // Controls the turrets, enemies, map
 class Level : public Mode
@@ -36,6 +37,8 @@ class Level : public Mode
 		// Add turret container
 		// Add enemy container
 		// Load a map from a textfile
+
+		Enemy *goblin_; // to be replaced with Enemy container
 };
 
 #endif

@@ -2,46 +2,48 @@
 #define ENEMY_HPP
 
 #include <SFML/Graphics.hpp>
+#include "Node.hpp"
 
-// The base class of enemies
-class Enemy
+/// The base class of enemies
+class Enemy : public Node
 {
-	public:
-		Enemy(sf::RenderWindow& window, float tileX, float tileY, sf::Time timeUntilSpawn, float speed, int hitPoints);
-		virtual void update(sf::Time deltaTime);
-		virtual void draw();
+    public:
+        Enemy(std::vector<std::pair<int, int>>::const_iterator pathBegin, std::vector<std::pair<int, int>>::const_iterator pathEnd, float speed, int hitPoints);
+        
+        virtual void update(sf::Time deltaTime);
+ 
+    private:
+        virtual void drawSelf(sf::RenderTarget& target, sf::RenderStates states) const;
 
     protected:
         void setDirection();
-        void move(sf::Time deltaTime); 
+        void move(sf::Time deltaTime);
 
     public:
-        bool isSpawned() const;  // 
-        bool isAlive() const;  // alive or dead
-        bool hasReachedBase() const;  // has succeed to reach the base
-        void hit(int maxDamage);  // used by projectile
-        float getTileX() const;  // location tile row
-        float getTileY() const;  // location tile column
-        float getDirection() const; // flight angle
-        int getHitPoints() const;  // hit points left
+        bool isAlive() const;        ///< alive or dead
+        bool hasReachedBase() const; ///< has succeed to reach the base
+        void hit(int maxDamage);     ///< used by projectile
+        float getTileX() const;      ///< location tile row
+        float getTileY() const;      ///< location tile column
+        float getDirection() const;  ///< flight angle
+        int getHitPoints() const;    ///< hit points left
 
-	protected:
-		sf::RenderWindow& window_;
-        float tileX_;  
-        float tileY_;  
+    protected:
+        std::vector<std::pair<int, int>>::const_iterator pathIterator_;
+        std::vector<std::pair<int, int>>::const_iterator pathEnd_;
+        float tileX_;
+        float tileY_;
         float direction_;
-        sf::Time timeUntilSpawn_;  
-        const float speed_;  
-        int hitPoints_;     
+        float speed_;
+        int hitPoints_;
+
+        sf::RectangleShape picture_; // Shape should be replaced with a Sprite
 };
 
-
-class Goblin : 
-    public Enemy
+class Goblin : public Enemy
 {
-    public:
-        Goblin(sf::RenderWindow& window, float tileX, float tileY, sf::Time timeUntilSpawn);
+public:
+    Goblin(std::vector<std::pair<int, int>>::const_iterator pathBegin, std::vector<std::pair<int, int>>::const_iterator pathEnd);
 };
-
 
 #endif

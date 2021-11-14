@@ -12,6 +12,11 @@ World::World(sf::RenderWindow& window)
 {
 }
 
+void World::update(sf::Time deltaTime)
+{
+	mode_->update(deltaTime);
+}
+
 void World::operate()
 {
 	// Picks the current mode from the modes array
