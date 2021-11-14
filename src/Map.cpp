@@ -8,7 +8,7 @@ Map::Map(sf::RenderWindow& window, const std::string& fileName) :
 	window_(window)
 {
     // loadFile(fileName);
-	loadFile("./levels/map1.txt");
+	loadFile("./include/maps/map1.txt");
 	findPaths();
     loadTextures();
 }
