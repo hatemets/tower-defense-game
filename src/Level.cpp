@@ -1,5 +1,6 @@
 #include "../include/Level.hpp"
 #include "../include/BackgroundSprite.hpp"
+#include "../include/Map.hpp"
 #include "../include/auxiliary/constants.hpp"
 #include <memory>
 
@@ -40,6 +41,9 @@ void Level::createScene()
 	background->setPosition(0.f, 0.f);
 	layers_[static_cast<std::size_t>(Layers::Background)]->addChild(std::move(background));
 
+	auto map = std::make_unique<Map>(Map{"./include/maps/map1.txt"}); // how the level/map is chosen?
+	map->setPosition(0.f, 0.f);
+	layers_[static_cast<std::size_t>(Layers::Background)]->addChild(std::move(map));
 
 	auto homeButton = std::make_unique<Button>("Back to Main Menu", fonts_, Resources::ID::SourceCodePro, buttonShapes_, Resources::ID::HomeButton);
 	homeButton->setPosition(WindowWidth / 2.f, WindowHeight / 2.f);

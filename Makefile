@@ -17,9 +17,15 @@ ifeq ($(OS),Windows_NT)
 	TARGET = $(OUT_FILE)
 	CLEAN = del /Q .\obj\*.o $(OUT_FILE)
 	MKDIR_OBJ = -@if not exist .\obj mkdir .\obj
-	SRC_FILES := ./src/BackgroundSprite.cpp ./src/Button.cpp ./src/game.cpp ./src/Level.cpp ./src/main.cpp ./src/MainMenu.cpp ./src/Mode.cpp ./src/Node.cpp ./src/World.cpp ./src/LevelMenu.cpp ./src/Turret.cpp ./src/Projectile.cpp ./src/Enemy.cpp ./src/Map.cpp
-	CONST_FILES := ./include/auxiliary/constants.hpp ./include/auxiliary/LayerIdentifiers.hpp ./include/auxiliary/ResourceIdentifiers.hpp ./include/auxiliary/ModeIdentifiers.hpp
-	HPP_FILES := ./include/BackgroundSprite.hpp ./include/Button.hpp ./include/game.hpp ./include/Level.hpp ./include/MainMenu.hpp ./include/Mode.hpp ./include/Node.hpp ./include/ResourceHolder.hpp ./include/ResourceHolder.inl ./include/World.hpp ./include/LevelMenu.hpp ./include/Turret.hpp ./include/Projectile.hpp ./include/Enemy.hpp ./include/Map.hpp
+
+#these wildcard commands should work also in Linux
+	SRC_FILES := $(wildcard ./src/*.cpp)
+	CONST_FILES := $(wildcard ./include/auxiliary/*.hpp)
+	HPP_FILES := $(wildcard ./include/*.hpp)
+	
+#SRC_FILES := ./src/BackgroundSprite.cpp ./src/Button.cpp ./src/game.cpp ./src/Level.cpp ./src/main.cpp ./src/MainMenu.cpp ./src/Mode.cpp ./src/Node.cpp ./src/World.cpp ./src/LevelMenu.cpp ./src/Turret.cpp ./src/Projectile.cpp ./src/Enemy.cpp ./src/Map.cpp
+#CONST_FILES := ./include/auxiliary/constants.hpp ./include/auxiliary/LayerIdentifiers.hpp ./include/auxiliary/ResourceIdentifiers.hpp ./include/auxiliary/ModeIdentifiers.hpp
+#HPP_FILES := ./include/BackgroundSprite.hpp ./include/Button.hpp ./include/game.hpp ./include/Level.hpp ./include/MainMenu.hpp ./include/Mode.hpp ./include/Node.hpp ./include/ResourceHolder.hpp ./include/ResourceHolder.inl ./include/World.hpp ./include/LevelMenu.hpp ./include/Turret.hpp ./include/Projectile.hpp ./include/Enemy.hpp ./include/Map.hpp
 else
 	# Linux specific definitions
 	OUT_FILE = out
