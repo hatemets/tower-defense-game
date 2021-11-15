@@ -2,7 +2,10 @@
 #define ENEMY_HPP
 
 #include <SFML/Graphics.hpp>
+#include <memory>
+#include <list>
 #include "Node.hpp"
+#include "Map.hpp"
 
 /// The base class of enemies
 class Enemy : public Node
@@ -11,8 +14,6 @@ class Enemy : public Node
         Enemy(std::vector<std::pair<int, int>>::const_iterator pathBegin, std::vector<std::pair<int, int>>::const_iterator pathEnd, float speed, int hitPoints);
         
         virtual void update(sf::Time deltaTime);
- 
-    private:
         virtual void drawSelf(sf::RenderTarget& target, sf::RenderStates states) const;
 
     protected:
@@ -44,6 +45,23 @@ class Goblin : public Enemy
 {
 public:
     Goblin(std::vector<std::pair<int, int>>::const_iterator pathBegin, std::vector<std::pair<int, int>>::const_iterator pathEnd);
+};
+
+class Enemies : public Node
+{
+public:
+    Enemies(Map* map, sf::Time minSpawnInterval, sf::Time maxSpawnInterval);
+    virtual void update(sf::Time deltaTime);
+
+private:
+    virtual void drawSelf(sf::RenderTarget& target, sf::RenderStates states) const;
+
+private:
+    std::list<std::shared_ptr<Enemy>> enemies_;
+    Map* map_; ///< Hold by unique pointer elsewhere.
+    sf::Time minSpawnInterval_;
+    sf::Time maxSpawnInterval_;
+    sf::Time nextSpawn_;
 };
 
 #endif

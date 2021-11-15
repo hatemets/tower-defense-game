@@ -38,7 +38,8 @@ class Level : public Mode
 		// Add enemy container
 		// Load a map from a textfile
 
-		Enemy *goblin_; // to be replaced with Enemy container
+		Map* map_; ///< Hold by unique pointer elsewhere.
+		Enemies *enemies_; ///< Hold by unique pointer elsewhere.
 };
 
 #endif

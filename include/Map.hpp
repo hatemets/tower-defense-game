@@ -3,9 +3,9 @@
 
 #include <SFML/Graphics.hpp>
 #include "Node.hpp"
-#include "Turret.hpp"
-#include "Projectile.hpp"
-#include "Enemy.hpp"
+// #include "Turret.hpp"
+// #include "Projectile.hpp"
+// #include "Enemy.hpp"
 
 class Map : public Node
 {
@@ -24,13 +24,13 @@ class Map : public Node
     public:
         std::pair<std::vector<std::pair<int, int>>::const_iterator, std::vector<std::pair<int, int>>::const_iterator> getPath() const;
         // these probably will be moved to level
-        void update(sf::Time deltaTime);
+        // void update(sf::Time deltaTime);
 
     private:
         // these probably will be moved to level
-        std::vector<std::shared_ptr<Turret>> turrets_;
-        std::vector<std::shared_ptr<Projectile>> projectiles_;
-        std::vector<std::shared_ptr<Enemy>> enemies_;
+        // std::vector<std::shared_ptr<Turret>> turrets_;
+        // std::vector<std::shared_ptr<Projectile>> projectiles_;
+        // std::vector<std::shared_ptr<Enemy>> enemies_;
 
     private:
         void loadFile(const std::string &fileName);

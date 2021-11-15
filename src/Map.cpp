@@ -69,11 +69,11 @@ std::pair<std::vector<std::pair<int, int>>::const_iterator, std::vector<std::pai
 	}
 }
 
-
+/*
 void Map::update(sf::Time deltaTime)
 {
 	// move to Level?
-}
+}*/
 
 
 void Map::loadFile(const std::string &fileName)
@@ -259,7 +259,7 @@ void Map::loadTextures()
 		std::shared_ptr<sf::RectangleShape> road(new sf::RectangleShape);
 		road->setSize(sf::Vector2f(TileSize, TileSize));
 		road->setPosition(col * TileSize, row * TileSize);
-		road->setFillColor(sf::Color::White);
+		road->setFillColor(sf::Color::Black);
 		mapPictures_.push_back(road);
 	}
 
