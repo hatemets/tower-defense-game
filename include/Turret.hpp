@@ -2,18 +2,18 @@
 #define TURRET_HPP
 
 #include <SFML/Graphics.hpp>
+#include "Enemy.hpp"
 
 // The base class of turrets
-class Turret
+class Turret : public Node
 {
 	public:
-		Turret(sf::RenderWindow& window, int row, int col, int price, 
-               float rotationSpeed, float rateOfFire, float projectileRange);
-		virtual void update(sf::Time deltaTime);
-		virtual void draw();
+		Turret(int row, int col, int price, float rotationSpeed, float rateOfFire, float radarRange, float projectileRange);
+
+        virtual void update(sf::Time deltaTime);
+        virtual void drawSelf(sf::RenderTarget& target, sf::RenderStates states) const;       
 
     protected:
-        void move(int row, int col);
         virtual float rotate(sf::Time deltaTime) = 0;  // note: change this: needs the enemies as a parameter
         virtual bool shoot() = 0;  // note: change this: the return value should be a projectile
 
@@ -26,20 +26,23 @@ class Turret
         float getRotationSpeed() const;  // max degrees per second (i.e. 90 means that full round takes 4 seconds)
         float getRateOfFire() const;  // max number of shots per second
         sf::Time getFireInterval() const;  // min time between shots
+        float getRadarRange() const;  // radar range as tiles
         float getProjectileRange() const;  // projectile range as tiles
         float getCurrentAngle() const;  // 0-359.999...
         sf::Time getNextFire() const;  // time before can shoot again
 
 	protected:
-		sf::RenderWindow& window_;
-        int row_;  
-        int col_;  
+        const int row_;  
+        const int col_;  
         const int price_;  
         const float rotationSpeed_;  
         const float rateOfFire_;  
+        const float radarRange_;
         const float projectileRange_;  
         float currentAngle_; 
         sf::Time nextFire_;  
+
+        sf::RectangleShape picture_; // Shape should be replaced with a Sprite
 };
 
 
@@ -47,7 +50,7 @@ class SimpleTurret :
     public Turret
 {
     public:
-        SimpleTurret(sf::RenderWindow& window, int row, int col);
+        SimpleTurret(int row, int col);
     
     protected:
         virtual float rotate(sf::Time deltaTime);
@@ -59,7 +62,7 @@ class GunTurret :
     public Turret
 {
     public:
-        GunTurret(sf::RenderWindow& window, int row, int col);
+        GunTurret(int row, int col);
     
     protected:
         virtual float rotate(sf::Time deltaTime);
@@ -71,7 +74,7 @@ class DoubleGunTurret :
     public Turret
 {
     public:
-        DoubleGunTurret(sf::RenderWindow& window, int row, int col);
+        DoubleGunTurret(int row, int col);
     
     protected:
         virtual float rotate(sf::Time deltaTime);
@@ -83,7 +86,7 @@ class BombTurret :
     public Turret
 {
     public:
-        BombTurret(sf::RenderWindow& window, int row, int col);
+        BombTurret(int row, int col);
     
     protected:
         virtual float rotate(sf::Time deltaTime);
@@ -95,11 +98,28 @@ class MissileTurret :
     public Turret
 {
     public:
-        MissileTurret(sf::RenderWindow& window, int row, int col);
+        MissileTurret(int row, int col);
     
     protected:
         virtual float rotate(sf::Time deltaTime);
         virtual bool shoot();  
+};
+
+
+class Turrets : public Node
+{
+public:
+    Turrets(Enemies* enemies);
+    virtual void update(sf::Time deltaTime);
+    void add(std::shared_ptr<Turret> turret);
+    const std::list<std::shared_ptr<Turret>> &getTurrets() const;
+
+private:
+    virtual void drawSelf(sf::RenderTarget& target, sf::RenderStates states) const;
+
+private:
+    std::list<std::shared_ptr<Turret>> turrets_;
+    Enemies* enemies_; ///< Hold by unique pointer elsewhere.
 };
 
 #endif

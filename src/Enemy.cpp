@@ -6,12 +6,12 @@
 
 Enemy::Enemy(std::vector<std::pair<int, int>>::const_iterator pathBegin, std::vector<std::pair<int, int>>::const_iterator pathEnd, float speed, int hitPoints)
     : pathIterator_(pathBegin),
-    pathEnd_(pathEnd),
-    tileX_(pathBegin->second + 0.5f),
-    tileY_(pathBegin->first + 0.5f),
-    direction_(0),
-    speed_(speed),
-    hitPoints_(hitPoints)
+      pathEnd_(pathEnd),
+      tileX_(pathBegin->second + 0.5f),
+      tileY_(pathBegin->first + 0.5f),
+      direction_(0),
+      speed_(speed),
+      hitPoints_(hitPoints)
 {
     picture_.setSize(sf::Vector2f(TileSize / 2.f, TileSize / 2.f));
     picture_.setOrigin(TileSize / 4.f, TileSize / 4.f);
@@ -26,9 +26,10 @@ void Enemy::update(sf::Time deltaTime)
     {
         move(deltaTime);
         auto target = *pathIterator_;
-        float targetX =  target.second + 0.5f;
+        float targetX = target.second + 0.5f;
         float targetY = target.first + 0.5f;
-        if (Map::isContact(tileX_, tileY_, 0.f, targetX, targetY, 0.25f)) {
+        if (Map::isContact(tileX_, tileY_, 0.f, targetX, targetY, 0.25f))
+        {
             pathIterator_++;
             setDirection();
             // picture_.setRotation(direction_);
@@ -37,16 +38,17 @@ void Enemy::update(sf::Time deltaTime)
     }
 }
 
-void Enemy::drawSelf(sf::RenderTarget& target, sf::RenderStates states) const
+void Enemy::drawSelf(sf::RenderTarget &target, sf::RenderStates states) const
 {
     target.draw(picture_, states);
 }
 
 void Enemy::setDirection()
 {
-    if (!hasReachedBase()) {
+    if (!hasReachedBase())
+    {
         auto target = *pathIterator_;
-        float targetX =  target.second + 0.5f;
+        float targetX = target.second + 0.5f;
         float targetY = target.first + 0.5f;
         direction_ = Map::calculateAngle(tileX_, tileY_, targetX, targetY);
     }
@@ -72,7 +74,7 @@ bool Enemy::isAlive() const
 
 bool Enemy::hasReachedBase() const
 {
-    return pathIterator_ == pathEnd_; 
+    return pathIterator_ == pathEnd_;
 }
 
 void Enemy::hit(int maxDamage)
@@ -110,56 +112,59 @@ int Enemy::getHitPoints() const
 
 // Goblin
 
-Goblin::Goblin(std::vector<std::pair<int, int>>::const_iterator pathBegin, std::vector<std::pair<int, int>>::const_iterator pathEnd) 
+Goblin::Goblin(std::vector<std::pair<int, int>>::const_iterator pathBegin, std::vector<std::pair<int, int>>::const_iterator pathEnd)
     : Enemy(pathBegin, pathEnd, 1.5, 500)
 {
 }
 
-
 // Enemies
 
-Enemies::Enemies(Map* map, sf::Time minSpawnInterval, sf::Time maxSpawnInterval) 
-    : map_(map), 
-    minSpawnInterval_(minSpawnInterval), 
-    maxSpawnInterval_(maxSpawnInterval),
-    nextSpawn_(minSpawnInterval)
+Enemies::Enemies(Map *map, sf::Time minSpawnInterval, sf::Time maxSpawnInterval)
+    : map_(map),
+      minSpawnInterval_(minSpawnInterval),
+      maxSpawnInterval_(maxSpawnInterval),
+      nextSpawn_(sf::seconds(1))
 {
 }
-
 
 void Enemies::update(sf::Time deltaTime)
 {
     enemies_.erase(std::remove_if(enemies_.begin(), enemies_.end(),
-                   [](const std::shared_ptr<Enemy> &enemy)
-                   {
-                       bool b = !enemy->isAlive() || enemy->hasReachedBase();
-                       if (b) {
-                           return true;
-                       }
-                       return b;
-                   }),
+                                  [](const std::shared_ptr<Enemy> &enemy)
+                                  {
+                                      return !enemy->isAlive() || enemy->hasReachedBase();
+                                  }),
                    enemies_.end());
 
-    for (auto enemy : enemies_) {
+    for (auto enemy : enemies_)
+    {
         enemy->update(deltaTime);
     }
 
     nextSpawn_ -= deltaTime;
-    if (nextSpawn_.asSeconds() <= 0) {
+    if (nextSpawn_.asSeconds() <= 0)
+    {
         sf::Time timeDiff = maxSpawnInterval_ - minSpawnInterval_;
-        sf::Time randomTime = sf::milliseconds(rand() % timeDiff.asMilliseconds());
-        nextSpawn_ += minSpawnInterval_ + randomTime;
+        if (timeDiff.asMilliseconds() > 1)
+        {
+            sf::Time randomTime = sf::milliseconds(rand() % timeDiff.asMilliseconds());
+            nextSpawn_ = minSpawnInterval_ + randomTime;
+        }
+        else
+        {
+            nextSpawn_ = minSpawnInterval_;
+        }
+
         auto path = map_->getPath();
-	    auto goblin = std::make_shared<Goblin>(Goblin{path.first, path.second});
+        auto goblin = std::make_shared<Goblin>(Goblin{path.first, path.second});
         enemies_.push_back(goblin);
     }
 }
 
-
-void Enemies::drawSelf(sf::RenderTarget& target, sf::RenderStates states) const
+void Enemies::drawSelf(sf::RenderTarget &target, sf::RenderStates states) const
 {
-    for (auto enemy : enemies_) {
+    for (auto enemy : enemies_)
+    {
         enemy->drawSelf(target, states);
     }
 }
-

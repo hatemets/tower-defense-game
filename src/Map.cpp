@@ -69,11 +69,11 @@ std::pair<std::vector<std::pair<int, int>>::const_iterator, std::vector<std::pai
 	}
 }
 
-/*
-void Map::update(sf::Time deltaTime)
+
+const std::vector<std::pair<int, int>> &Map::getTurretBaseTiles() const
 {
-	// move to Level?
-}*/
+	return turretBaseTiles_;
+}
 
 
 void Map::loadFile(const std::string &fileName)

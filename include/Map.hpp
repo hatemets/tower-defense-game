@@ -23,19 +23,12 @@ class Map : public Node
 
     public:
         std::pair<std::vector<std::pair<int, int>>::const_iterator, std::vector<std::pair<int, int>>::const_iterator> getPath() const;
-        // these probably will be moved to level
-        // void update(sf::Time deltaTime);
-
-    private:
-        // these probably will be moved to level
-        // std::vector<std::shared_ptr<Turret>> turrets_;
-        // std::vector<std::shared_ptr<Projectile>> projectiles_;
-        // std::vector<std::shared_ptr<Enemy>> enemies_;
+        const std::vector<std::pair<int, int>> &getTurretBaseTiles() const;
+        bool static isMember(int row, int col, const std::vector<std::pair<int, int>> &container);
 
     private:
         void loadFile(const std::string &fileName);
         void loadTextures();
-        bool static isMember(int row, int col, const std::vector<std::pair<int, int>> &container);
         bool isSpawn(int row, int col) const;
         bool isRoad(int row, int col) const;
         bool isBase(int row, int col) const;

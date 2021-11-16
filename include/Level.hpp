@@ -8,6 +8,7 @@
 #include "auxiliary/ResourceIdentifiers.hpp"
 #include "Mode.hpp"
 #include "Enemy.hpp"
+#include "Turret.hpp"
 
 // Controls the turrets, enemies, map
 class Level : public Mode
@@ -39,7 +40,8 @@ class Level : public Mode
 		// Load a map from a textfile
 
 		Map* map_; ///< Hold by unique pointer elsewhere.
-		Enemies *enemies_; ///< Hold by unique pointer elsewhere.
+		Enemies* enemies_; ///< Hold by unique pointer elsewhere.
+		Turrets* turrets_; ///< Hold by unique pointer elsewhere.
 };
 
 #endif
