@@ -52,6 +52,7 @@ class Enemies : public Node
 public:
     Enemies(Map* map, sf::Time minSpawnInterval, sf::Time maxSpawnInterval);
     virtual void update(sf::Time deltaTime);
+    const std::list<std::shared_ptr<Enemy>> &getList() const;
 
 private:
     virtual void drawSelf(sf::RenderTarget& target, sf::RenderStates states) const;

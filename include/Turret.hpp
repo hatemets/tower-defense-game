@@ -5,17 +5,20 @@
 #include "Enemy.hpp"
 
 // The base class of turrets
-class Turret : public Node
+class Turret
 {
 	public:
 		Turret(int row, int col, int price, float rotationSpeed, float rateOfFire, float radarRange, float projectileRange);
 
-        virtual void update(sf::Time deltaTime);
+        virtual void update(sf::Time deltaTime, Enemies* enemies);
         virtual void drawSelf(sf::RenderTarget& target, sf::RenderStates states) const;       
 
     protected:
-        virtual float rotate(sf::Time deltaTime) = 0;  // note: change this: needs the enemies as a parameter
+        virtual float rotate(sf::Time deltaTime, Enemies* enemies) = 0;  // note: change this: needs the enemies as a parameter
         virtual bool shoot() = 0;  // note: change this: the return value should be a projectile
+
+        std::shared_ptr<Enemy> getNearestEnemyInRadar(Enemies* enemies);
+        float rotateToNearestEnemyInRadar(sf::Time deltaTime, Enemies* enemies);
 
     public:
         int getRow() const;  // location tile row
@@ -53,7 +56,7 @@ class SimpleTurret :
         SimpleTurret(int row, int col);
     
     protected:
-        virtual float rotate(sf::Time deltaTime);
+        virtual float rotate(sf::Time deltaTime, Enemies* enemies);
         virtual bool shoot();
 };
 
@@ -65,7 +68,7 @@ class GunTurret :
         GunTurret(int row, int col);
     
     protected:
-        virtual float rotate(sf::Time deltaTime);
+        virtual float rotate(sf::Time deltaTime, Enemies* enemies);
         virtual bool shoot();
 };
 
@@ -77,7 +80,7 @@ class DoubleGunTurret :
         DoubleGunTurret(int row, int col);
     
     protected:
-        virtual float rotate(sf::Time deltaTime);
+        virtual float rotate(sf::Time deltaTime, Enemies* enemies);
         virtual bool shoot();
 };
 
@@ -89,7 +92,7 @@ class BombTurret :
         BombTurret(int row, int col);
     
     protected:
-        virtual float rotate(sf::Time deltaTime);
+        virtual float rotate(sf::Time deltaTime, Enemies* enemies);
         virtual bool shoot();   
 };
 
@@ -101,7 +104,7 @@ class MissileTurret :
         MissileTurret(int row, int col);
     
     protected:
-        virtual float rotate(sf::Time deltaTime);
+        virtual float rotate(sf::Time deltaTime, Enemies* enemies);
         virtual bool shoot();  
 };
 
@@ -112,7 +115,7 @@ public:
     Turrets(Enemies* enemies);
     virtual void update(sf::Time deltaTime);
     void add(std::shared_ptr<Turret> turret);
-    const std::list<std::shared_ptr<Turret>> &getTurrets() const;
+    const std::list<std::shared_ptr<Turret>> &getList() const;
 
 private:
     virtual void drawSelf(sf::RenderTarget& target, sf::RenderStates states) const;

@@ -2,6 +2,7 @@
 #include "../include/auxiliary/constants.hpp"
 #include <math.h>
 #include <iostream>
+#include <limits>
 
 
 Turret::Turret(int row, int col, int price, float rotationSpeed, float rateOfFire, float radarRange, float projectileRange) : 
@@ -23,10 +24,10 @@ Turret::Turret(int row, int col, int price, float rotationSpeed, float rateOfFir
 }
 
 
-void Turret::update(sf::Time deltaTime)
+void Turret::update(sf::Time deltaTime, Enemies* enemies)
 {
     // rotate
-    currentAngle_ += rotate(deltaTime);
+    currentAngle_ += rotate(deltaTime, enemies);
     // std::cout << currentAngle_ << std::endl;
     while (currentAngle_ >= 360) {
         currentAngle_ -= 360;
@@ -53,6 +54,48 @@ void Turret::update(sf::Time deltaTime)
 void Turret::drawSelf(sf::RenderTarget& target, sf::RenderStates states) const
 {
     target.draw(picture_, states);
+}
+
+
+std::shared_ptr<Enemy> Turret::getNearestEnemyInRadar(Enemies* enemies)
+{
+    std::shared_ptr<Enemy> nearest(nullptr);
+    float minDistance = std::numeric_limits<float>::max();
+    float turretX = getTileX();
+    float turretY = getTileY();
+    for (auto enemy : enemies->getList()) {
+        float enemyDistance = Map::calculateDistance(turretX, turretY, enemy->getTileX(), enemy->getTileY());
+        if (enemyDistance < minDistance && enemyDistance <= radarRange_) {
+            minDistance = enemyDistance;
+            nearest = enemy;
+        }
+    }
+    return nearest;
+}
+
+
+float Turret::rotateToNearestEnemyInRadar(sf::Time deltaTime, Enemies* enemies)
+{
+    auto target = getNearestEnemyInRadar(enemies);
+    if (target) {
+        float maxRotation = deltaTime.asSeconds() * rotationSpeed_;
+        float angle = Map::calculateAngle(getTileX(), getTileY(), target->getTileX(), target->getTileY());
+        float neededRotation = angle - currentAngle_;
+        while (neededRotation > 180.f) {
+            neededRotation -= 360.f;
+        } 
+        while (neededRotation < -180.f) {
+            neededRotation += 360.f;
+        }
+        if ( abs(neededRotation) <= maxRotation ) {
+            return neededRotation;
+        } else if (neededRotation > 0) {
+            return maxRotation;
+        } else {
+            return -maxRotation;
+        }
+    }
+    return 0.f;
 }
 
 
@@ -135,13 +178,33 @@ SimpleTurret::SimpleTurret(int row, int col) :
 }
 
 
-float SimpleTurret::rotate(sf::Time deltaTime)
+float SimpleTurret::rotate(sf::Time deltaTime, Enemies* enemies)
 {
     return deltaTime.asSeconds() * rotationSpeed_; // rotate without aiming
 }
 
 
 bool SimpleTurret::shoot()
+{
+    return true; // shoot always when possible
+}
+
+
+// GunTurret 
+
+GunTurret::GunTurret(int row, int col) : 
+    Turret(row, col, 10, 91, 5, 5, 5)
+{
+}
+
+
+float GunTurret::rotate(sf::Time deltaTime, Enemies* enemies)
+{
+    return rotateToNearestEnemyInRadar(deltaTime, enemies);
+}
+
+
+bool GunTurret::shoot()
 {
     return true; // shoot always when possible
 }
@@ -158,7 +221,7 @@ void Turrets::update(sf::Time deltaTime)
 {
     for (auto turret : turrets_)
     {
-        turret->update(deltaTime);
+        turret->update(deltaTime, enemies_);
     }
 }
 
@@ -169,7 +232,7 @@ void Turrets::add(std::shared_ptr<Turret> turret)
 }
 
 
-const std::list<std::shared_ptr<Turret>> &Turrets::getTurrets() const
+const std::list<std::shared_ptr<Turret>> &Turrets::getList() const
 {
     return turrets_;
 }

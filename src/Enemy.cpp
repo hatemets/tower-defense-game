@@ -161,6 +161,13 @@ void Enemies::update(sf::Time deltaTime)
     }
 }
 
+
+const std::list<std::shared_ptr<Enemy>> &Enemies::getList() const
+{
+    return enemies_;
+}
+
+
 void Enemies::drawSelf(sf::RenderTarget &target, sf::RenderStates states) const
 {
     for (auto enemy : enemies_)

@@ -70,7 +70,7 @@ void Level::createScene()
 		int row = tile.second;
 		int col = tile.first;
 		if (!Map::isMember(row, col, turretTiles)) {
-			auto turret = std::make_shared<SimpleTurret>(SimpleTurret{ row, col });
+			auto turret = std::make_shared<GunTurret>(GunTurret{ row, col });
 			turrets_->add(turret);
 			turretTiles.push_back(tile);
 		}
