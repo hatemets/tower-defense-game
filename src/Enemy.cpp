@@ -82,6 +82,7 @@ bool Enemy::hasReachedBase() const
 void Enemy::hit(int maxDamage)
 {
     int halfDamage = maxDamage / 2;
+
     if (halfDamage == 0)
     {
         hitPoints_ -= maxDamage;
@@ -97,63 +98,4 @@ void Enemy::hit(int maxDamage)
 Goblin::Goblin(std::vector<std::pair<int, int>>::const_iterator pathBegin, std::vector<std::pair<int, int>>::const_iterator pathEnd)
     : Enemy(pathBegin, pathEnd, 1.5, 500)
 {
-}
-
-// Enemies
-
-Enemies::Enemies(Map *map, sf::Time minSpawnInterval, sf::Time maxSpawnInterval)
-    : map_(map),
-      minSpawnInterval_(minSpawnInterval),
-      maxSpawnInterval_(maxSpawnInterval),
-      nextSpawn_(sf::seconds(1))
-{
-}
-
-void Enemies::update(sf::Time deltaTime)
-{
-    enemies_.erase(std::remove_if(enemies_.begin(), enemies_.end(),
-                                  [](const std::shared_ptr<Enemy> &enemy)
-                                  {
-                                      return !enemy->isAlive() || enemy->hasReachedBase();
-                                  }),
-                   enemies_.end());
-
-    for (auto enemy : enemies_)
-    {
-        enemy->update(deltaTime);
-    }
-
-    nextSpawn_ -= deltaTime;
-    if (nextSpawn_.asSeconds() <= 0)
-    {
-        sf::Time timeDiff = maxSpawnInterval_ - minSpawnInterval_;
-        if (timeDiff.asMilliseconds() > 1)
-        {
-            sf::Time randomTime = sf::milliseconds(rand() % timeDiff.asMilliseconds());
-            nextSpawn_ = minSpawnInterval_ + randomTime;
-        }
-        else
-        {
-            nextSpawn_ = minSpawnInterval_;
-        }
-
-        auto path = map_->getPath();
-        auto goblin = std::make_shared<Goblin>(Goblin{path.first, path.second});
-        enemies_.push_back(goblin);
-    }
-}
-
-
-const std::list<std::shared_ptr<Enemy>>& Enemies::getList() const
-{
-    return enemies_;
-}
-
-
-void Enemies::drawSelf(sf::RenderTarget& target, sf::RenderStates states) const
-{
-    for (auto enemy : enemies_)
-    {
-        enemy->drawSelf(target, states);
-    }
 }

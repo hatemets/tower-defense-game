@@ -47,22 +47,4 @@ class Goblin : public Enemy
 		Goblin(std::vector<std::pair<int, int>>::const_iterator pathBegin, std::vector<std::pair<int, int>>::const_iterator pathEnd);
 };
 
-class Enemies : public Node
-{
-	public:
-		Enemies(Map* map, sf::Time minSpawnInterval, sf::Time maxSpawnInterval);
-		virtual void update(sf::Time deltaTime);
-		const std::list<std::shared_ptr<Enemy>> &getList() const;
-
-	private:
-		virtual void drawSelf(sf::RenderTarget& target, sf::RenderStates states) const;
-
-	private:
-		std::list<std::shared_ptr<Enemy>> enemies_;
-		Map* map_; ///< Hold by unique pointer elsewhere.
-		sf::Time minSpawnInterval_;
-		sf::Time maxSpawnInterval_;
-		sf::Time nextSpawn_;
-};
-
 #endif

@@ -36,7 +36,8 @@ void World::changeMode(Type newMode)
 	switch (newMode)
 	{
 		case Type::Level:
-			mode_.reset(new Level(window_));
+			// TODO: Remove hardcoded values
+			mode_.reset(new Level(window_, sf::seconds(3.f), sf::seconds(10.f)));
 			break;
 		case Type::MainMenu:
 			mode_.reset(new MainMenu(window_));

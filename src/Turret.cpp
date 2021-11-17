@@ -24,77 +24,104 @@ Turret::Turret(int row, int col, int price, float rotationSpeed, float rateOfFir
 }
 
 
-void Turret::update(sf::Time deltaTime, Enemies* enemies)
+void Turret::update(sf::Time deltaTime, const EnemyList& enemies)
 {
     // rotate
     currentAngle_ += rotate(deltaTime, enemies);
     // std::cout << currentAngle_ << std::endl;
-    while (currentAngle_ >= 360) {
+    while (currentAngle_ >= 360)
+	{
         currentAngle_ -= 360;
     }
-    while (currentAngle_ < 0) {
+
+    while (currentAngle_ < 0)
+	{
         currentAngle_ += 360;
     }
 
     picture_.setRotation(currentAngle_);
 
-    // shoot
-    if (nextFire_ <= deltaTime) {
-        if (shoot()) {
-            nextFire_ = getFireInterval();
-        } else {
-            nextFire_ = sf::seconds(0);
-        }
-    } else {
-        nextFire_ -= deltaTime;
-    }
+	// shoot
+	if (nextFire_ <= deltaTime)
+	{
+		if (shoot())
+		{
+			nextFire_ = getFireInterval();
+		}
+		else
+		{
+			nextFire_ = sf::seconds(0);
+		}
+	}
+	else
+	{
+		nextFire_ -= deltaTime;
+	}
 }
 
 
 void Turret::drawSelf(sf::RenderTarget& target, sf::RenderStates states) const
 {
-    target.draw(picture_, states);
+	target.draw(picture_, states);
 }
 
 
-std::shared_ptr<Enemy> Turret::getNearestEnemyInRadar(Enemies* enemies)
+std::shared_ptr<Enemy> Turret::getNearestEnemyInRadar(const EnemyList& enemies)
 {
     std::shared_ptr<Enemy> nearest(nullptr);
     float minDistance = std::numeric_limits<float>::max();
     float turretX = getTileX();
     float turretY = getTileY();
-    for (auto enemy : enemies->getList()) {
+
+    for (auto& enemy : enemies)
+	{
         float enemyDistance = Map::calculateDistance(sf::Vector2f(turretX, turretY), sf::Vector2f(enemy->getTileX(), enemy->getTileY()));
-        if (enemyDistance < minDistance && enemyDistance <= radarRange_) {
+
+        if (enemyDistance < minDistance && enemyDistance <= radarRange_)
+		{
             minDistance = enemyDistance;
             nearest = enemy;
         }
     }
+
     return nearest;
 }
 
 
-float Turret::rotateToNearestEnemyInRadar(sf::Time deltaTime, Enemies* enemies)
+float Turret::rotateToNearestEnemyInRadar(sf::Time deltaTime, const EnemyList& enemies)
 {
     auto target = getNearestEnemyInRadar(enemies);
-    if (target) {
+
+    if (target)
+	{
         float maxRotation = deltaTime.asSeconds() * rotationSpeed_;
         float angle = Map::calculateAngle(sf::Vector2f(getTileX(), getTileY()), sf::Vector2f(target->getTileX(), target->getTileY()));
         float neededRotation = angle - currentAngle_;
-        while (neededRotation > 180.f) {
+
+        while (neededRotation > 180.f)
+		{
             neededRotation -= 360.f;
-        } 
-        while (neededRotation < -180.f) {
-            neededRotation += 360.f;
-        }
-        if ( abs(neededRotation) <= maxRotation ) {
-            return neededRotation;
-        } else if (neededRotation > 0) {
-            return maxRotation;
-        } else {
-            return -maxRotation;
-        }
+		} 
+
+		while (neededRotation < -180.f)
+		{
+			neededRotation += 360.f;
+		}
+
+		if ( abs(neededRotation) <= maxRotation )
+		{
+			return neededRotation;
+		}
+		else if (neededRotation > 0)
+		{
+			return maxRotation;
+		}
+		else
+		{
+			return -maxRotation;
+		}
     }
+
     return 0.f;
 }
 
@@ -109,7 +136,7 @@ SimpleTurret::SimpleTurret(int row, int col) :
 }
 
 
-float SimpleTurret::rotate(sf::Time deltaTime, Enemies* enemies)
+float SimpleTurret::rotate(sf::Time deltaTime, const EnemyList& enemies)
 {
     return deltaTime.asSeconds() * rotationSpeed_; // rotate without aiming
 }
@@ -124,12 +151,13 @@ bool SimpleTurret::shoot()
 // GunTurret 
 
 GunTurret::GunTurret(int row, int col) : 
+	// TODO: Remove hardcoded values
     Turret(row, col, 10, 91, 5, 5, 5)
 {
 }
 
 
-float GunTurret::rotate(sf::Time deltaTime, Enemies* enemies)
+float GunTurret::rotate(sf::Time deltaTime, const EnemyList& enemies)
 {
     return rotateToNearestEnemyInRadar(deltaTime, enemies);
 }
@@ -139,41 +167,3 @@ bool GunTurret::shoot()
 {
     return true; // shoot always when possible
 }
-
-
-// Turrets
-
-Turrets::Turrets(Enemies *enemies)
-    : enemies_(enemies)
-{
-}
-
-void Turrets::update(sf::Time deltaTime)
-{
-    for (auto turret : turrets_)
-    {
-        turret->update(deltaTime, enemies_);
-    }
-}
-
-
-void Turrets::add(std::shared_ptr<Turret> turret)
-{
-    turrets_.push_back(turret);
-}
-
-
-const std::list<std::shared_ptr<Turret>>& Turrets::getList() const
-{
-    return turrets_;
-}
-
-
-void Turrets::drawSelf(sf::RenderTarget &target, sf::RenderStates states) const
-{
-    for (auto turret : turrets_)
-    {
-        turret->drawSelf(target, states);
-    }
-}
-

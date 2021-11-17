@@ -7,12 +7,16 @@
 #include <algorithm>
 #include <iostream>
 
-Level::Level(sf::RenderWindow& window)
+Level::Level(sf::RenderWindow& window, sf::Time minSpawnInterval, sf::Time maxSpawnInterval)
 	: Mode(window),
 	textures_(),
 	map_(nullptr),
-	enemies_(nullptr),
-	turrets_(nullptr)
+	enemies_(),
+	minSpawnInterval_(minSpawnInterval),
+	maxSpawnInterval_(maxSpawnInterval),
+	// TODO: Remove hardcoded values
+	nextSpawn_(sf::seconds(1)),
+	turrets_()
 {
 	loadResources();
 	createScene();
@@ -38,6 +42,7 @@ void Level::createScene()
 	}
 
 
+	// Background
 	sf::Texture& backgroundTexture = textures_.get(Textures::ID::GrassArea);
 	backgroundTexture.setRepeated(true);
 
@@ -47,23 +52,25 @@ void Level::createScene()
 	background->setPosition(0.f, 0.f);
 	layers_[static_cast<std::size_t>(Layers::Background)]->addChild(std::move(background));
 
+
+	// Map
 	auto map = std::make_unique<Map>(Map{"./include/maps/map1.txt"}); // how the level/map is chosen?
 	map_ = map.get();
 	map_->setPosition(0.f, 0.f);
 	layers_[static_cast<std::size_t>(Layers::Background)]->addChild(std::move(map));
 
-	auto enemies = std::make_unique<Enemies>(Enemies{map_, sf::seconds(3.f), sf::seconds(10.f)});
-	enemies_ = enemies.get();
-	enemies_->setPosition(0.f, 0.f);
-	layers_[static_cast<std::size_t>(Layers::Entities)]->addChild(std::move(enemies));
+	/* auto enemies = std::make_unique<Enemies>(Enemies{map_, sf::seconds(3.f), sf::seconds(10.f)}); */
+	/* enemies_ = enemies.get(); */
+	/* enemies_->setPosition(0.f, 0.f); */
+	/* layers_[static_cast<std::size_t>(Layers::Entities)]->addChild(std::move(enemies)); */
 
-	auto turrets = std::make_unique<Turrets>(Turrets{enemies_});
-	turrets_ = turrets.get();
-	turrets_->setPosition(0.f, 0.f);
-	layers_[static_cast<std::size_t>(Layers::Entities)]->addChild(std::move(turrets));
+	/* auto turrets = std::make_unique<Turrets>(Turrets{enemies_}); */
+	/* turrets_ = turrets.get(); */
+	/* turrets_->setPosition(0.f, 0.f); */
+	/* layers_[static_cast<std::size_t>(Layers::Entities)]->addChild(std::move(turrets)); */
 
 	// simulate buying turrets
-	const std::vector<std::pair<int, int>> &turretBaseTiles = map_->getTurretBaseTiles();
+	const std::vector<std::pair<int, int>>& turretBaseTiles = map_->getTurretBaseTiles();
 
 	// TODO: Fix the erroneous statement
 	/* std::size_t turretCreateCount = std::min(3, turretBaseTiles.size()); */
@@ -80,8 +87,8 @@ void Level::createScene()
 
 		if (!Map::isMember(row, col, turretTiles))
 		{
-			auto turret = std::make_shared<GunTurret>(GunTurret{ row, col });
-			turrets_->add(turret);
+			// Add a turret to the turret container
+			turrets_.push_back(std::make_shared<GunTurret>(GunTurret{ row, col }));
 			turretTiles.push_back(tile);
 		}
 	}
@@ -95,12 +102,66 @@ void Level::createScene()
 
 void Level::update(sf::Time deltaTime)
 {
-	if (enemies_)
+	updateEnemies(deltaTime);
+	updateTurrets(deltaTime);
+}
+
+
+void Level::updateEnemies(sf::Time deltaTime)
+{
+	enemies_.erase(std::remove_if(enemies_.begin(), enemies_.end(),
+				[](const std::shared_ptr<Enemy> &enemy)
+				{
+				return !enemy->isAlive() || enemy->hasReachedBase();
+				}),
+			enemies_.end());
+
+	for (auto enemy : enemies_)
 	{
-		enemies_->update(deltaTime);
+		enemy->update(deltaTime);
 	}
-	if (turrets_)
+
+	nextSpawn_ -= deltaTime;
+	if (nextSpawn_.asSeconds() <= 0)
 	{
-		turrets_->update(deltaTime);
+		sf::Time timeDiff = maxSpawnInterval_ - minSpawnInterval_;
+		if (timeDiff.asMilliseconds() > 1)
+		{
+			sf::Time randomTime = sf::milliseconds(rand() % timeDiff.asMilliseconds());
+			nextSpawn_ = minSpawnInterval_ + randomTime;
+		}
+		else
+		{
+			nextSpawn_ = minSpawnInterval_;
+		}
+
+		auto path = map_->getPath();
+		auto goblin = std::make_shared<Goblin>(Goblin{path.first, path.second});
+		enemies_.push_back(goblin);
 	}
 }
+
+void Level::updateTurrets(sf::Time deltaTime)
+{
+	for (auto& turret : turrets_)
+	{
+		turret->update(deltaTime, enemies_);
+	}
+}
+
+
+void Level::drawSelf(sf::RenderTarget& target, sf::RenderStates states) const
+{
+	target.draw(nodeTree_, states);
+
+	for (auto& enemy : enemies_)
+	{
+		enemy->drawSelf(target, states);
+	}
+
+	for (auto& turret : turrets_)
+	{
+		turret->drawSelf(target, states);
+	}
+}
+
