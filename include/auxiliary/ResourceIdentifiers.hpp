@@ -38,6 +38,7 @@ namespace Resources
 			// Path is for enemies
 			GrassArea,
 			SandPath,
+			DirtPath,
 			LevelMenuBackground,
 
 			// Enemies

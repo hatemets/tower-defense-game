@@ -3,14 +3,18 @@
 
 #include <SFML/Graphics.hpp>
 #include "Node.hpp"
+#include "auxiliary/ResourceIdentifiers.hpp"
+#include "ResourceHolder.hpp"
 // #include "Turret.hpp"
 // #include "Projectile.hpp"
 // #include "Enemy.hpp"
 
+using namespace Resources;
+
 class Map : public Node
 {
     public:
-        Map(const std::string& fileName);
+        Map(const std::string& filename, ResourceHolder<sf::Texture, Textures::ID>& textures);
 
     private:
         virtual void drawSelf(sf::RenderTarget &target, sf::RenderStates states) const;
@@ -35,13 +39,16 @@ class Map : public Node
         void findPaths();
 
     private:
+		ResourceHolder<sf::Texture, Textures::ID>& textures_;
+
         // Tiles are listed as row,col pairs
         std::vector<std::pair<int, int>> spawnTiles_;
         std::vector<std::pair<int, int>> roadTiles_;
         std::vector<std::pair<int, int>> baseTiles_;
         std::vector<std::pair<int, int>> turretBaseTiles_;
         std::vector<std::vector<std::pair<int, int>>> paths_;
-        std::vector<std::shared_ptr<sf::Shape>> mapPictures_; // Shapes probably should be replaced with Textures or Sprites
+        /* std::vector<std::shared_ptr<sf::Shape>> mapPictures_; // Shapes probably should be replaced with Textures or Sprites */
+        std::vector<std::shared_ptr<sf::Sprite>> mapPictures_; // Shapes probably should be replaced with Textures or Sprites
 };
 
 #endif

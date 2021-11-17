@@ -25,7 +25,8 @@ Level::Level(sf::RenderWindow& window, sf::Time minSpawnInterval, sf::Time maxSp
 
 void Level::loadResources()
 {
-	textures_.load(Textures::ID::GrassArea, "./include/images/levelBackground.png");
+	textures_.load(Textures::ID::GrassArea, "./include/images/Grass.png");
+	textures_.load(Textures::ID::DirtPath, "./include/images/Ground.png");
 	buttonShapes_.load(Buttons::ID::HomeButton);
 }
 
@@ -54,7 +55,7 @@ void Level::createScene()
 
 
 	// Map
-	auto map = std::make_unique<Map>(Map{"./include/maps/map1.txt"}); // how the level/map is chosen?
+	auto map = std::make_unique<Map>(Map{"./include/maps/map1.txt", textures_}); // how the level/map is chosen?
 	map_ = map.get();
 	map_->setPosition(0.f, 0.f);
 	layers_[static_cast<std::size_t>(Layers::Background)]->addChild(std::move(map));
