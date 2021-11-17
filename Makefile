@@ -1,7 +1,7 @@
 CC = g++
 CFLAGS = -g -Wall -Wno-switch --std=c++17
 
-TARGET := sfml
+TARGET := out
 OBJ_DIR := ./obj
 SRC_DIR := ./src
 HEADER_DIR := ./include
@@ -29,7 +29,7 @@ ifeq ($(OS),Windows_NT)
 else
 	# Linux specific definitions
 	OUT_FILE = out
-	CLEAN = rm -rf $(OBJ_DIR)*/.o $(TARGET)
+	CLEAN = rm -rf $(OBJ_DIR)/*.o $(TARGET)
 	MKDIR_OBJ = @mkdir -p $(OBJ_DIR)
 	SRC_FILES := $(shell find $(SRC_DIR) -type f -name *.cpp)
 	CONST_FILES := $(shell find $(HEADER_DIR)/auxiliary/ -type f -name *.hpp)
