@@ -2,29 +2,29 @@
 #include "../include/auxiliary/constants.hpp"
 
 // First value is the button background, the second is the text itself
-std::pair<sf::Color, sf::Color> getColor(Resources::ID id)
+std::pair<sf::Color, sf::Color> getColor(Buttons::ID id)
 {
 	using namespace Resources;
 
 	switch (id)
 	{
-		case ID::StartButton:
+		case Buttons::ID::StartButton:
 			{
 				return std::make_pair(sf::Color::Green, sf::Color::Black);
 			}
-		case ID::QuitButton:
+		case Buttons::ID::QuitButton:
 			{
 				return std::make_pair(sf::Color::Red, sf::Color::White);
 			}
-		case ID::PauseButton:
+		case Buttons::ID::PauseButton:
 			{
 				return std::make_pair(sf::Color::Yellow, sf::Color::Black);
 			}
-		case ID::HomeButton:
+		case Buttons::ID::HomeButton:
 			{
 				return std::make_pair(sf::Color::Yellow, sf::Color::Black);
 			}
-		case ID::LevelMenuButton:
+		case Buttons::ID::LevelMenuButton:
 			{
 				return std::make_pair(sf::Color::Magenta, sf::Color::White);
 			}
@@ -33,7 +33,7 @@ std::pair<sf::Color, sf::Color> getColor(Resources::ID id)
 }
 
 
-Button::Button(const std::string& text, ResourceHolder<sf::Font, Resources::ID>& fonts, Resources::ID fontID, ButtonHolder<Resources::ID>& resources, Resources::ID buttonID, float scalar)
+Button::Button(const std::string& text, ResourceHolder<sf::Font, Fonts::ID>& fonts, Fonts::ID fontID, ButtonHolder<Buttons::ID>& resources, Buttons::ID buttonID, float scalar)
 	: button_(resources.get(buttonID)),
 	type_(buttonID)
 {

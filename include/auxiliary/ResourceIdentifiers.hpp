@@ -3,35 +3,52 @@
 
 namespace Resources
 {
-	enum class ID
+	namespace Buttons
 	{
-		// Icons
+		enum class ID
+		{
+			// To level menu
+			StartButton,
 
-		// Patterns for map
-		// Area is for turrets
-		// Path is for enemies
-		GrassArea,
-		SandPath,
-		LevelMenuBackground,
+			// To main menu
+			HomeButton,
+			QuitButton,
+			PauseButton,
+			LevelMenuButton,
+		};
 
-		// Enemies
-		Goblin,
+	}
 
-		// Turrets
-		ArrowShooter,
+	namespace Fonts
+	{
+		enum class ID
+		{
+			SourceCodePro
+		};
+	}
 
-		// To level menu
-		StartButton,
+	namespace Textures
+	{
+		enum class ID
+		{
+			// Icons
 
-		// To main menu
-		HomeButton,
-		QuitButton,
-		PauseButton,
-		LevelMenuButton,
+			// Patterns for map
+			// Area is for turrets
+			// Path is for enemies
+			GrassArea,
+			SandPath,
+			LevelMenuBackground,
 
-		// Fonts
-		SourceCodePro
+			// Enemies
+			Goblin,
+
+			// Turrets
+			ArrowShooter,
+
 	};
+	}
+
 };
 
 #endif

@@ -15,9 +15,9 @@ LevelMenu::LevelMenu(sf::RenderWindow& window)
 
 void LevelMenu::loadResources()
 {
-	textures_.load(Resources::ID::LevelMenuBackground, "./include/images/GreenTile.png");
-	buttonShapes_.load(Resources::ID::HomeButton);
-	buttonShapes_.load(Resources::ID::StartButton);
+	textures_.load(Resources::Textures::ID::LevelMenuBackground, "./include/images/GreenTile.png");
+	buttonShapes_.load(Resources::Buttons::ID::HomeButton);
+	buttonShapes_.load(Resources::Buttons::ID::StartButton);
 }
 
 
@@ -34,7 +34,7 @@ void LevelMenu::createScene()
 
 
 	// Set the background for the menu
-	sf::Texture& backgroundTexture = textures_.get(Resources::ID::LevelMenuBackground);
+	sf::Texture& backgroundTexture = textures_.get(Resources::Textures::ID::LevelMenuBackground);
 	backgroundTexture.setRepeated(true);
 
 	sf::IntRect bounds(windowBounds_);
@@ -46,12 +46,12 @@ void LevelMenu::createScene()
 
 	// Configure the buttons
 	// NOTE: Start button is the one that leads the user to the first level (subject to change)
-	auto startButton = std::make_unique<Button>("Level 1", fonts_, Resources::ID::SourceCodePro, buttonShapes_, Resources::ID::StartButton);
+	auto startButton = std::make_unique<Button>("Level 1", fonts_, Resources::Fonts::ID::SourceCodePro, buttonShapes_, Resources::Buttons::ID::StartButton);
 	startButton->setPosition(WindowWidth / 2.f, WindowHeight / 2.f);
 	buttons_.push_back(startButton.get());
 	layers_[static_cast<std::size_t>(Layers::Buttons)]->addChild(std::move(startButton));
 
-	auto homeButton = std::make_unique<Button>("Main Menu", fonts_, Resources::ID::SourceCodePro, buttonShapes_, Resources::ID::HomeButton);
+	auto homeButton = std::make_unique<Button>("Main Menu", fonts_, Resources::Fonts::ID::SourceCodePro, buttonShapes_, Resources::Buttons::ID::HomeButton);
 	// NOTE: Position is based on the previous button
 	auto pos = buttons_[buttons_.size() - 1]->getButton().getPosition();
 	homeButton->setPosition(pos.x, pos.y + homeButton->getButton().getSize().y + 25.f);

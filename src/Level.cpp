@@ -20,8 +20,8 @@ Level::Level(sf::RenderWindow& window)
 
 void Level::loadResources()
 {
-	textures_.load(Resources::ID::GrassArea, "./include/images/levelBackground.png");
-	buttonShapes_.load(Resources::ID::HomeButton);
+	textures_.load(Resources::Textures::ID::GrassArea, "./include/images/levelBackground.png");
+	buttonShapes_.load(Resources::Buttons::ID::HomeButton);
 }
 
 
@@ -37,7 +37,7 @@ void Level::createScene()
 	}
 
 
-	sf::Texture& backgroundTexture = textures_.get(Resources::ID::GrassArea);
+	sf::Texture& backgroundTexture = textures_.get(Resources::Textures::ID::GrassArea);
 	backgroundTexture.setRepeated(true);
 
 	sf::IntRect bounds(windowBounds_);
@@ -63,20 +63,29 @@ void Level::createScene()
 
 	// simulate buying turrets
 	const std::vector<std::pair<int, int>> &turretBaseTiles = map_->getTurretBaseTiles();
-	size_t turretCreateCount = std::min(3u, turretBaseTiles.size());
+
+	// TODO: Fix the erroneous statement
+	/* std::size_t turretCreateCount = std::min(3, turretBaseTiles.size()); */
+	std::size_t turretCreateCount = (3 > turretBaseTiles.size()) ? 3 : turretBaseTiles.size();
+	
+
 	std::vector<std::pair<int, int>> turretTiles;
-	while (turretTiles.size() < turretCreateCount) {
+
+	while (turretTiles.size() < turretCreateCount)
+	{
 		auto tile = turretBaseTiles[rand() % turretBaseTiles.size()];
 		int row = tile.second;
 		int col = tile.first;
-		if (!Map::isMember(row, col, turretTiles)) {
+
+		if (!Map::isMember(row, col, turretTiles))
+		{
 			auto turret = std::make_shared<GunTurret>(GunTurret{ row, col });
 			turrets_->add(turret);
 			turretTiles.push_back(tile);
 		}
 	}
 
-	auto homeButton = std::make_unique<Button>("Back to Main Menu", fonts_, Resources::ID::SourceCodePro, buttonShapes_, Resources::ID::HomeButton);
+	auto homeButton = std::make_unique<Button>("Back to Main Menu", fonts_, Resources::Fonts::ID::SourceCodePro, buttonShapes_, Resources::Buttons::ID::HomeButton);
 	homeButton->setPosition(WindowWidth / 2.f, WindowHeight / 2.f);
 	buttons_.push_back(homeButton.get());
 	layers_[static_cast<std::size_t>(Layers::HUD)]->addChild(std::move(homeButton));

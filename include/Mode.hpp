@@ -41,13 +41,13 @@ class Mode : public Node
 		// Window dimensions
 		sf::FloatRect windowBounds_;
 
-		ResourceHolder<sf::Font, Resources::ID> fonts_;
+		ResourceHolder<sf::Font, Resources::Fonts::ID> fonts_;
 
 		// A container storing button pointers
 		std::vector<const Button*> buttons_;
 
 		// Holds all the shapes (graphics) of buttons
-		ButtonHolder<Resources::ID> buttonShapes_;
+		ButtonHolder<Resources::Buttons::ID> buttonShapes_;
 };
 
 #endif

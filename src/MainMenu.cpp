@@ -15,8 +15,8 @@ MainMenu::MainMenu(sf::RenderWindow& window)
 
 void MainMenu::loadResources()
 {
-	textures_.load(Resources::ID::GrassArea, "./include/images/background1.jpg");
-	buttonShapes_.load(Resources::ID::LevelMenuButton);
+	textures_.load(Textures::ID::GrassArea, "./include/images/background1.jpg");
+	buttonShapes_.load(Buttons::ID::LevelMenuButton);
 }
 
 
@@ -33,7 +33,7 @@ void MainMenu::createScene()
 
 
 	// Set the background for the menu
-	sf::Texture& backgroundTexture = textures_.get(Resources::ID::GrassArea);
+	sf::Texture& backgroundTexture = textures_.get(Textures::ID::GrassArea);
 	backgroundTexture.setRepeated(true);
 
 	sf::IntRect bounds(windowBounds_);
@@ -44,7 +44,7 @@ void MainMenu::createScene()
 
 
 	// Configure the buttons
-	auto startButton = std::make_unique<Button>("Play", fonts_, Resources::ID::SourceCodePro, buttonShapes_, Resources::ID::LevelMenuButton);
+	auto startButton = std::make_unique<Button>("Play", fonts_, Fonts::ID::SourceCodePro, buttonShapes_, Buttons::ID::LevelMenuButton);
 	startButton->setPosition(WindowWidth / 2.f, WindowHeight / 2.f);
 	buttons_.push_back(startButton.get());
 	layers_[static_cast<std::size_t>(Layers::Buttons)]->addChild(std::move(startButton));

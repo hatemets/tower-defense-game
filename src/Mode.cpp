@@ -11,7 +11,7 @@ Mode::Mode(sf::RenderWindow& window)
 	buttonShapes_()
 {
 	// TODO: Create a universal filepath
-	fonts_.load(Resources::ID::SourceCodePro, "./include/fonts/SourceCodePro.ttf");
+	fonts_.load(Fonts::ID::SourceCodePro, "./include/fonts/SourceCodePro.ttf");
 }
 
 
@@ -35,11 +35,11 @@ ModeState Mode::handleInput(sf::Vector2i mousePos)
 
 		switch (button->getType())
 		{
-			case ID::StartButton:
+			case Buttons::ID::StartButton:
 				return ModeState(Type::Level);
-			case ID::HomeButton:
+			case Buttons::ID::HomeButton:
 				return ModeState(Type::MainMenu);
-			case ID::LevelMenuButton:
+			case Buttons::ID::LevelMenuButton:
 				return ModeState(Type::LevelMenu);
 			default:
 				return ModeState();

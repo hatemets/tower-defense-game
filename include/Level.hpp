@@ -33,7 +33,7 @@ class Level : public Mode
 		virtual void createScene() final;
 
 	private:
-		ResourceHolder<sf::Texture, Resources::ID> textures_;
+		ResourceHolder<sf::Texture, Textures::ID> textures_;
 		// TODO:
 		// Add turret container
 		// Add enemy container

@@ -23,8 +23,8 @@ class Map : public Node
 
     public:
         std::pair<std::vector<std::pair<int, int>>::const_iterator, std::vector<std::pair<int, int>>::const_iterator> getPath() const;
-        const std::vector<std::pair<int, int>> &getTurretBaseTiles() const;
-        bool static isMember(int row, int col, const std::vector<std::pair<int, int>> &container);
+        const std::vector<std::pair<int, int>>& getTurretBaseTiles() const;
+        bool static isMember(int row, int col, const std::vector<std::pair<int, int>>& container);
 
     private:
         void loadFile(const std::string &fileName);
