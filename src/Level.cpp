@@ -20,8 +20,8 @@ Level::Level(sf::RenderWindow& window)
 
 void Level::loadResources()
 {
-	textures_.load(Resources::Textures::ID::GrassArea, "./include/images/levelBackground.png");
-	buttonShapes_.load(Resources::Buttons::ID::HomeButton);
+	textures_.load(Textures::ID::GrassArea, "./include/images/levelBackground.png");
+	buttonShapes_.load(Buttons::ID::HomeButton);
 }
 
 
@@ -37,7 +37,7 @@ void Level::createScene()
 	}
 
 
-	sf::Texture& backgroundTexture = textures_.get(Resources::Textures::ID::GrassArea);
+	sf::Texture& backgroundTexture = textures_.get(Textures::ID::GrassArea);
 	backgroundTexture.setRepeated(true);
 
 	sf::IntRect bounds(windowBounds_);
@@ -85,7 +85,7 @@ void Level::createScene()
 		}
 	}
 
-	auto homeButton = std::make_unique<Button>("Back to Main Menu", fonts_, Resources::Fonts::ID::SourceCodePro, buttonShapes_, Resources::Buttons::ID::HomeButton);
+	auto homeButton = std::make_unique<Button>("Back to Main Menu", fonts_, Fonts::ID::SourceCodePro, buttonShapes_, Buttons::ID::HomeButton);
 	homeButton->setPosition(WindowWidth / 2.f, WindowHeight / 2.f);
 	buttons_.push_back(homeButton.get());
 	layers_[static_cast<std::size_t>(Layers::HUD)]->addChild(std::move(homeButton));

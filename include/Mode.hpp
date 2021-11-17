@@ -10,6 +10,7 @@
 #include "auxiliary/ModeIdentifiers.hpp"
 
 using namespace Modes;
+using namespace Resources;
 
 // Mode is an abstract class used for representing one "scene" currently
 // displayed on the game window
@@ -41,13 +42,13 @@ class Mode : public Node
 		// Window dimensions
 		sf::FloatRect windowBounds_;
 
-		ResourceHolder<sf::Font, Resources::Fonts::ID> fonts_;
+		ResourceHolder<sf::Font, Fonts::ID> fonts_;
 
 		// A container storing button pointers
 		std::vector<const Button*> buttons_;
 
 		// Holds all the shapes (graphics) of buttons
-		ButtonHolder<Resources::Buttons::ID> buttonShapes_;
+		ButtonHolder<Buttons::ID> buttonShapes_;
 };
 
 #endif

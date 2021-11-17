@@ -17,7 +17,7 @@ class Button : public Node
 		// TODO: create an abstract base class for entities that move
 		void setPosition(float x, float y);
 		const sf::RectangleShape& getButton() const { return button_; }
-		Resources::Buttons::ID getType() const { return type_; }
+		Buttons::ID getType() const { return type_; }
 
 	private:
 		sf::Text text_;
