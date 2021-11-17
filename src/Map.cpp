@@ -293,8 +293,8 @@ void Map::loadTextures()
 		int row = turretBaseTile.first;
 		int col = turretBaseTile.second;
 		std::shared_ptr<sf::CircleShape> turretBase(new sf::CircleShape);
-		turretBase->setRadius(TileSize / 2);
-		turretBase->setPosition(col * TileSize, row * TileSize);
+		turretBase->setRadius(TileSize * 0.3f);
+		turretBase->setPosition((col + 0.2f) * TileSize, (row + 0.2f) * TileSize);
 		turretBase->setFillColor(sf::Color::Blue);
 		mapPictures_.push_back(turretBase);
 	}

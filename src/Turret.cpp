@@ -16,7 +16,7 @@ Turret::Turret(int row, int col, int price, float rotationSpeed, float rateOfFir
     currentAngle_(0) 
 {
     picture_.setPosition(getTileX() * TileSize, getTileY() * TileSize);
-    picture_.setSize(sf::Vector2f(TileSize / 1.5f, TileSize / 5.f));
+    picture_.setSize(sf::Vector2f(TileSize / 2.f, TileSize / 5.f));
     picture_.setOrigin(0.f, TileSize / 10.f);
     picture_.setFillColor(sf::Color::Black);
 
@@ -51,7 +51,7 @@ void Turret::update(sf::Time deltaTime, Enemies* enemies)
 }
 
 
-void Turret::drawSelf(sf::RenderTarget& target, sf::RenderStates states) const
+void Turret::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     target.draw(picture_, states);
 }
@@ -242,7 +242,7 @@ void Turrets::drawSelf(sf::RenderTarget &target, sf::RenderStates states) const
 {
     for (auto turret : turrets_)
     {
-        turret->drawSelf(target, states);
+        turret->draw(target, states);
     }
 }
 

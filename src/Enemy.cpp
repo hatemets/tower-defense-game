@@ -38,7 +38,7 @@ void Enemy::update(sf::Time deltaTime)
     }
 }
 
-void Enemy::drawSelf(sf::RenderTarget &target, sf::RenderStates states) const
+void Enemy::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
     target.draw(picture_, states);
 }
@@ -172,6 +172,6 @@ void Enemies::drawSelf(sf::RenderTarget &target, sf::RenderStates states) const
 {
     for (auto enemy : enemies_)
     {
-        enemy->drawSelf(target, states);
+        enemy->draw(target, states);
     }
 }

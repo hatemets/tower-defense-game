@@ -8,13 +8,13 @@
 #include "Map.hpp"
 
 /// The base class of enemies
-class Enemy : public Node
+class Enemy
 {
     public:
         Enemy(std::vector<std::pair<int, int>>::const_iterator pathBegin, std::vector<std::pair<int, int>>::const_iterator pathEnd, float speed, int hitPoints);
         
         virtual void update(sf::Time deltaTime);
-        virtual void drawSelf(sf::RenderTarget& target, sf::RenderStates states) const;
+        virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
     protected:
         void setDirection();

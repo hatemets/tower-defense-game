@@ -11,7 +11,7 @@ class Turret
 		Turret(int row, int col, int price, float rotationSpeed, float rateOfFire, float radarRange, float projectileRange);
 
         virtual void update(sf::Time deltaTime, Enemies* enemies);
-        virtual void drawSelf(sf::RenderTarget& target, sf::RenderStates states) const;       
+        virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;       
 
     protected:
         virtual float rotate(sf::Time deltaTime, Enemies* enemies) = 0;  // note: change this: needs the enemies as a parameter
