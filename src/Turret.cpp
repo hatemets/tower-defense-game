@@ -99,75 +99,6 @@ float Turret::rotateToNearestEnemyInRadar(sf::Time deltaTime, Enemies* enemies)
 }
 
 
-int Turret::getRow() const
-{
-    return row_;
-}
-
-
-int Turret::getCol() const
-{
-    return col_;
-}  
-
-
-float Turret::getTileX() const
-{
-    return row_ + 0.5f;
-}  
-        
-
-float Turret::getTileY() const
-{
-    return col_ + 0.5f;
-}  
-
-int Turret::getPrice() const
-{
-    return price_;
-}
-
-
-float Turret::getRotationSpeed() const
-{
-    return rotationSpeed_;
-}
-
-
-float Turret::getRateOfFire() const
-{
-    return rateOfFire_;
-}
-
-
-sf::Time Turret::getFireInterval() const
-{
-    return sf::seconds(1 / rateOfFire_);
-}
-
-
-float Turret::getRadarRange() const
-{
-    return radarRange_;
-}
-
-
-float Turret::getProjectileRange() const
-{
-    return projectileRange_;
-}
-
-
-float Turret::getCurrentAngle() const
-{
-    return currentAngle_;
-}
-
-
-sf::Time Turret::getNextFire() const
-{
-    return nextFire_;
-}
 
 
 // SimpleTurret 
@@ -232,7 +163,7 @@ void Turrets::add(std::shared_ptr<Turret> turret)
 }
 
 
-const std::list<std::shared_ptr<Turret>> &Turrets::getList() const
+const std::list<std::shared_ptr<Turret>>& Turrets::getList() const
 {
     return turrets_;
 }

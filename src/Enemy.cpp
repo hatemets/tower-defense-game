@@ -92,26 +92,6 @@ void Enemy::hit(int maxDamage)
     }
 }
 
-float Enemy::getTileX() const
-{
-    return tileX_;
-}
-
-float Enemy::getTileY() const
-{
-    return tileY_;
-}
-
-float Enemy::getDirection() const
-{
-    return direction_;
-}
-
-int Enemy::getHitPoints() const
-{
-    return hitPoints_;
-}
-
 // Goblin
 
 Goblin::Goblin(std::vector<std::pair<int, int>>::const_iterator pathBegin, std::vector<std::pair<int, int>>::const_iterator pathEnd)
@@ -164,13 +144,13 @@ void Enemies::update(sf::Time deltaTime)
 }
 
 
-const std::list<std::shared_ptr<Enemy>> &Enemies::getList() const
+const std::list<std::shared_ptr<Enemy>>& Enemies::getList() const
 {
     return enemies_;
 }
 
 
-void Enemies::drawSelf(sf::RenderTarget &target, sf::RenderStates states) const
+void Enemies::drawSelf(sf::RenderTarget& target, sf::RenderStates states) const
 {
     for (auto enemy : enemies_)
     {

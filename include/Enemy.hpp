@@ -21,13 +21,13 @@ class Enemy : public Node
 		void move(sf::Time deltaTime);
 
 	public:
-		bool isAlive() const;        ///< alive or dead
-		bool hasReachedBase() const; ///< has succeed to reach the base
-		void hit(int maxDamage);     ///< used by projectile
-		float getTileX() const;      ///< location tile row
-		float getTileY() const;      ///< location tile column
-		float getDirection() const;  ///< flight angle
-		int getHitPoints() const;    ///< hit points left
+		bool isAlive() const;        // alive or dead
+		bool hasReachedBase() const; // has succeed to reach the base
+		void hit(int maxDamage);     // used by projectile
+		float getTileX() const { return tileX_; } // flight angle
+		float getTileY() const { return tileY_; } // hit points left
+		float getDirection() const { return direction_; } // location tile row
+		int getHitPoints() const { return hitPoints_; } // location tile column
 
 	protected:
 		std::vector<std::pair<int, int>>::const_iterator pathIterator_;

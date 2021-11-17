@@ -34,10 +34,6 @@ class Level : public Mode
 
 	private:
 		ResourceHolder<sf::Texture, Textures::ID> textures_;
-		// TODO:
-		// Add turret container
-		// Add enemy container
-		// Load a map from a textfile
 
 		Map* map_; ///< Hold by unique pointer elsewhere.
 		Enemies* enemies_; ///< Hold by unique pointer elsewhere.

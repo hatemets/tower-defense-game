@@ -21,18 +21,18 @@ class Turret
 		float rotateToNearestEnemyInRadar(sf::Time deltaTime, Enemies* enemies);
 
 	public:
-		int getRow() const;  // location tile row
-		int getCol() const;  // location tile column
-		float getTileX() const;  // turret centre x in tile coordinates
-		float getTileY() const;  // turret centre y in tile coordinates
-		int getPrice() const;  // purchase price
-		float getRotationSpeed() const;  // max degrees per second (i.e. 90 means that full round takes 4 seconds)
-		float getRateOfFire() const;  // max number of shots per second
-		sf::Time getFireInterval() const;  // min time between shots
-		float getRadarRange() const;  // radar range as tiles
-		float getProjectileRange() const;  // projectile range as tiles
-		float getCurrentAngle() const;  // 0-359.999...
-		sf::Time getNextFire() const;  // time before can shoot again
+		int getRow() const { return row_; }                                       // location tile row
+		int getCol() const { return col_; }                                       // location tile column
+		float getTileX() const { return row_ + 0.5f; }                            // turret centre x in tile coordinates
+		float getTileY() const { return col_ + 0.5f; }                            // turret centre y in tile coordinates
+		int getPrice() const { return price_; }                                   // purchase price
+		float getRotationSpeed() const { return rotationSpeed_; }                 // max degrees per second (i.e. 90 means that full round takes 4 seconds)
+		float getRateOfFire() const { return rateOfFire_; }                       // max number of shots per second
+		sf::Time getFireInterval() const { return sf::seconds(1 / rateOfFire_); } // min time between shots
+		float getRadarRange() const { return radarRange_; }                       // radar range as tiles
+		float getProjectileRange() const { return projectileRange_; }             // projectile range as tiles
+		float getCurrentAngle() const { return currentAngle_; }                   // 0-359.999...
+		sf::Time getNextFire() const { return nextFire_; }                        // time before can shoot again
 
 	protected:
 		const int row_;  
