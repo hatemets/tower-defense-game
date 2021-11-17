@@ -2,29 +2,30 @@
 #define PROJECTILE_HPP
 
 #include <SFML/Graphics.hpp>
+#include "Enemy.hpp"
 
 // The base class of projectiles
 class Projectile
 {
 	public:
-		Projectile(sf::RenderWindow& window, float tileX, float tileY, float direction, float speed, 
+		Projectile(float tileX, float tileY, float direction, float speed, 
                    float flightRange, float explosionRange, float maxDamage);
-		virtual void update(sf::Time deltaTime);
-		virtual void draw();
+
+		virtual void update(sf::Time deltaTime, Enemies* enemies);
+        virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
     protected:
-        virtual bool isHit(); // fix this: change return value to enemy list
+        virtual std::shared_ptr<Enemy> checkHit(Enemies* enemies);
+        virtual void explode(std::shared_ptr<Enemy> hitEnemy, Enemies* enemies);
         virtual void flight(sf::Time deltaTime); 
-        // float calculateDistance(float targetRow, float targetCol) const; // fix this: use common code with turret
-        // float calculatetAngle(float targetRow, float targetCol) const; // fix this: use common code with turret
 
     public:
+        bool isAlive() const;  // lifetime left
         float getTileX() const;  // location tile row
         float getTileY() const;  // location tile column
         float getDirection() const; // flight angle
 
 	protected:
-		sf::RenderWindow& window_;
         float tileX_;  
         float tileY_;  
         float direction_;  
@@ -39,7 +40,7 @@ class Bullet :
     public Projectile
 {
     public:
-        Bullet(sf::RenderWindow& window, float tileX, float tileY, float direction);
+        Bullet(float tileX, float tileY, float direction);
 };
 
 
@@ -47,7 +48,7 @@ class Bomb :
     public Projectile
 {
     public:
-        Bomb(sf::RenderWindow& window, float tileX, float tileY, float directionl);
+        Bomb(float tileX, float tileY, float directionl);
 };
 
 
@@ -55,15 +56,32 @@ class Missile :
     public Projectile
 {
     public:
-        Missile(sf::RenderWindow& window, float tileX, float tileY, float direction);
+        Missile(float tileX, float tileY, float direction);
     
     protected:
-        virtual bool isHit();
-        virtual void flight(sf::Time deltaTime);
+        virtual std::shared_ptr<Enemy> checkHit(Enemies* enemies);
+        virtual void explode(std::shared_ptr<Enemy> enemy, Enemies* enemies);
+        virtual void flight(sf::Time deltaTime); 
+};
+
+
+class Projectiles : public Node
+{
+public:
+    Projectiles(Enemies* enemies);
+    virtual void update(sf::Time deltaTime);
     
-    private:
-        // float calculateDistance(float targetRow, float targetCol) const; // fix this: use common code with turret
-        // float calculatetAngle(float targetRow, float targetCol) const; // fix this: use common code with turret
+    void add(std::shared_ptr<Projectile> projectile);
+    // const std::list<std::shared_ptr<Projectile>> &getList() const;
+
+private:
+    virtual void drawSelf(sf::RenderTarget& target, sf::RenderStates states) const;
+
+private:
+    std::list<std::shared_ptr<Bullet>> bullets_;
+    std::list<std::shared_ptr<Projectile>> otherProjectiles_;
+    Enemies* enemies_; ///< Hold by unique pointer elsewhere.
+    sf::VertexArray bulletVertices_; ///< combine picture of all bullets
 };
 
 

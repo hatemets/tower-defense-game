@@ -28,6 +28,7 @@ class Enemy
         float getTileY() const;      ///< location tile column
         float getDirection() const;  ///< flight angle
         int getHitPoints() const;    ///< hit points left
+        float getRadius() const;
 
     protected:
         std::vector<std::pair<int, int>>::const_iterator pathIterator_;
@@ -37,6 +38,7 @@ class Enemy
         float direction_;
         float speed_;
         int hitPoints_;
+        float radius_;
 
         sf::RectangleShape picture_; // Shape should be replaced with a Sprite
 };

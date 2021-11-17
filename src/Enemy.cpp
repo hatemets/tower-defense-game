@@ -11,7 +11,8 @@ Enemy::Enemy(std::vector<std::pair<int, int>>::const_iterator pathBegin, std::ve
       tileY_(pathBegin->first + 0.5f),
       direction_(0),
       speed_(speed),
-      hitPoints_(hitPoints)
+      hitPoints_(hitPoints),
+      radius_(0.25f) // probably should be enemy dependent
 {
     picture_.setSize(sf::Vector2f(TileSize / 2.f, TileSize / 2.f));
     picture_.setOrigin(TileSize / 4.f, TileSize / 4.f);
@@ -110,6 +111,11 @@ int Enemy::getHitPoints() const
     return hitPoints_;
 }
 
+float Enemy::getRadius() const
+{
+    return radius_;
+}
+
 // Goblin
 
 Goblin::Goblin(std::vector<std::pair<int, int>>::const_iterator pathBegin, std::vector<std::pair<int, int>>::const_iterator pathEnd)
@@ -129,6 +135,7 @@ Enemies::Enemies(Map *map, sf::Time minSpawnInterval, sf::Time maxSpawnInterval)
 
 void Enemies::update(sf::Time deltaTime)
 {
+    // remove outdated enemies
     enemies_.erase(std::remove_if(enemies_.begin(), enemies_.end(),
                                   [](const std::shared_ptr<Enemy> &enemy)
                                   {

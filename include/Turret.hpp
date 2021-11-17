@@ -114,6 +114,7 @@ class Turrets : public Node
 public:
     Turrets(Enemies* enemies);
     virtual void update(sf::Time deltaTime);
+    
     void add(std::shared_ptr<Turret> turret);
     const std::list<std::shared_ptr<Turret>> &getList() const;
 
