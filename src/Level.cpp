@@ -5,6 +5,7 @@
 #include "../include/auxiliary/constants.hpp"
 #include <memory>
 #include <algorithm>
+#include <iostream>
 
 Level::Level(sf::RenderWindow& window)
 	: Mode(window),
@@ -85,8 +86,9 @@ void Level::createScene()
 		}
 	}
 
-	auto homeButton = std::make_unique<Button>("Back to Main Menu", fonts_, Fonts::ID::SourceCodePro, buttonShapes_, Buttons::ID::HomeButton);
-	homeButton->setPosition(WindowWidth / 2.f, WindowHeight / 2.f);
+	auto homeButton = std::make_unique<Button>("X", fonts_, Fonts::ID::SourceCodePro, buttonShapes_, Buttons::ID::HomeButton);
+	auto homeButtonSize = homeButton->getButton().getSize();
+	homeButton->setPosition(WindowWidth - homeButtonSize.x / 2.f, 0 + homeButtonSize.y / 2.f);
 	buttons_.push_back(homeButton.get());
 	layers_[static_cast<std::size_t>(Layers::HUD)]->addChild(std::move(homeButton));
 }

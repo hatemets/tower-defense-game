@@ -1,8 +1,9 @@
 #include "../include/Map.hpp"
 #include "../include/auxiliary/constants.hpp"
-#include <math.h>
+#include <cmath>
 #include <fstream>
 #include <sstream> 
+
 
 Map::Map(const std::string &fileName)
 {
@@ -21,32 +22,26 @@ void Map::drawSelf(sf::RenderTarget &target, sf::RenderStates states) const
 }
 
 
-float Map::calculateDistance2(float aX, float aY, float bX, float bY)
+float Map::calculateAngle(const sf::Vector2f posA, const sf::Vector2f posB)
 {
-	float deltaX = aX - bX;
-	float deltaY = aY - bY;
-	return deltaX * deltaX + deltaY * deltaY;
+	return atan2f(posB.y - posA.y, posB.x - posA.x) * RadiansToDegrees;
 }
 
 
-float Map::calculateDistance(float aX, float aY, float bX, float bY)
+float Map::calculateDistance(const sf::Vector2f posA, const sf::Vector2f posB)
 {
-	float distance2 = calculateDistance2(aX, aY, bX, bY);
-	return sqrtf(distance2);
+	float deltaX = posA.x - posB.x;
+	float deltaY = posA.y - posB.y;
+
+	return std::sqrt(std::pow(deltaX, 2) + std::pow(deltaY, 2));
 }
 
 
-float Map::calculateAngle(float aX, float aY, float bX, float bY)
-{
-	return atan2f(bY - aY, bX - aX) * RadiansToDegrees;
-}
-
-
-bool Map::isContact(float aX, float aY, float aRadius, float bX, float bY, float bRadius)
+bool Map::isContact(const sf::Vector2f posA, float aRadius, const sf::Vector2f posB, float bRadius)
 {
 	float minDistance = aRadius + bRadius;
-	float distance2 = calculateDistance2(aX, aY, bX, bY);
-	return distance2 < (minDistance * minDistance);
+
+	return calculateDistance(posA, posB) < std::pow(minDistance, 2);
 }
 
 
@@ -79,6 +74,7 @@ const std::vector<std::pair<int, int>> &Map::getTurretBaseTiles() const
 void Map::loadFile(const std::string &fileName)
 {
 	std::ifstream istr(fileName);
+
 	if (istr.rdstate() & (istr.failbit | istr.badbit))
 	{
 		std::stringstream ss;

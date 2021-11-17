@@ -28,12 +28,14 @@ void Enemy::update(sf::Time deltaTime)
         auto target = *pathIterator_;
         float targetX = target.second + 0.5f;
         float targetY = target.first + 0.5f;
-        if (Map::isContact(tileX_, tileY_, 0.f, targetX, targetY, 0.25f))
+
+        if (Map::isContact(sf::Vector2f(tileX_, tileY_), 0.f, sf::Vector2f(targetX, targetY), 0.25f))
         {
             pathIterator_++;
             setDirection();
             // picture_.setRotation(direction_);
         }
+
         picture_.setPosition(tileX_ * TileSize, tileY_ * TileSize);
     }
 }
@@ -50,7 +52,7 @@ void Enemy::setDirection()
         auto target = *pathIterator_;
         float targetX = target.second + 0.5f;
         float targetY = target.first + 0.5f;
-        direction_ = Map::calculateAngle(tileX_, tileY_, targetX, targetY);
+        direction_ = Map::calculateAngle(sf::Vector2f(tileX_, tileY_), sf::Vector2f(targetX, targetY));
     }
 }
 

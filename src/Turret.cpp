@@ -64,7 +64,7 @@ std::shared_ptr<Enemy> Turret::getNearestEnemyInRadar(Enemies* enemies)
     float turretX = getTileX();
     float turretY = getTileY();
     for (auto enemy : enemies->getList()) {
-        float enemyDistance = Map::calculateDistance(turretX, turretY, enemy->getTileX(), enemy->getTileY());
+        float enemyDistance = Map::calculateDistance(sf::Vector2f(turretX, turretY), sf::Vector2f(enemy->getTileX(), enemy->getTileY()));
         if (enemyDistance < minDistance && enemyDistance <= radarRange_) {
             minDistance = enemyDistance;
             nearest = enemy;
@@ -79,7 +79,7 @@ float Turret::rotateToNearestEnemyInRadar(sf::Time deltaTime, Enemies* enemies)
     auto target = getNearestEnemyInRadar(enemies);
     if (target) {
         float maxRotation = deltaTime.asSeconds() * rotationSpeed_;
-        float angle = Map::calculateAngle(getTileX(), getTileY(), target->getTileX(), target->getTileY());
+        float angle = Map::calculateAngle(sf::Vector2f(getTileX(), getTileY()), sf::Vector2f(target->getTileX(), target->getTileY()));
         float neededRotation = angle - currentAngle_;
         while (neededRotation > 180.f) {
             neededRotation -= 360.f;

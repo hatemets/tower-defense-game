@@ -9,8 +9,8 @@ const unsigned int FramesPerSecond = 200;
 const int WindowWidth = 800;
 const int WindowHeight = 600;
 
-const int TileCols = 40;
-const int TileRows = 30;
+const int TileCols = 20;
+const int TileRows = 15;
 
 const int TileSize = WindowWidth / TileCols;
 

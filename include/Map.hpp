@@ -10,16 +10,15 @@
 class Map : public Node
 {
     public:
-        Map(const std::string &fileName);
+        Map(const std::string& fileName);
 
     private:
         virtual void drawSelf(sf::RenderTarget &target, sf::RenderStates states) const;
 
     public:
-        static float calculateDistance2(float aX, float aY, float bX, float bY);
-        static float calculateDistance(float aX, float aY, float bX, float bY);
-        static float calculateAngle(float aX, float aY, float bX, float bY);
-        static bool isContact(float aX, float aY, float aRadius, float bX, float bY, float bRadius);
+		static float calculateDistance(const sf::Vector2f posA, const sf::Vector2f posB);
+		static float calculateAngle(const sf::Vector2f posA, const sf::Vector2f posB);
+		static bool isContact(const sf::Vector2f posA, float aRadius, const sf::Vector2f posB, float bRadius);
 
     public:
         std::pair<std::vector<std::pair<int, int>>::const_iterator, std::vector<std::pair<int, int>>::const_iterator> getPath() const;

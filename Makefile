@@ -25,7 +25,7 @@ ifeq ($(OS),Windows_NT)
 else
 	# Linux specific definitions
 	OUT_FILE = out
-	CLEAN = rm -rf $(OBJ_DIR)*/.o $(TARGET)
+	CLEAN = rm -rf $(OBJ_DIR)/*.o $(TARGET)
 	MKDIR_OBJ = @mkdir -p $(OBJ_DIR)
 	SRC_FILES := $(shell find $(SRC_DIR) -type f -name *.cpp)
 	OBJ_FILES := $(patsubst $(SRC_DIR)/%,$(OBJ_DIR)/%,$(SRC_FILES:.cpp=.o))
