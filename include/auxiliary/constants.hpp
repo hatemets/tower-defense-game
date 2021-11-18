@@ -1,6 +1,8 @@
 #ifndef CONSTANTS_HPP
 #define CONSTANTS_HPP
 
+#include <array>
+
 // General
 const unsigned int FramesPerSecond = 200;
 
@@ -13,6 +15,12 @@ const int TileCols = 20;
 const int TileRows = 15;
 
 const int TileSize = WindowWidth / TileCols;
+
+// Primary theme color for buttons
+const std::array<int, 3> PrimaryColor = {00, 00, 80};
+
+// Secondary theme color for texts and the like
+const std::array<int, 3> SecondaryColor = {180, 180, 180};
 
 // Math
 const float Pi = 3.14159f;

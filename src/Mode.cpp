@@ -20,6 +20,18 @@ void Mode::drawSelf(sf::RenderTarget& target, sf::RenderStates states) const
 	target.draw(nodeTree_, states);
 }
 
+void Mode::initializePointers(std::size_t layerCount)
+{
+	for (std::size_t i = 0; i < layerCount; ++i)
+	{
+		auto layerNode = std::make_unique<Node>();
+
+		layers_.push_back(layerNode.get());
+
+		nodeTree_.addChild(std::move(layerNode));
+	}
+}
+
 ModeState Mode::handleInput(sf::Vector2i mousePos)
 {
 	auto found = std::find_if(buttons_.begin(), buttons_.end(), [&](const Button* button)

@@ -27,6 +27,8 @@ class MainMenu : public Mode
 	private:
 		virtual void loadResources() final;
 		virtual void createScene() final;
+		virtual void addButtons() override;
+		virtual void addBackground() override;
 
 	private:
 		ResourceHolder<sf::Texture, Textures::ID> textures_;

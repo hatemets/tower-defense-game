@@ -26,8 +26,13 @@ class Mode : public Node
 	private:
 		virtual void loadResources() = 0;
 		virtual void createScene() = 0;
+		virtual void addButtons() = 0;
+		virtual void addBackground() = 0;
 
 		virtual void drawSelf(sf::RenderTarget& target, sf::RenderStates states) const;
+
+	protected:
+		void initializePointers(std::size_t layerCount);
 
 	protected:
 		// Reference to the original window
@@ -42,6 +47,7 @@ class Mode : public Node
 		// Window dimensions
 		sf::FloatRect windowBounds_;
 
+		// Fonts
 		ResourceHolder<sf::Font, Fonts::ID> fonts_;
 
 		// A container storing button pointers

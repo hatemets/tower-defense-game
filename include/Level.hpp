@@ -16,7 +16,7 @@ class Level : public Mode
 	public:
 		Level(sf::RenderWindow& window, sf::Time minSpawnInterval, sf::Time maxSpawnInterval);
 		virtual void update(sf::Time deltaTime) final;
-		virtual void drawSelf(sf::RenderTarget& target, sf::RenderStates states) const;
+		virtual void drawSelf(sf::RenderTarget& target, sf::RenderStates states) const override;
 	
 	private:
 		enum class Layers
@@ -32,12 +32,15 @@ class Level : public Mode
 	private:
 		virtual void loadResources() final;
 		virtual void createScene() final;
+		virtual void addButtons() override;
+		virtual void addBackground() override;
 
 		void updateEnemies(sf::Time deltaTime);
 		void updateTurrets(sf::Time deltaTime);
 		void updateProjectiles(sf::Time deltaTime);
 
 		void addProjectile(std::shared_ptr<Projectile> projectile);
+		void loadMap();
 
 	private:
 		ResourceHolder<sf::Texture, Textures::ID> textures_;

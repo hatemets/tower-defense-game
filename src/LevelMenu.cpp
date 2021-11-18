@@ -23,16 +23,14 @@ void LevelMenu::loadResources()
 
 void LevelMenu::createScene()
 {
-	for (std::size_t i = 0; i < static_cast<std::size_t>(Layers::TotalCount); ++i)
-	{
-		auto layerNode = std::make_unique<Node>();
-
-		layers_.push_back(layerNode.get());
-
-		nodeTree_.addChild(std::move(layerNode));
-	}
+	initializePointers(static_cast<std::size_t>(Layers::TotalCount));
+	addBackground();
+	addButtons();
+}
 
 
+void LevelMenu::addBackground()
+{
 	// Set the background for the menu
 	sf::Texture& backgroundTexture = textures_.get(Textures::ID::LevelMenuBackground);
 	backgroundTexture.setRepeated(true);
@@ -42,8 +40,11 @@ void LevelMenu::createScene()
 	auto background = std::make_unique<BackgroundSprite>(BackgroundSprite{backgroundTexture, bounds});
 	background->setPosition(0.f, 0.f);
 	layers_[static_cast<std::size_t>(Layers::Background)]->addChild(std::move(background));
+}
 
 
+void LevelMenu::addButtons()
+{
 	// Configure the buttons
 	// NOTE: Start button is the one that leads the user to the first level (subject to change)
 	auto startButton = std::make_unique<Button>("Level 1", fonts_, Fonts::ID::SourceCodePro, buttonShapes_, Buttons::ID::StartButton);

@@ -1,32 +1,22 @@
 #include "../include/Button.hpp"
 #include "../include/auxiliary/constants.hpp"
+#include <array>
 
 // First value is the button background, the second is the text itself
-std::pair<sf::Color, sf::Color> getColor(Buttons::ID id)
+std::pair<std::array<int, 3>, std::array<int, 3>> getColor(Buttons::ID id)
 {
 	using namespace Resources;
 
 	switch (id)
 	{
+		// TODO: Add more colors
 		case Buttons::ID::StartButton:
-			{
-				return std::make_pair(sf::Color::Green, sf::Color::Black);
-			}
 		case Buttons::ID::QuitButton:
-			{
-				return std::make_pair(sf::Color::Red, sf::Color::White);
-			}
 		case Buttons::ID::PauseButton:
-			{
-				return std::make_pair(sf::Color::Yellow, sf::Color::Black);
-			}
 		case Buttons::ID::HomeButton:
-			{
-				return std::make_pair(sf::Color::Yellow, sf::Color::Black);
-			}
 		case Buttons::ID::LevelMenuButton:
 			{
-				return std::make_pair(sf::Color::Magenta, sf::Color::White);
+				return std::make_pair(PrimaryColor, SecondaryColor);
 			}
 		default: throw std::runtime_error("Unknown button id");
 	}
@@ -41,22 +31,25 @@ Button::Button(const std::string& text, ResourceHolder<sf::Font, Fonts::ID>& fon
 	text_.setString(text);
 
 
-	// Set the scale of the text (default is 1)
+	// Set the scale of the text
 	// This effectively sets the size of the button as well
 	text_.setScale(scalar, scalar);
+	text_.setStyle(sf::Text::Bold);
 
 	auto textBounds = text_.getLocalBounds();
 
-	text_.setOrigin(textBounds.width / 2.f, textBounds.height / 2.f);
-
+	text_.setOrigin((textBounds.width + textBounds.left) / 2.f, (textBounds.height + textBounds.left) / 2.f);
 
 	button_.setSize(sf::Vector2f(textBounds.width + textBounds.left + ButtonPaddingX, textBounds.height + textBounds.top + ButtonPaddingY));
 	button_.setOrigin((textBounds.width - textBounds.left + ButtonPaddingX) / 2.f, (textBounds.height - textBounds.top + ButtonPaddingY) / 2.f);
 
 	auto colorPair = getColor(type_);
 
-	button_.setFillColor(colorPair.first);
-	text_.setFillColor(colorPair.second);
+	auto primaryVals = colorPair.first;
+	auto secondaryVals = colorPair.second;
+
+	button_.setFillColor(sf::Color(primaryVals[0], primaryVals[1], primaryVals[2]));
+	text_.setFillColor(sf::Color(secondaryVals[0], secondaryVals[1], secondaryVals[2]));
 }
 
 
