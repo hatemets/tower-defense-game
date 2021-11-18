@@ -1,7 +1,7 @@
 CC = g++
 CFLAGS = -g -Wall -Wno-switch --std=c++17
 
-TARGET := sfml
+TARGET := out
 OBJ_DIR := ./obj
 SRC_DIR := ./src
 HEADER_DIR := ./include
@@ -42,4 +42,4 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp $(HPP_FILES)
 .PHONY: clean
 
 clean:
-	$(CLEAN) $(TARGET)
+	$(CLEAN)
