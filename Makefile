@@ -42,4 +42,4 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp $(HPP_FILES)
 .PHONY: clean
 
 clean:
-	$(CLEAN) $(OBJ_DIR)/*.o $(TARGET)
+	$(CLEAN) $(TARGET)
