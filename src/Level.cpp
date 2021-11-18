@@ -72,6 +72,11 @@ void Level::createScene()
 	/* turrets_->setPosition(0.f, 0.f); */
 	/* layers_[static_cast<std::size_t>(Layers::Entities)]->addChild(std::move(turrets)); */
 
+	auto projectiles = std::make_unique<Projectiles>(Projectiles{enemies_});
+	projectiles_ = projectiles.get();
+	projectiles_->setPosition(0.f, 0.f);
+	layers_[static_cast<std::size_t>(Layers::Entities)]->addChild(std::move(projectiles));
+
 	// simulate buying turrets
 	const std::vector<std::pair<int, int>>& turretBaseTiles = map_->getTurretBaseTiles();
 
@@ -141,6 +146,10 @@ void Level::updateEnemies(sf::Time deltaTime)
 		auto path = map_->getPath();
 		auto goblin = std::make_shared<Goblin>(Goblin{path.first, path.second});
 		enemies_.push_back(goblin);
+	}
+	if (projectiles_)
+	{
+		projectiles_->update(deltaTime);
 	}
 }
 

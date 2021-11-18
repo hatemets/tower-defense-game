@@ -16,7 +16,7 @@ Turret::Turret(int row, int col, int price, float rotationSpeed, float rateOfFir
     currentAngle_(0) 
 {
     picture_.setPosition(getTileX() * TileSize, getTileY() * TileSize);
-    picture_.setSize(sf::Vector2f(TileSize / 1.5f, TileSize / 5.f));
+    picture_.setSize(sf::Vector2f(TileSize / 2.f, TileSize / 5.f));
     picture_.setOrigin(0.f, TileSize / 10.f);
     picture_.setFillColor(sf::Color::Black);
 
@@ -44,8 +44,15 @@ void Turret::update(sf::Time deltaTime, const EnemyList& enemies)
 	// shoot
 	if (nextFire_ <= deltaTime)
 	{
-		if (shoot())
+		std::vector<std::shared_ptr<Projectile>> shotProjectiles = shoot();
+
+		if (shotProjectiles.size() > 0)
 		{
+			for (auto projectile : shotProjectiles)
+			{
+				// add to projectiles list!
+			}
+
 			nextFire_ = getFireInterval();
 		}
 		else
@@ -142,9 +149,10 @@ float SimpleTurret::rotate(sf::Time deltaTime, const EnemyList& enemies)
 }
 
 
-bool SimpleTurret::shoot()
+std::vector<std::shared_ptr<Projectile>> SimpleTurret::shoot()
 {
-    return true; // shoot always when possible
+    std::vector<std::shared_ptr<Projectile>> projectiles;
+    return projectiles; 
 }
 
 
@@ -163,7 +171,14 @@ float GunTurret::rotate(sf::Time deltaTime, const EnemyList& enemies)
 }
 
 
-bool GunTurret::shoot()
+std::vector<std::shared_ptr<Projectile>> GunTurret::shoot()
 {
-    return true; // shoot always when possible
+    // change this to shoot only when aim is ready and enemy is within shooting range!
+    std::vector<std::shared_ptr<Projectile>> projectiles;
+    float projectileX = getTileX() + cosf(currentAngle_ * DegreesToRadians);
+    float projectileY = getTileY() + sinf(currentAngle_ * DegreesToRadians);
+    projectiles.push_back(std::make_shared<Projectile>(Bullet{projectileX, projectileY, currentAngle_}));
+    return projectiles; 
 }
+
+

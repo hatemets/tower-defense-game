@@ -4,11 +4,11 @@
 #include <SFML/Graphics.hpp>
 #include "Node.hpp"
 #include "Map.hpp"
-// #include "ResourceHolder.hpp"
 #include "auxiliary/ResourceIdentifiers.hpp"
 #include "Mode.hpp"
 #include "Enemy.hpp"
 #include "Turret.hpp"
+#include "Projectile.hpp"
 
 // Controls the turrets, enemies, map
 class Level : public Mode
@@ -49,6 +49,11 @@ class Level : public Mode
 
 		// Turrets
 		std::list<std::shared_ptr<Turret>> turrets_;
+
+		// Projectiles
+		std::list<std::shared_ptr<Bullet>> projectiles_;
+
+		/* Projectiles* projectiles_; ///< Hold by unique pointer elsewhere. */
 };
 
 #endif

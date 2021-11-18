@@ -13,8 +13,8 @@ class Enemy : public Node
 	public:
 		Enemy(std::vector<std::pair<int, int>>::const_iterator pathBegin, std::vector<std::pair<int, int>>::const_iterator pathEnd, float speed, int hitPoints);
 
-		virtual void update(sf::Time deltaTime);
-		virtual void drawSelf(sf::RenderTarget& target, sf::RenderStates states) const;
+		virtual void update(sf::Time deltaTime) override;
+		virtual void drawSelf(sf::RenderTarget& target, sf::RenderStates states) const override;
 
 	protected:
 		void setDirection();

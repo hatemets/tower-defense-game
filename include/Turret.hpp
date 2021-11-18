@@ -3,21 +3,22 @@
 
 #include <SFML/Graphics.hpp>
 #include "Enemy.hpp"
+#include "Projectile.hpp"
 
 using EnemyList = std::list<std::shared_ptr<Enemy>>;
 
 // The base class of turrets
-class Turret
+class Turret : public Node
 {
 	public:
 		Turret(int row, int col, int price, float rotationSpeed, float rateOfFire, float radarRange, float projectileRange);
 
 		virtual void update(sf::Time deltaTime, const EnemyList& enemies);
-		virtual void drawSelf(sf::RenderTarget& target, sf::RenderStates states) const;       
+		virtual void drawSelf(sf::RenderTarget& target, sf::RenderStates states) const override;       
 
 	protected:
 		virtual float rotate(sf::Time deltaTime, const EnemyList& enemies) = 0;  // note: change this: needs the enemies as a parameter
-		virtual bool shoot() = 0;  // note: change this: the return value should be a projectile
+        virtual std::vector<std::shared_ptr<Projectile>> shoot() = 0;
 
 		std::shared_ptr<Enemy> getNearestEnemyInRadar(const EnemyList& enemies);
 		float rotateToNearestEnemyInRadar(sf::Time deltaTime, const EnemyList& enemies);
@@ -59,7 +60,7 @@ class SimpleTurret :
 
 	private:
 		virtual float rotate(sf::Time deltaTime, const EnemyList& enemies) override;
-		virtual bool shoot() override;
+        virtual std::vector<std::shared_ptr<Projectile>> shoot() override;
 };
 
 
@@ -70,8 +71,8 @@ class GunTurret :
 		GunTurret(int row, int col);
 
 	private:
-		virtual float rotate(sf::Time deltaTime, const EnemyList& enemies);
-		virtual bool shoot();
+		virtual float rotate(sf::Time deltaTime, const EnemyList& enemies) override;
+        virtual std::vector<std::shared_ptr<Projectile>> shoot() override;
 };
 
 
@@ -82,8 +83,8 @@ class DoubleGunTurret :
 		DoubleGunTurret(int row, int col);
 
 	private:
-		virtual float rotate(sf::Time deltaTime, const EnemyList& enemies);
-		virtual bool shoot();
+		virtual float rotate(sf::Time deltaTime, const EnemyList& enemies) override;
+        virtual std::vector<std::shared_ptr<Projectile>> shoot() override;
 };
 
 
@@ -94,8 +95,8 @@ class BombTurret :
 		BombTurret(int row, int col);
 
 	private:
-		virtual float rotate(sf::Time deltaTime, const EnemyList& enemies);
-		virtual bool shoot();   
+		virtual float rotate(sf::Time deltaTime, const EnemyList& enemies) override;
+        virtual std::vector<std::shared_ptr<Projectile>> shoot() override;
 };
 
 
@@ -106,8 +107,8 @@ class MissileTurret :
 		MissileTurret(int row, int col);
 
 	private:
-		virtual float rotate(sf::Time deltaTime, const EnemyList& enemies);
-		virtual bool shoot();  
+		virtual float rotate(sf::Time deltaTime, const EnemyList& enemies) override;
+        virtual std::vector<std::shared_ptr<Projectile>> shoot() override;
 };
 
 
