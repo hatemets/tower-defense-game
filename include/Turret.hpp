@@ -3,6 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 #include "Enemy.hpp"
+#include "Projectile.hpp"
 
 // The base class of turrets
 class Turret
@@ -15,7 +16,7 @@ class Turret
 
     protected:
         virtual float rotate(sf::Time deltaTime, Enemies* enemies) = 0;  // note: change this: needs the enemies as a parameter
-        virtual bool shoot() = 0;  // note: change this: the return value should be a projectile
+        virtual std::vector<std::shared_ptr<Projectile>> shoot() = 0;  // note: change this: the return value should be a projectile
 
         std::shared_ptr<Enemy> getNearestEnemyInRadar(Enemies* enemies);
         float rotateToNearestEnemyInRadar(sf::Time deltaTime, Enemies* enemies);
@@ -57,7 +58,7 @@ class SimpleTurret :
     
     protected:
         virtual float rotate(sf::Time deltaTime, Enemies* enemies);
-        virtual bool shoot();
+        virtual std::vector<std::shared_ptr<Projectile>> shoot();
 };
 
 
@@ -69,7 +70,7 @@ class GunTurret :
     
     protected:
         virtual float rotate(sf::Time deltaTime, Enemies* enemies);
-        virtual bool shoot();
+        virtual std::vector<std::shared_ptr<Projectile>> shoot();
 };
 
 
@@ -81,7 +82,7 @@ class DoubleGunTurret :
     
     protected:
         virtual float rotate(sf::Time deltaTime, Enemies* enemies);
-        virtual bool shoot();
+        virtual std::vector<std::shared_ptr<Projectile>> shoot();
 };
 
 
@@ -93,7 +94,7 @@ class BombTurret :
     
     protected:
         virtual float rotate(sf::Time deltaTime, Enemies* enemies);
-        virtual bool shoot();   
+        virtual std::vector<std::shared_ptr<Projectile>> shoot();   
 };
 
 
@@ -105,7 +106,7 @@ class MissileTurret :
     
     protected:
         virtual float rotate(sf::Time deltaTime, Enemies* enemies);
-        virtual bool shoot();  
+        virtual std::vector<std::shared_ptr<Projectile>> shoot();  
 };
 
 
@@ -114,7 +115,7 @@ class Turrets : public Node
 public:
     Turrets(Enemies* enemies);
     virtual void update(sf::Time deltaTime);
-    
+
     void add(std::shared_ptr<Turret> turret);
     const std::list<std::shared_ptr<Turret>> &getList() const;
 

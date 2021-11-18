@@ -9,6 +9,7 @@
 #include "Mode.hpp"
 #include "Enemy.hpp"
 #include "Turret.hpp"
+#include "Projectile.hpp"
 
 // Controls the turrets, enemies, map
 class Level : public Mode
@@ -42,6 +43,7 @@ class Level : public Mode
 		Map* map_; ///< Hold by unique pointer elsewhere.
 		Enemies* enemies_; ///< Hold by unique pointer elsewhere.
 		Turrets* turrets_; ///< Hold by unique pointer elsewhere.
+		Projectiles* projectiles_; ///< Hold by unique pointer elsewhere.
 };
 
 #endif

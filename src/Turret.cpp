@@ -40,7 +40,11 @@ void Turret::update(sf::Time deltaTime, Enemies* enemies)
 
     // shoot
     if (nextFire_ <= deltaTime) {
-        if (shoot()) {
+        std::vector<std::shared_ptr<Projectile>> shotProjectiles = shoot();
+        if (shotProjectiles.size() > 0) {
+            for (auto projectile : shotProjectiles) {
+                // add to projectiles list!
+            }
             nextFire_ = getFireInterval();
         } else {
             nextFire_ = sf::seconds(0);
@@ -184,9 +188,10 @@ float SimpleTurret::rotate(sf::Time deltaTime, Enemies* enemies)
 }
 
 
-bool SimpleTurret::shoot()
+std::vector<std::shared_ptr<Projectile>> SimpleTurret::shoot()
 {
-    return true; // shoot always when possible
+    std::vector<std::shared_ptr<Projectile>> projectiles;
+    return projectiles; 
 }
 
 
@@ -204,9 +209,14 @@ float GunTurret::rotate(sf::Time deltaTime, Enemies* enemies)
 }
 
 
-bool GunTurret::shoot()
+std::vector<std::shared_ptr<Projectile>> GunTurret::shoot()
 {
-    return true; // shoot always when possible
+    // change this to shoot only when aim is ready and enemy is within shooting range!
+    std::vector<std::shared_ptr<Projectile>> projectiles;
+    float projectileX = getTileX() + cosf(currentAngle_ * DegreesToRadians);
+    float projectileY = getTileY() + sinf(currentAngle_ * DegreesToRadians);
+    projectiles.push_back(std::make_shared<Projectile>(Bullet{projectileX, projectileY, currentAngle_}));
+    return projectiles; 
 }
 
 

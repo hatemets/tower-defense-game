@@ -61,6 +61,11 @@ void Level::createScene()
 	turrets_->setPosition(0.f, 0.f);
 	layers_[static_cast<std::size_t>(Layers::Entities)]->addChild(std::move(turrets));
 
+	auto projectiles = std::make_unique<Projectiles>(Projectiles{enemies_});
+	projectiles_ = projectiles.get();
+	projectiles_->setPosition(0.f, 0.f);
+	layers_[static_cast<std::size_t>(Layers::Entities)]->addChild(std::move(projectiles));
+
 	// simulate buying turrets
 	const std::vector<std::pair<int, int>> &turretBaseTiles = map_->getTurretBaseTiles();
 	size_t turretCreateCount = std::min(3u, turretBaseTiles.size());
@@ -91,5 +96,9 @@ void Level::update(sf::Time deltaTime)
 	if (turrets_)
 	{
 		turrets_->update(deltaTime);
+	}
+	if (projectiles_)
+	{
+		projectiles_->update(deltaTime);
 	}
 }
