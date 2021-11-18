@@ -35,6 +35,9 @@ class Level : public Mode
 
 		void updateEnemies(sf::Time deltaTime);
 		void updateTurrets(sf::Time deltaTime);
+		void updateProjectiles(sf::Time deltaTime);
+
+		void addProjectile(std::shared_ptr<Projectile> projectile);
 
 	private:
 		ResourceHolder<sf::Texture, Textures::ID> textures_;
@@ -52,8 +55,7 @@ class Level : public Mode
 
 		// Projectiles
 		std::list<std::shared_ptr<Bullet>> projectiles_;
-
-		/* Projectiles* projectiles_; ///< Hold by unique pointer elsewhere. */
+		sf::VertexArray bulletVertices_; // combine picture of all bullets
 };
 
 #endif

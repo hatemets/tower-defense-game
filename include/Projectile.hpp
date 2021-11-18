@@ -7,13 +7,13 @@
 using EnemyList = std::list<std::shared_ptr<Enemy>>;
 
 // The base class of projectiles
-class Projectile
+class Projectile : public Node
 {
 	public:
 		Projectile(float tileX, float tileY, float direction, float speed, float flightRange, float explosionRange, float maxDamage);
 
 		virtual void update(sf::Time deltaTime, const EnemyList& enemies);
-		virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
+		virtual void drawSelf(sf::RenderTarget& target, sf::RenderStates states) const override;
 
 	protected:
 		virtual std::shared_ptr<Enemy> checkHit(const EnemyList& enemies);
@@ -63,28 +63,6 @@ class Missile :
 		virtual std::shared_ptr<Enemy> checkHit(const EnemyList& enemies);
 		virtual void explode(std::shared_ptr<Enemy> enemy, const EnemyList& enemies);
 		virtual void flight(sf::Time deltaTime); 
-};
-
-
-class Projectiles : public Node
-{
-	public:
-		Projectiles(const EnemyList& enemies);
-		virtual void update(sf::Time deltaTime);
-
-		void add(std::shared_ptr<Projectile> projectile);
-		// const std::list<std::shared_ptr<Projectile>> &getList() const;
-
-	private:
-		virtual void drawSelf(sf::RenderTarget& target, sf::RenderStates states) const;
-
-	private:
-		std::list<std::shared_ptr<Bullet>> bullets_;
-		std::list<std::shared_ptr<Projectile>> otherProjectiles_;
-
-		const EnemyList& enemies_;
-
-		sf::VertexArray bulletVertices_; ///< combine picture of all bullets
 };
 
 

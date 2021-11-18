@@ -16,7 +16,8 @@ Level::Level(sf::RenderWindow& window, sf::Time minSpawnInterval, sf::Time maxSp
 	maxSpawnInterval_(maxSpawnInterval),
 	// TODO: Remove hardcoded values
 	nextSpawn_(sf::seconds(1)),
-	turrets_()
+	turrets_(),
+	bulletVertices_(sf::Points, 0)
 {
 	loadResources();
 	createScene();
@@ -38,9 +39,7 @@ void Level::createScene()
 	for (std::size_t i = 0; i < static_cast<std::size_t>(Layers::TotalCount); ++i)
 	{
 		auto layerNode = std::make_unique<Node>();
-
 		layers_.push_back(layerNode.get());
-
 		nodeTree_.addChild(std::move(layerNode));
 	}
 
@@ -67,15 +66,7 @@ void Level::createScene()
 	/* enemies_->setPosition(0.f, 0.f); */
 	/* layers_[static_cast<std::size_t>(Layers::Entities)]->addChild(std::move(enemies)); */
 
-	/* auto turrets = std::make_unique<Turrets>(Turrets{enemies_}); */
-	/* turrets_ = turrets.get(); */
-	/* turrets_->setPosition(0.f, 0.f); */
-	/* layers_[static_cast<std::size_t>(Layers::Entities)]->addChild(std::move(turrets)); */
-
-	auto projectiles = std::make_unique<Projectiles>(Projectiles{enemies_});
-	projectiles_ = projectiles.get();
-	projectiles_->setPosition(0.f, 0.f);
-	layers_[static_cast<std::size_t>(Layers::Entities)]->addChild(std::move(projectiles));
+	// Projectiles
 
 	// simulate buying turrets
 	const std::vector<std::pair<int, int>>& turretBaseTiles = map_->getTurretBaseTiles();
@@ -101,6 +92,7 @@ void Level::createScene()
 		}
 	}
 
+	// Home button
 	auto homeButton = std::make_unique<Button>("X", fonts_, Fonts::ID::SourceCodePro, buttonShapes_, Buttons::ID::HomeButton);
 	auto homeButtonSize = homeButton->getButton().getSize();
 	homeButton->setPosition(WindowWidth - homeButtonSize.x / 2.f, 0 + homeButtonSize.y / 2.f);
@@ -112,6 +104,7 @@ void Level::update(sf::Time deltaTime)
 {
 	updateEnemies(deltaTime);
 	updateTurrets(deltaTime);
+	updateProjectiles(deltaTime);
 }
 
 
@@ -130,6 +123,7 @@ void Level::updateEnemies(sf::Time deltaTime)
 	}
 
 	nextSpawn_ -= deltaTime;
+
 	if (nextSpawn_.asSeconds() <= 0)
 	{
 		sf::Time timeDiff = maxSpawnInterval_ - minSpawnInterval_;
@@ -147,17 +141,53 @@ void Level::updateEnemies(sf::Time deltaTime)
 		auto goblin = std::make_shared<Goblin>(Goblin{path.first, path.second});
 		enemies_.push_back(goblin);
 	}
-	if (projectiles_)
-	{
-		projectiles_->update(deltaTime);
-	}
 }
+
 
 void Level::updateTurrets(sf::Time deltaTime)
 {
 	for (auto& turret : turrets_)
 	{
 		turret->update(deltaTime, enemies_);
+	}
+}
+
+
+void Level::updateProjectiles(sf::Time deltaTime)
+{
+
+	// remove outdated bullets and other projectiles
+	projectiles_.erase(std::remove_if(projectiles_.begin(), projectiles_.end(),
+				[](const std::shared_ptr<Projectile> &projectile)
+				{
+				return !projectile->isAlive();
+				}), projectiles_.end());
+
+	for (auto& projectile : projectiles_)
+	{
+		projectile->update(deltaTime, enemies_);
+	}
+
+	bulletVertices_.resize(projectiles_.size());
+
+	int i = 0;
+
+	for (auto& bullet : projectiles_)
+	{
+		bulletVertices_[i].position = sf::Vector2f(bullet->getTileX() * TileSize, bullet->getTileY() * TileSize);
+		bulletVertices_[i].color = sf::Color::White;
+		i++;
+	}
+}
+
+void Level::addProjectile(std::shared_ptr<Projectile> projectile)
+{
+	std::shared_ptr<Bullet> bullet = std::dynamic_pointer_cast<Bullet>(projectile);
+
+	// TODO: Remove the if statement and the parameter
+	if (bullet)
+	{
+		projectiles_.push_back(bullet);
 	}
 }
 
@@ -175,5 +205,16 @@ void Level::drawSelf(sf::RenderTarget& target, sf::RenderStates states) const
 	{
 		turret->drawSelf(target, states);
 	}
+
+	if (bulletVertices_.getVertexCount() > 0)
+	{
+		target.draw(bulletVertices_, states);
+	}
+
+	// TODO: Might need to change projectile code
+	/* for (auto& projectile : projectiles_) */
+	/* { */
+	/* 	projectile->drawSelf(target, states); */
+	/* } */
 }
 

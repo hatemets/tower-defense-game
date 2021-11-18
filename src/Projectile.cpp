@@ -44,7 +44,7 @@ void Projectile::update(sf::Time deltaTime, const EnemyList& enemies)
 	}
 }
 
-void Projectile::draw(sf::RenderTarget &target, sf::RenderStates states) const
+void Projectile::drawSelf(sf::RenderTarget &target, sf::RenderStates states) const
 {
 }
 
@@ -55,9 +55,9 @@ bool Projectile::isAlive() const
 
 std::shared_ptr<Enemy> Projectile::checkHit(const EnemyList& enemies)
 {
-	for (std::shared_ptr<Enemy> enemy : enemies->getList())
+	for (std::shared_ptr<Enemy> enemy : enemies)
 	{
-		if (Map::isContact(tileX_, tileY_, 0.f, enemy->getTileX(), enemy->getTileY(), enemy->getRadius()))
+		if (Map::isContact(sf::Vector2f(tileX_, tileY_), 0.f, sf::Vector2f(enemy->getTileX(), enemy->getTileY()), enemy->getRadius()))
 		{
 			return enemy;
 		}
@@ -109,72 +109,4 @@ Bullet::Bullet(float tileX, float tileY, float direction) : Projectile(tileX, ti
 {
 }
 
-// Projectiles
 
-Projectiles::Projectiles(const EnemyList& enemies)
-	: enemies_(enemies),
-	bulletVertices_(sf::Points, 0)
-{
-}
-
-void Projectiles::update(sf::Time deltaTime)
-{
-	// remove outdated bullets and other projectiles
-	bullets_.erase(std::remove_if(bullets_.begin(), bullets_.end(),
-				[](const std::shared_ptr<Bullet> &bullet)
-				{
-				return !bullet->isAlive();
-				}),
-			bullets_.end());
-	otherProjectiles_.erase(std::remove_if(otherProjectiles_.begin(), otherProjectiles_.end(),
-				[](const std::shared_ptr<Projectile> &projectile)
-				{
-				return !projectile->isAlive();
-				}),
-			otherProjectiles_.end());
-
-	for (auto bullet : bullets_)
-	{
-		bullet->update(deltaTime, enemies_);
-	}
-	for (auto projectile : otherProjectiles_)
-	{
-		projectile->update(deltaTime, enemies_);
-	}
-
-	bulletVertices_.resize(bullets_.size());
-	int i = 0;
-	for (auto bullet : bullets_)
-	{
-		bulletVertices_[i].position = sf::Vector2f(bullet->getTileX() * TileSize, bullet->getTileY() * TileSize);
-		bulletVertices_[i].color = sf::Color::White;
-		i++;
-	}
-}
-
-void Projectiles::add(std::shared_ptr<Projectile> projectile)
-{
-	std::shared_ptr<Bullet> bullet = std::dynamic_pointer_cast<Bullet>(projectile);
-
-	if (bullet)
-	{
-		bullets_.push_back(bullet);
-	}
-	else
-	{
-		otherProjectiles_.push_back(projectile);
-	}
-}
-
-void Projectiles::drawSelf(sf::RenderTarget &target, sf::RenderStates states) const
-{
-	if (bulletVertices_.getVertexCount() > 0)
-	{
-		target.draw(bulletVertices_, states);
-	}
-
-	for (auto projectile : otherProjectiles_)
-	{
-		projectile->draw(target, states);
-	}
-}

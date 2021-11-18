@@ -4,14 +4,15 @@
 #include "../include/auxiliary/constants.hpp"
 #include <math.h>
 
-Enemy::Enemy(std::vector<std::pair<int, int>>::const_iterator pathBegin, std::vector<std::pair<int, int>>::const_iterator pathEnd, float speed, int hitPoints)
+Enemy::Enemy(std::vector<std::pair<int, int>>::const_iterator pathBegin, std::vector<std::pair<int, int>>::const_iterator pathEnd, float speed, int hitPoints, float radius)
     : pathIterator_(pathBegin),
       pathEnd_(pathEnd),
       tileX_(pathBegin->second + 0.5f),
       tileY_(pathBegin->first + 0.5f),
       direction_(0),
       speed_(speed),
-      hitPoints_(hitPoints)
+      hitPoints_(hitPoints),
+	  radius_(radius)
 {
     picture_.setSize(sf::Vector2f(TileSize / 2.f, TileSize / 2.f));
     picture_.setOrigin(TileSize / 4.f, TileSize / 4.f);
