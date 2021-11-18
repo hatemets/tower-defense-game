@@ -29,10 +29,10 @@ class Mode : public Node
 		virtual void addButtons() = 0;
 		virtual void addBackground() = 0;
 
-		virtual void drawSelf(sf::RenderTarget& target, sf::RenderStates states) const;
 
 	protected:
 		void initializePointers(std::size_t layerCount);
+		virtual void drawSelf(sf::RenderTarget& target, sf::RenderStates states) const;
 
 	protected:
 		// Reference to the original window

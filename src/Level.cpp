@@ -199,7 +199,7 @@ void Level::addProjectile(std::shared_ptr<Projectile> projectile)
 
 void Level::drawSelf(sf::RenderTarget& target, sf::RenderStates states) const
 {
-	target.draw(nodeTree_, states);
+	Mode::drawSelf(target, states);
 
 	for (auto& enemy : enemies_)
 	{
