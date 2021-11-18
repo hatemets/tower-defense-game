@@ -27,6 +27,8 @@ void Level::loadResources()
 {
 	textures_.load(Textures::ID::GrassArea, "./include/images/Grass.png");
 	textures_.load(Textures::ID::DirtPath, "./include/images/Ground.png");
+	textures_.load(Textures::ID::OrangeBase, "./include/images/TurretBaseOrange.png");
+
 	buttonShapes_.load(Buttons::ID::HomeButton);
 }
 

@@ -257,47 +257,52 @@ void Map::loadTextures()
 
 		auto road = std::make_shared<sf::Sprite>(textures_.get(Textures::ID::DirtPath));
 		auto imageBounds = road->getGlobalBounds();
-		
 		road->setScale(TileSize / imageBounds.width, TileSize / imageBounds.height);
 		road->setPosition(col * TileSize, row * TileSize);
 
-		/* road.setFillColor(sf::Color::Black); */
 		mapPictures_.push_back(road);
 	}
 
 	// the graphical presentation of the spawns
-	/* for (auto spawnTile : spawnTiles_) */
-	/* { */
-	/* 	int row = spawnTile.first; */
-	/* 	int col = spawnTile.second; */
-	/* 	std::shared_ptr<sf::RectangleShape> spawn(new sf::RectangleShape); */
-	/* 	spawn->setSize(sf::Vector2f(TileSize, TileSize)); */
-	/* 	spawn->setPosition(col * TileSize, row * TileSize); */
-	/* 	spawn->setFillColor(sf::Color::Yellow); */
-	/* 	mapPictures_.push_back(spawn); */
-	/* } */
+	for (auto spawnTile : spawnTiles_)
+	{
+		int row = spawnTile.first;
+		int col = spawnTile.second;
 
-	/* // the graphical presentation of the bases */
-	/* for (auto baseTile : baseTiles_) */
-	/* { */
-	/* 	int row = baseTile.first; */
-	/* 	int col = baseTile.second; */
-	/* 	std::shared_ptr<sf::RectangleShape> base(new sf::RectangleShape); */
-	/* 	base->setSize(sf::Vector2f(TileSize, TileSize)); */
-	/* 	base->setPosition(col * TileSize, row * TileSize); */
-	/* 	base->setFillColor(sf::Color::Red); */
-	/* 	mapPictures_.push_back(base); */
-	/* } */
+		auto road = std::make_shared<sf::Sprite>(textures_.get(Textures::ID::DirtPath));
+		auto imageBounds = road->getGlobalBounds();
+		road->setScale(TileSize / imageBounds.width, TileSize / imageBounds.height);
+		road->setPosition(col * TileSize, row * TileSize);
 
-	/* // the graphical presentation of the available turret places */
-	/* for (auto turretBaseTile : turretBaseTiles_) */
-	/* { */
-	/* 	int row = turretBaseTile.first; */
-	/* 	int col = turretBaseTile.second; */
-	/* 	std::shared_ptr<sf::CircleShape> turretBase(new sf::CircleShape); */
-	/* 	turretBase->setRadius(TileSize / 2); */
-	/* 	turretBase->setPosition(col * TileSize, row * TileSize); */
-	/* 	turretBase->setFillColor(sf::Color::Blue); */
-	/* 	mapPictures_.push_back(turretBase); */
-	/* } */
+		mapPictures_.push_back(road);
+	}
+
+	// the graphical presentation of the bases
+	for (auto baseTile : baseTiles_)
+	{
+		int row = baseTile.first;
+		int col = baseTile.second;
+
+		auto road = std::make_shared<sf::Sprite>(textures_.get(Textures::ID::DirtPath));
+		auto imageBounds = road->getGlobalBounds();
+		road->setScale(TileSize / imageBounds.width, TileSize / imageBounds.height);
+		road->setPosition(col * TileSize, row * TileSize);
+
+		mapPictures_.push_back(road);
+	}
+
+	// the graphical presentation of the available turret places
+	for (auto turretBaseTile : turretBaseTiles_)
+	{
+		int row = turretBaseTile.first;
+		int col = turretBaseTile.second;
+
+		auto base = std::make_shared<sf::Sprite>(textures_.get(Textures::ID::OrangeBase));
+		auto imageBounds = base->getGlobalBounds();
+
+		base->setScale(TileSize / imageBounds.width, TileSize / imageBounds.height);
+		base->setPosition(col * TileSize, row * TileSize);
+
+		mapPictures_.push_back(base);
+	}
 }

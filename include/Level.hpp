@@ -40,8 +40,6 @@ class Level : public Mode
 		ResourceHolder<sf::Texture, Textures::ID> textures_;
 
 		Map* map_; ///< Hold by unique pointer elsewhere.
-		/* Enemies* enemies_; ///< Hold by unique pointer elsewhere. */
-		/* Turrets* turrets_; ///< Hold by unique pointer elsewhere. */
 
 		// Enemies
 		std::list<std::shared_ptr<Enemy>> enemies_;
