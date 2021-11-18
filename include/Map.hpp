@@ -32,11 +32,11 @@ class Map : public Node
     private:
         void loadFile(const std::string &fileName);
         void loadTextures();
-        bool isSpawn(int row, int col) const;
-        bool isRoad(int row, int col) const;
-        bool isBase(int row, int col) const;
-        bool isTurretBase(int row, int col) const;
         void findPaths();
+		bool isSpawn(int row, int col) const { return isMember(row, col, spawnTiles_); }
+		bool isRoad(int row, int col) const { return isMember(row, col, roadTiles_); }
+		bool isBase(int row, int col) const { return isMember(row, col, baseTiles_); }
+		bool isTurretBase(int row, int col) const { return isMember(row, col, turretBaseTiles_); }
 
     private:
 		ResourceHolder<sf::Texture, Textures::ID>& textures_;

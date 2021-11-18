@@ -133,30 +133,6 @@ bool Map::isMember(int row, int col, const std::vector<std::pair<int, int>> &con
 }
 
 
-bool Map::isSpawn(int row, int col) const
-{
-	return isMember(row, col, spawnTiles_);
-}
-
-
-bool Map::isRoad(int row, int col) const
-{
-	return isMember(row, col, roadTiles_);
-}
-
-
-bool Map::isBase(int row, int col) const
-{
-	return isMember(row, col, baseTiles_);
-}
-
-
-bool Map::isTurretBase(int row, int col) const
-{
-	return isMember(row, col, turretBaseTiles_);
-}
-
-
 void Map::findPaths()
 {
 	std::vector<std::pair<int, int>> path;
