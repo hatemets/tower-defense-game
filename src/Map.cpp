@@ -223,62 +223,28 @@ void Map::findPaths()
 }
 
 
-void Map::loadTextures()
+void Map::loadTileset(const std::vector<std::pair<int, int>>& tiles_, Textures::ID style)
 {
-	// the graphical presentation of the road
-	for (auto roadTile : roadTiles_)
+	for (auto roadTile : tiles_)
 	{
 		int row = roadTile.first;
 		int col = roadTile.second;
 
-		auto road = std::make_shared<sf::Sprite>(textures_.get(Textures::ID::DirtPath));
+		auto road = std::make_shared<sf::Sprite>(textures_.get(style));
 		auto imageBounds = road->getGlobalBounds();
 		road->setScale(TileSize / imageBounds.width, TileSize / imageBounds.height);
 		road->setPosition(col * TileSize, row * TileSize);
 
 		mapPictures_.push_back(road);
 	}
+}
 
-	// the graphical presentation of the spawns
-	for (auto spawnTile : spawnTiles_)
-	{
-		int row = spawnTile.first;
-		int col = spawnTile.second;
 
-		auto road = std::make_shared<sf::Sprite>(textures_.get(Textures::ID::DirtPath));
-		auto imageBounds = road->getGlobalBounds();
-		road->setScale(TileSize / imageBounds.width, TileSize / imageBounds.height);
-		road->setPosition(col * TileSize, row * TileSize);
-
-		mapPictures_.push_back(road);
-	}
-
-	// the graphical presentation of the bases
-	for (auto baseTile : baseTiles_)
-	{
-		int row = baseTile.first;
-		int col = baseTile.second;
-
-		auto road = std::make_shared<sf::Sprite>(textures_.get(Textures::ID::DirtPath));
-		auto imageBounds = road->getGlobalBounds();
-		road->setScale(TileSize / imageBounds.width, TileSize / imageBounds.height);
-		road->setPosition(col * TileSize, row * TileSize);
-
-		mapPictures_.push_back(road);
-	}
-
-	// the graphical presentation of the available turret places
-	for (auto turretBaseTile : turretBaseTiles_)
-	{
-		int row = turretBaseTile.first;
-		int col = turretBaseTile.second;
-
-		auto base = std::make_shared<sf::Sprite>(textures_.get(Textures::ID::OrangeBase));
-		auto imageBounds = base->getGlobalBounds();
-
-		base->setScale(TileSize / imageBounds.width, TileSize / imageBounds.height);
-		base->setPosition(col * TileSize, row * TileSize);
-
-		mapPictures_.push_back(base);
-	}
+void Map::loadTextures()
+{
+	// the graphical presentation of the road
+	loadTileset(roadTiles_);
+	loadTileset(spawnTiles_);
+	loadTileset(baseTiles_);
+	loadTileset(turretBaseTiles_, Textures::ID::OrangeBase);
 }

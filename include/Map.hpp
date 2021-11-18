@@ -38,6 +38,9 @@ class Map : public Node
 		bool isBase(int row, int col) const { return isMember(row, col, baseTiles_); }
 		bool isTurretBase(int row, int col) const { return isMember(row, col, turretBaseTiles_); }
 
+
+		void loadTileset(const std::vector<std::pair<int, int>>& tiles_, Textures::ID style = Textures::ID::DirtPath);
+
     private:
 		ResourceHolder<sf::Texture, Textures::ID>& textures_;
 
