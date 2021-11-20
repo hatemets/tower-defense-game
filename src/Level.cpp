@@ -17,7 +17,7 @@ Level::Level(sf::RenderWindow& window, sf::Time minSpawnInterval, sf::Time maxSp
 	// TODO: Remove hardcoded values
 	nextSpawn_(sf::seconds(1)),
 	turrets_(),
-	bulletVertices_(sf::Points, 0)
+	projectileVertices_(sf::Points, 0)
 {
 	loadResources();
 	createScene();
@@ -139,15 +139,14 @@ void Level::updateTurrets(sf::Time deltaTime)
 {
 	for (auto& turret : turrets_)
 	{
-		turret->update(deltaTime, enemies_);
+		turret->update(deltaTime, enemies_, projectiles_);
 	}
 }
 
 
 void Level::updateProjectiles(sf::Time deltaTime)
 {
-
-	// remove outdated bullets and other projectiles
+	// remove outdated projectiles
 	projectiles_.erase(std::remove_if(projectiles_.begin(), projectiles_.end(),
 				[](const std::shared_ptr<Projectile> &projectile)
 				{
@@ -159,16 +158,21 @@ void Level::updateProjectiles(sf::Time deltaTime)
 		projectile->update(deltaTime, enemies_);
 	}
 
-	bulletVertices_.resize(projectiles_.size());
+	// collect all projectiles, that can be drawn as a vertex
+	projectileVertices_.resize(projectiles_.size());
 
-	int i = 0;
-
-	for (auto& bullet : projectiles_)
+	int vertexCount = 0;
+	for (auto& projectile : projectiles_)
 	{
-		bulletVertices_[i].position = sf::Vector2f(bullet->getTileX() * TileSize, bullet->getTileY() * TileSize);
-		bulletVertices_[i].color = sf::Color::White;
-		i++;
+		if (projectile->drawAsVertex())
+		{
+			projectileVertices_[vertexCount].position = sf::Vector2f(projectile->getTileX() * TileSize, projectile->getTileY() * TileSize);
+			projectileVertices_[vertexCount].color = sf::Color::White;
+			vertexCount++;
+		}
 	}
+
+	projectileVertices_.resize(vertexCount);
 }
 
 
@@ -183,17 +187,6 @@ void Level::addBackground()
 	auto background = std::make_unique<BackgroundSprite>(BackgroundSprite{backgroundTexture, bounds});
 	background->setPosition(0.f, 0.f);
 	layers_[static_cast<std::size_t>(Layers::Background)]->addChild(std::move(background));
-}
-
-void Level::addProjectile(std::shared_ptr<Projectile> projectile)
-{
-	std::shared_ptr<Bullet> bullet = std::dynamic_pointer_cast<Bullet>(projectile);
-
-	// TODO: Remove the if statement and the parameter
-	if (bullet)
-	{
-		projectiles_.push_back(bullet);
-	}
 }
 
 
@@ -211,15 +204,19 @@ void Level::drawSelf(sf::RenderTarget& target, sf::RenderStates states) const
 		turret->drawSelf(target, states);
 	}
 
-	if (bulletVertices_.getVertexCount() > 0)
+	// draw vertex projectiles (i.e. bullets)
+	if (projectileVertices_.getVertexCount() > 0)
 	{
-		target.draw(bulletVertices_, states);
+		target.draw(projectileVertices_, states);
 	}
 
-	// TODO: Might need to change projectile code
-	/* for (auto& projectile : projectiles_) */
-	/* { */
-	/* 	projectile->drawSelf(target, states); */
-	/* } */
+	// draw sprite projectiles
+	for (auto& projectile : projectiles_)
+	{
+		if (!projectile->drawAsVertex())
+		{
+			projectile->drawSelf(target, states);
+		}
+	}
 }
 

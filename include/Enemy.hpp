@@ -25,8 +25,8 @@ class Enemy : public Node
 		bool isAlive() const;								 // alive or dead
 		bool hasReachedBase() const;						 // has succeed to reach the base
 		void hit(int maxDamage);							 // used by projectile
-		float getTileX() const { return tileX_; }	         // the x location in tile coordinates 		 
-		float getTileY() const { return tileY_; }			 // the y location in tile coordinates 
+		float getTileX() const { return tileX_; }	         // enemy centre x in tile coordinates 		 
+		float getTileY() const { return tileY_; }			 // enemy centre y in tile coordinates
 		float getDirection() const { return direction_; }	 // flight angle
 		int getHitPoints() const { return hitPoints_; }		 // hitpoints left
 		float getRadius() const { return radius_; }			 // the hit radius of the enemy

@@ -24,7 +24,7 @@ Turret::Turret(int row, int col, int price, float rotationSpeed, float rateOfFir
 }
 
 
-void Turret::update(sf::Time deltaTime, const EnemyList& enemies)
+void Turret::update(sf::Time deltaTime, const EnemyList& enemies, ProjectileList& projectiles)
 {
     // rotate
     currentAngle_ += rotate(deltaTime, enemies);
@@ -50,7 +50,8 @@ void Turret::update(sf::Time deltaTime, const EnemyList& enemies)
 		{
 			for (auto projectile : shotProjectiles)
 			{
-				// add to projectiles list!
+                // add shot projectiles to the projectile list of the level
+				projectiles.push_back(projectile);
 			}
 
 			nextFire_ = getFireInterval();

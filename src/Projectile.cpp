@@ -4,13 +4,14 @@
 #include <memory>
 #include <algorithm>
 
-Projectile::Projectile(float tileX, float tileY, float direction, float speed, float flightRange, float explosionRange, float maxDamage)
+Projectile::Projectile(float tileX, float tileY, float direction, float speed, float flightRange, float explosionRange, float maxDamage, bool drawAsVertex)
 	: tileX_(tileX),
 	tileY_(tileY),
 	direction_(direction),
 	speed_(speed),
 	explosionRange_(explosionRange),
-	maxDamage_(maxDamage)
+	maxDamage_(maxDamage),
+	drawAsVertex_(drawAsVertex)
 {
 	lifetimeLeft_ = sf::seconds(flightRange / speed);
 }
@@ -88,24 +89,10 @@ void Projectile::flight(sf::Time deltaTime)
 	tileY_ += deltaY;
 }
 
-float Projectile::getTileX() const
-{
-	return tileX_;
-}
-
-float Projectile::getTileY() const
-{
-	return tileY_;
-}
-
-float Projectile::getDirection() const
-{
-	return direction_;
-}
 
 // Bullet
 
-Bullet::Bullet(float tileX, float tileY, float direction) : Projectile(tileX, tileY, direction, 5, 5, 0, 50)
+Bullet::Bullet(float tileX, float tileY, float direction) : Projectile(tileX, tileY, direction, 5, 5, 0, 50, true)
 {
 }
 

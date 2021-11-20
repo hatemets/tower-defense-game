@@ -39,7 +39,6 @@ class Level : public Mode
 		void updateTurrets(sf::Time deltaTime);
 		void updateProjectiles(sf::Time deltaTime);
 
-		void addProjectile(std::shared_ptr<Projectile> projectile);
 		void loadMap();
 
 	private:
@@ -56,9 +55,9 @@ class Level : public Mode
 		// Turrets
 		std::list<std::shared_ptr<Turret>> turrets_;
 
-		// Projectiles
-		std::list<std::shared_ptr<Bullet>> projectiles_;
-		sf::VertexArray bulletVertices_; // combine picture of all bullets
+		// Projectiles 
+		std::list<std::shared_ptr<Projectile>> projectiles_;
+		sf::VertexArray projectileVertices_; // combined picture of all projectiles that can be drawn as a vertex
 };
 
 #endif

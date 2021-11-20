@@ -6,6 +6,7 @@
 #include "Projectile.hpp"
 
 using EnemyList = std::list<std::shared_ptr<Enemy>>;
+using ProjectileList = std::list<std::shared_ptr<Projectile>>;
 
 // The base class of turrets
 class Turret : public Node
@@ -13,11 +14,11 @@ class Turret : public Node
 	public:
 		Turret(int row, int col, int price, float rotationSpeed, float rateOfFire, float radarRange, float projectileRange);
 
-		virtual void update(sf::Time deltaTime, const EnemyList& enemies);
+		virtual void update(sf::Time deltaTime, const EnemyList& enemies, ProjectileList& projectiles);
 		virtual void drawSelf(sf::RenderTarget& target, sf::RenderStates states) const override;       
 
 	protected:
-		virtual float rotate(sf::Time deltaTime, const EnemyList& enemies) = 0;  // note: change this: needs the enemies as a parameter
+		virtual float rotate(sf::Time deltaTime, const EnemyList& enemies) = 0;
         virtual std::vector<std::shared_ptr<Projectile>> shoot() = 0;
 
 		std::shared_ptr<Enemy> getNearestEnemyInRadar(const EnemyList& enemies);
