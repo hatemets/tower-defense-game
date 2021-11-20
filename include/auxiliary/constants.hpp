@@ -34,4 +34,9 @@ const float ButtonHeight = 1.f / 6.f * WindowHeight;
 const float ButtonPaddingX = 1.f / 4.f * ButtonWidth;
 const float ButtonPaddingY = 1.f / 8.f * ButtonHeight;
 
+// Projectile properties
+const float BulletSpeed = 5.f;       // 5 tiles per second
+const float BulletFlightRange = 5.f; // 5 tiles
+const int BulletMaxDamage = 50;      // 50 hit points (hit points are integers)
+
 #endif

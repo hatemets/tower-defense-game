@@ -96,7 +96,7 @@ std::shared_ptr<Enemy> Turret::getNearestEnemyInRadar(const EnemyList& enemies)
 }
 
 
-float Turret::rotateToNearestEnemyInRadar(sf::Time deltaTime, bool estimateEnemyMovement, const EnemyList& enemies)
+float Turret::rotateToNearestEnemyInRadar(sf::Time deltaTime, bool estimateEnemyMovement, float projectileSpeed, const EnemyList& enemies)
 {
     auto enemy = getNearestEnemyInRadar(enemies);
 
@@ -107,7 +107,6 @@ float Turret::rotateToNearestEnemyInRadar(sf::Time deltaTime, bool estimateEnemy
 
         if (estimateEnemyMovement)
         {
-            float projectileSpeed = 5.f; // FIX THIS: depends on the projectile type
             float enemyDistance = Map::calculateDistance(sf::Vector2f(getTileX(), getTileY()), sf::Vector2f(targetX, targetY));
             float flightTime = enemyDistance / projectileSpeed;
             float enemySpeed = enemy->getSpeed();
@@ -183,7 +182,7 @@ GunTurret::GunTurret(int row, int col) :
 
 float GunTurret::rotate(sf::Time deltaTime, const EnemyList& enemies)
 {
-    return rotateToNearestEnemyInRadar(deltaTime, true, enemies);
+    return rotateToNearestEnemyInRadar(deltaTime, true, BulletSpeed, enemies);
 }
 
 

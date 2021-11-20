@@ -4,7 +4,7 @@
 #include <memory>
 #include <algorithm>
 
-Projectile::Projectile(float tileX, float tileY, float direction, float speed, float flightRange, float explosionRange, float maxDamage, bool drawAsVertex)
+Projectile::Projectile(float tileX, float tileY, float direction, float speed, float flightRange, float explosionRange, int maxDamage, bool drawAsVertex)
 	: tileX_(tileX),
 	tileY_(tileY),
 	direction_(direction),
@@ -92,7 +92,7 @@ void Projectile::flight(sf::Time deltaTime)
 
 // Bullet
 
-Bullet::Bullet(float tileX, float tileY, float direction) : Projectile(tileX, tileY, direction, 5, 5, 0, 50, true)
+Bullet::Bullet(float tileX, float tileY, float direction) : Projectile(tileX, tileY, direction, BulletSpeed, BulletFlightRange, 0, BulletMaxDamage, true)
 {
 }
 

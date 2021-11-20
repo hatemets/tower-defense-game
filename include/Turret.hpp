@@ -22,7 +22,7 @@ class Turret : public Node
         virtual std::vector<std::shared_ptr<Projectile>> shoot() = 0;
 
 		std::shared_ptr<Enemy> getNearestEnemyInRadar(const EnemyList& enemies);
-		float rotateToNearestEnemyInRadar(sf::Time deltaTime, bool estimateEnemyMovement, const EnemyList& enemies);
+		float rotateToNearestEnemyInRadar(sf::Time deltaTime, bool estimateEnemyMovement, float projectileSpeed, const EnemyList& enemies);
 
 	public:
 		int getRow() const { return row_; }                                       // location tile row
