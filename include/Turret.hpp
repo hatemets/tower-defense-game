@@ -27,8 +27,8 @@ class Turret : public Node
 	public:
 		int getRow() const { return row_; }                                       // location tile row
 		int getCol() const { return col_; }                                       // location tile column
-		float getTileX() const { return row_ + 0.5f; }                            // turret centre x in tile coordinates
-		float getTileY() const { return col_ + 0.5f; }                            // turret centre y in tile coordinates
+		float getTileX() const { return col_ + 0.5f; }                            // turret centre x in tile coordinates
+		float getTileY() const { return row_ + 0.5f; }                            // turret centre y in tile coordinates
 		int getPrice() const { return price_; }                                   // purchase price
 		float getRotationSpeed() const { return rotationSpeed_; }                 // max degrees per second (i.e. 90 means that full round takes 4 seconds)
 		float getRateOfFire() const { return rateOfFire_; }                       // max number of shots per second

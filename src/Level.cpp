@@ -55,8 +55,8 @@ void Level::createScene()
 	while (turretTiles.size() < turretCreateCount)
 	{
 		auto tile = turretBaseTiles[rand() % turretBaseTiles.size()];
-		int row = tile.second;
-		int col = tile.first;
+		int row = tile.first;
+		int col = tile.second;
 
 		if (!Map::isMember(row, col, turretTiles))
 		{
