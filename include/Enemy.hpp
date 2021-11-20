@@ -28,6 +28,7 @@ class Enemy : public Node
 		float getTileX() const { return tileX_; }	         // enemy centre x in tile coordinates 		 
 		float getTileY() const { return tileY_; }			 // enemy centre y in tile coordinates
 		float getDirection() const { return direction_; }	 // flight angle
+		float getSpeed() const { return speed_; }			 // speed as tiles / second 
 		int getHitPoints() const { return hitPoints_; }		 // hitpoints left
 		float getRadius() const { return radius_; }			 // the hit radius of the enemy
 
