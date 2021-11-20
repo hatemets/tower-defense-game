@@ -47,6 +47,7 @@ class Turret : public Node
 		const float radarRange_;
 		const float projectileRange_;  
 		float currentAngle_; 
+		bool isAimReady_; // is current angle OK for shooting
 		sf::Time nextFire_;  
 
 		sf::RectangleShape picture_; // Shape should be replaced with a Sprite

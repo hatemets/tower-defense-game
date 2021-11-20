@@ -69,13 +69,13 @@ std::shared_ptr<Enemy> Projectile::checkHit(const EnemyList& enemies)
 
 void Projectile::explode(std::shared_ptr<Enemy> hitEnemy, const EnemyList& enemies)
 {
-	if (hitEnemy)
+	if (explosionRange_ == 0 && hitEnemy)
 	{
-		hitEnemy->hit(maxDamage_);
+		hitEnemy->hit(maxDamage_); // damage only the hit enemy
 	}
 	if (explosionRange_ > 0)
 	{
-		//damage also other enemies in the range
+		//damage all enemies in the range
 	}
 }
 

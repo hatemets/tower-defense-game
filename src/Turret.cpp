@@ -13,7 +13,8 @@ Turret::Turret(int row, int col, int price, float rotationSpeed, float rateOfFir
     rateOfFire_(rateOfFire),  
     radarRange_(radarRange),
     projectileRange_(projectileRange),  
-    currentAngle_(0) 
+    currentAngle_(0),
+    isAimReady_(false)
 {
     picture_.setPosition(getTileX() * TileSize, getTileY() * TileSize);
     picture_.setSize(sf::Vector2f(TileSize / 2.f, TileSize / 5.f));
@@ -28,7 +29,7 @@ void Turret::update(sf::Time deltaTime, const EnemyList& enemies, ProjectileList
 {
     // rotate
     currentAngle_ += rotate(deltaTime, enemies);
-    // std::cout << currentAngle_ << std::endl;
+
     while (currentAngle_ >= 360)
 	{
         currentAngle_ -= 360;
@@ -42,7 +43,7 @@ void Turret::update(sf::Time deltaTime, const EnemyList& enemies, ProjectileList
     picture_.setRotation(currentAngle_);
 
 	// shoot
-	if (nextFire_ <= deltaTime)
+	if (nextFire_ <= deltaTime && isAimReady_)
 	{
 		std::vector<std::shared_ptr<Projectile>> shotProjectiles = shoot();
 
@@ -98,6 +99,8 @@ std::shared_ptr<Enemy> Turret::getNearestEnemyInRadar(const EnemyList& enemies)
 
 float Turret::rotateToNearestEnemyInRadar(sf::Time deltaTime, bool estimateEnemyMovement, float projectileSpeed, const EnemyList& enemies)
 {
+    isAimReady_ = false;
+
     auto enemy = getNearestEnemyInRadar(enemies);
 
     if (enemy)
@@ -132,6 +135,7 @@ float Turret::rotateToNearestEnemyInRadar(sf::Time deltaTime, bool estimateEnemy
 
 		if ( abs(neededRotation) <= maxRotation )
 		{
+            isAimReady_ = true;
 			return neededRotation;
 		}
 		else if (neededRotation > 0)
@@ -146,8 +150,6 @@ float Turret::rotateToNearestEnemyInRadar(sf::Time deltaTime, bool estimateEnemy
 
     return 0.f;
 }
-
-
 
 
 // SimpleTurret 
@@ -188,7 +190,6 @@ float GunTurret::rotate(sf::Time deltaTime, const EnemyList& enemies)
 
 std::vector<std::shared_ptr<Projectile>> GunTurret::shoot()
 {
-    // change this to shoot only when aim is ready and enemy is within shooting range!
     std::vector<std::shared_ptr<Projectile>> projectiles;
     float projectileX = getTileX() + cosf(currentAngle_ * DegreesToRadians);
     float projectileY = getTileY() + sinf(currentAngle_ * DegreesToRadians);

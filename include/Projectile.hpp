@@ -31,9 +31,9 @@ class Projectile : public Node
 		float tileX_;  
 		float tileY_;  
 		float direction_;  
-		const float speed_;  
-		const float explosionRange_;  
-		const int maxDamage_; 
+		const float speed_;          // projectile speed as tiles per second
+		const float explosionRange_; // damage area as tiles (0 if requires direct hit)
+		const int maxDamage_;        // max hit points damage 
 		const bool drawAsVertex_;
 		sf::Time lifetimeLeft_; 
 };
