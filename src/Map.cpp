@@ -42,7 +42,7 @@ bool Map::isContact(const sf::Vector2f posA, float aRadius, const sf::Vector2f p
 {
 	float minDistance = aRadius + bRadius;
 
-	return calculateDistance(posA, posB) < std::pow(minDistance, 2);
+	return calculateDistance(posA, posB) <= minDistance;
 }
 
 

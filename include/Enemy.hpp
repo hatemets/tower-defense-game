@@ -12,7 +12,7 @@ class Enemy : public Node
 {
 	public:
 		// TODO: Remove hardcoded values
-		Enemy(std::vector<std::pair<int, int>>::const_iterator pathBegin, std::vector<std::pair<int, int>>::const_iterator pathEnd, float speed, int hitPoints, float radius = 15.f);
+		Enemy(std::vector<std::pair<int, int>>::const_iterator pathBegin, std::vector<std::pair<int, int>>::const_iterator pathEnd, float speed, int hitPoints, float radius = 0.25f);
 
 		virtual void update(sf::Time deltaTime) override;
 		virtual void drawSelf(sf::RenderTarget& target, sf::RenderStates states) const override;
@@ -25,11 +25,11 @@ class Enemy : public Node
 		bool isAlive() const;								 // alive or dead
 		bool hasReachedBase() const;						 // has succeed to reach the base
 		void hit(int maxDamage);							 // used by projectile
-		float getTileX() const { return tileX_; }			 // flight angle
-		float getTileY() const { return tileY_; }			 // hitpoints left
-		float getDirection() const { return direction_; }	 // location tile row
-		int getHitPoints() const { return hitPoints_; }		 // location tile column
-		float getRadius() const { return radius_; }			 // radius of the enemy (assuming it's a circle)
+		float getTileX() const { return tileX_; }	         // the x location in tile coordinates 		 
+		float getTileY() const { return tileY_; }			 // the y location in tile coordinates 
+		float getDirection() const { return direction_; }	 // flight angle
+		int getHitPoints() const { return hitPoints_; }		 // hitpoints left
+		float getRadius() const { return radius_; }			 // the hit radius of the enemy
 
 	protected:
 		std::vector<std::pair<int, int>>::const_iterator pathIterator_;
