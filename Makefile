@@ -10,10 +10,8 @@ LIBS = -lsfml-graphics -lsfml-window -lsfml-system
 
 ifeq ($(OS),Windows_NT)
 	# Windows specific definitions
-	# NOTE: Change these paths to appropriate libs subdirectories after SMFL library (Windows version) is checked in into libs
-	# NB! Must be revised for general use (in case the project will be used by any Windows users)
-	IFLAGS = -IC:\Users\Niko\git\SFML-test\SFML-2.5.1-windows-gcc-7.3.0-mingw-32-bit\SFML-2.5.1\include
-	LFLAGS = -LC:\Users\Niko\git\SFML-test\SFML-2.5.1-windows-gcc-7.3.0-mingw-32-bit\SFML-2.5.1\lib
+	IFLAGS = -I.\libs\SFML-2.5.1-windows-gcc-7.3.0-mingw-32-bit\SFML-2.5.1\include
+	LFLAGS = -L.\libs\SFML-2.5.1-windows-gcc-7.3.0-mingw-32-bit\SFML-2.5.1\lib
 	SRC_FILES := $(wildcard ./src/*.cpp)
 	CONST_FILES := $(wildcard ./include/auxiliary/*.hpp)
 	HPP_FILES := $(wildcard ./include/*.hpp)

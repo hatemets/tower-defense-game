@@ -9,7 +9,8 @@ large dependencies, such as QT.
 
 # List of External Libs
 
-1. [Project1](https://someproject.com/download)
+1. [SFML-2.5.1-windows-gcc-7.3.0-mingw-32-bit](https://www.sfml-dev.org/download/sfml/2.5.1/)
+   SFML 2.5.1 library for Windows (compatible with i686-7.3.0-posix-dwarf-rt_v5-rev0 mingw32 g++.exe)
 2. [Project2](https://anotherproject.com/download)
 
 
