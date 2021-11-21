@@ -12,7 +12,8 @@ using ProjectileList = std::list<std::shared_ptr<Projectile>>;
 class Turret : public Node
 {
 	public:
-		Turret(int row, int col, int price, float rotationSpeed, float rateOfFire, float radarRange, float projectileRange);
+		Turret(int row, int col, int price, float rotationSpeed, float rateOfFire, float radarRange, float projectileRange, 
+			   ResourceHolder<sf::Texture, Textures::ID>& textures, Textures::ID turretStyle);
 
 		virtual void update(sf::Time deltaTime, const EnemyList& enemies, ProjectileList& projectiles);
 		virtual void drawSelf(sf::RenderTarget& target, sf::RenderStates states) const override;       
@@ -50,19 +51,7 @@ class Turret : public Node
 		bool isAimReady_; // is current angle OK for shooting
 		sf::Time nextFire_;  
 
-		sf::RectangleShape picture_; // Shape should be replaced with a Sprite
-};
-
-
-class SimpleTurret : 
-	public Turret
-{
-	public:
-		SimpleTurret(int row, int col);
-
-	private:
-		virtual float rotate(sf::Time deltaTime, const EnemyList& enemies) override;
-        virtual std::vector<std::shared_ptr<Projectile>> shoot() override;
+		sf::Sprite turretPicture_;
 };
 
 
@@ -70,7 +59,7 @@ class GunTurret :
 	public Turret
 {
 	public:
-		GunTurret(int row, int col);
+		GunTurret(int row, int col, ResourceHolder<sf::Texture, Textures::ID>& textures);
 
 	private:
 		virtual float rotate(sf::Time deltaTime, const EnemyList& enemies) override;
@@ -82,7 +71,7 @@ class DoubleGunTurret :
 	public Turret
 {
 	public:
-		DoubleGunTurret(int row, int col);
+		DoubleGunTurret(int row, int col, ResourceHolder<sf::Texture, Textures::ID>& textures);
 
 	private:
 		virtual float rotate(sf::Time deltaTime, const EnemyList& enemies) override;
@@ -94,7 +83,7 @@ class BombTurret :
 	public Turret
 {
 	public:
-		BombTurret(int row, int col);
+		BombTurret(int row, int col, ResourceHolder<sf::Texture, Textures::ID>& textures);
 
 	private:
 		virtual float rotate(sf::Time deltaTime, const EnemyList& enemies) override;
@@ -106,7 +95,7 @@ class MissileTurret :
 	public Turret
 {
 	public:
-		MissileTurret(int row, int col);
+		MissileTurret(int row, int col, ResourceHolder<sf::Texture, Textures::ID>& textures);
 
 	private:
 		virtual float rotate(sf::Time deltaTime, const EnemyList& enemies) override;

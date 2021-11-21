@@ -225,17 +225,17 @@ void Map::findPaths()
 
 void Map::loadTileset(const std::vector<std::pair<int, int>>& tiles_, Textures::ID style)
 {
-	for (auto roadTile : tiles_)
+	for (auto tile : tiles_)
 	{
-		int row = roadTile.first;
-		int col = roadTile.second;
+		int row = tile.first;
+		int col = tile.second;
 
-		auto road = std::make_shared<sf::Sprite>(textures_.get(style));
-		auto imageBounds = road->getGlobalBounds();
-		road->setScale(TileSize / imageBounds.width, TileSize / imageBounds.height);
-		road->setPosition(col * TileSize, row * TileSize);
+		auto sprite = std::make_shared<sf::Sprite>(textures_.get(style));
+		auto imageBounds = sprite->getGlobalBounds();
+		sprite->setScale(TileSize / imageBounds.width, TileSize / imageBounds.height);
+		sprite->setPosition(col * TileSize, row * TileSize);
 
-		mapPictures_.push_back(road);
+		mapPictures_.push_back(sprite);
 	}
 }
 

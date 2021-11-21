@@ -29,6 +29,7 @@ void Level::loadResources()
 	textures_.load(Textures::ID::GrassArea, "./include/images/Grass.png");
 	textures_.load(Textures::ID::DirtPath, "./include/images/Ground.png");
 	textures_.load(Textures::ID::OrangeBase, "./include/images/TurretBaseOrange.png");
+	textures_.load(Textures::ID::GunTurret, "./include/images/GunTurret.png");
 
 	buttonShapes_.load(Buttons::ID::HomeButton);
 }
@@ -61,7 +62,7 @@ void Level::createScene()
 		if (!Map::isMember(row, col, turretTiles))
 		{
 			// Add a turret to the turret container
-			turrets_.push_back(std::make_shared<GunTurret>(GunTurret{ row, col }));
+			turrets_.push_back(std::make_shared<GunTurret>(GunTurret{ row, col, textures_ }));
 			turretTiles.push_back(tile);
 		}
 	}

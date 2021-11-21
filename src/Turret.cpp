@@ -5,7 +5,8 @@
 #include <limits>
 
 
-Turret::Turret(int row, int col, int price, float rotationSpeed, float rateOfFire, float radarRange, float projectileRange) : 
+Turret::Turret(int row, int col, int price, float rotationSpeed, float rateOfFire, float radarRange, float projectileRange,
+               ResourceHolder<sf::Texture, Textures::ID>& textures, Textures::ID turretStyle) : 
     row_(row), 
     col_(col), 
     price_(price),  
@@ -16,11 +17,19 @@ Turret::Turret(int row, int col, int price, float rotationSpeed, float rateOfFir
     currentAngle_(0),
     isAimReady_(false)
 {
+    /*
     picture_.setPosition(getTileX() * TileSize, getTileY() * TileSize);
     picture_.setSize(sf::Vector2f(TileSize / 2.f, TileSize / 5.f));
     picture_.setOrigin(0.f, TileSize / 10.f);
     picture_.setFillColor(sf::Color::Black);
-
+    */
+    
+    turretPicture_.setTexture(textures.get(turretStyle));
+    auto imageBounds = turretPicture_.getGlobalBounds();
+    turretPicture_.setOrigin(imageBounds.width / 2.f, imageBounds.height / 2.f);
+	turretPicture_.setScale(TileSize / imageBounds.width, TileSize / imageBounds.height);
+	turretPicture_.setPosition(getTileX() * TileSize, getTileY() * TileSize);
+ 
     nextFire_ = sf::seconds(0);  // ready to shoot immediately 
 }
 
@@ -40,7 +49,7 @@ void Turret::update(sf::Time deltaTime, const EnemyList& enemies, ProjectileList
         currentAngle_ += 360;
     }
 
-    picture_.setRotation(currentAngle_);
+    turretPicture_.setRotation(currentAngle_ - TurretTextureOffset);
 
 	// shoot
 	if (nextFire_ <= deltaTime && isAimReady_)
@@ -71,7 +80,7 @@ void Turret::update(sf::Time deltaTime, const EnemyList& enemies, ProjectileList
 
 void Turret::drawSelf(sf::RenderTarget& target, sf::RenderStates states) const
 {
-	target.draw(picture_, states);
+	target.draw(turretPicture_, states);
 }
 
 
@@ -152,32 +161,10 @@ float Turret::rotateToNearestEnemyInRadar(sf::Time deltaTime, bool estimateEnemy
 }
 
 
-// SimpleTurret 
-
-SimpleTurret::SimpleTurret(int row, int col) : 
-    Turret(row, col, 10, 91, 5, 5, 5)
-{
-}
-
-
-float SimpleTurret::rotate(sf::Time deltaTime, const EnemyList& enemies)
-{
-    return deltaTime.asSeconds() * rotationSpeed_; // rotate without aiming
-}
-
-
-std::vector<std::shared_ptr<Projectile>> SimpleTurret::shoot()
-{
-    std::vector<std::shared_ptr<Projectile>> projectiles;
-    return projectiles; 
-}
-
-
 // GunTurret 
 
-GunTurret::GunTurret(int row, int col) : 
-	// TODO: Remove hardcoded values
-    Turret(row, col, 10, 91, 5, 5, 5)
+GunTurret::GunTurret(int row, int col, ResourceHolder<sf::Texture, Textures::ID>& textures)
+ : Turret(row, col, GunTurretPrice, GunTurretRotationSpeed, GunTurretRateOfFire, GunTurretRadarRange, GunTurretProjectileRange, textures, Textures::ID::GunTurret)
 {
 }
 
@@ -191,8 +178,8 @@ float GunTurret::rotate(sf::Time deltaTime, const EnemyList& enemies)
 std::vector<std::shared_ptr<Projectile>> GunTurret::shoot()
 {
     std::vector<std::shared_ptr<Projectile>> projectiles;
-    float projectileX = getTileX() + cosf(currentAngle_ * DegreesToRadians);
-    float projectileY = getTileY() + sinf(currentAngle_ * DegreesToRadians);
+    float projectileX = getTileX() + 0.5f * cosf(currentAngle_ * DegreesToRadians);
+    float projectileY = getTileY() + 0.5f * sinf(currentAngle_ * DegreesToRadians);
     projectiles.push_back(std::make_shared<Projectile>(Bullet{projectileX, projectileY, currentAngle_}));
     return projectiles; 
 }
