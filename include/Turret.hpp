@@ -13,7 +13,7 @@ class Turret : public Node
 {
 	public:
 		Turret(int row, int col, int price, float rotationSpeed, float rateOfFire, float radarRange, float projectileRange, 
-			   ResourceHolder<sf::Texture, Textures::ID>& textures, Textures::ID turretStyle);
+			   ResourceHolder<sf::Texture, Textures::ID>& textures, Textures::ID turretBaseStyle, Textures::ID turretStyle);
 
 		virtual void update(sf::Time deltaTime, const EnemyList& enemies, ProjectileList& projectiles);
 		virtual void drawSelf(sf::RenderTarget& target, sf::RenderStates states) const override;       
@@ -51,6 +51,7 @@ class Turret : public Node
 		bool isAimReady_; // is current angle OK for shooting
 		sf::Time nextFire_;  
 
+		sf::Sprite turretBasePicture_;
 		sf::Sprite turretPicture_;
 };
 

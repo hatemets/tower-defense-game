@@ -30,6 +30,8 @@ void Level::loadResources()
 	textures_.load(Textures::ID::DirtPath, "./include/images/Ground.png");
 	textures_.load(Textures::ID::OrangeBase, "./include/images/TurretBaseOrange.png");
 	textures_.load(Textures::ID::GunTurret, "./include/images/GunTurret.png");
+	textures_.load(Textures::ID::DoubleGunTurret, "./include/images/DoubleGunTurret.png");
+	textures_.load(Textures::ID::DoubleGunTurretBase, "./include/images/DoubleGunTurretBase.png");
 
 	buttonShapes_.load(Buttons::ID::HomeButton);
 }
@@ -41,9 +43,6 @@ void Level::createScene()
 	addBackground();
 	addButtons();
 	loadMap();
-
-	// Projectiles
-	// TODO: Implement projectiles
 
 	// Simulate buying turrets
 	const std::vector<std::pair<int, int>>& turretBaseTiles = map_->getTurretBaseTiles();
@@ -62,7 +61,13 @@ void Level::createScene()
 		if (!Map::isMember(row, col, turretTiles))
 		{
 			// Add a turret to the turret container
-			turrets_.push_back(std::make_shared<GunTurret>(GunTurret{ row, col, textures_ }));
+			if (turretTiles.size() == 0) 
+			{
+				turrets_.push_back(std::make_shared<DoubleGunTurret>(DoubleGunTurret{ row, col, textures_ }));
+			} else 
+			{
+				turrets_.push_back(std::make_shared<GunTurret>(GunTurret{ row, col, textures_ }));
+			}
 			turretTiles.push_back(tile);
 		}
 	}
@@ -186,7 +191,7 @@ void Level::addBackground()
 	sf::IntRect bounds(windowBounds_);
 
 	auto background = std::make_unique<BackgroundSprite>(BackgroundSprite{backgroundTexture, bounds});
-	background->setColor(sf::Color(128, 128, 128)); // make grass darker so that bullets are more visible
+	background->setColor(sf::Color(192, 192, 192)); // make grass darker so that bullets are more visible
 	background->setPosition(0.f, 0.f);
 	layers_[static_cast<std::size_t>(Layers::Background)]->addChild(std::move(background));
 }

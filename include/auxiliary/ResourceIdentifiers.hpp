@@ -47,9 +47,11 @@ namespace Resources
 			// Turrets
 			ArrowShooter,
 			GunTurret,
+			DoubleGunTurret,
 
 			// Turret bases
-			OrangeBase
+			OrangeBase,
+			DoubleGunTurretBase,
 		};
 	}
 

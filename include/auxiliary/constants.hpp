@@ -35,7 +35,7 @@ const float ButtonPaddingX = 1.f / 4.f * ButtonWidth;
 const float ButtonPaddingY = 1.f / 8.f * ButtonHeight;
 
 // Turret properties
-const float TurretTextureOffset = 90; // the turret texture angle (90 degrees = turret points down)
+const float TurretTextureOffset = 90; // turret texture angle (90 degrees = turret barrel points down in the texture)
 
 const int GunTurretPrice = 10;
 const float GunTurretRotationSpeed = 90.f; // 90 degrees per second
@@ -43,9 +43,15 @@ const float GunTurretRateOfFire = 5.f; // 5 shots per second
 const float GunTurretRadarRange = 5.f; // 5 tiles
 const float GunTurretProjectileRange = 5.f; // 5 tiles
 
+const int DoubleGunTurretPrice = 30;
+const float DoubleGunTurretRotationSpeed = 90.f; 
+const float DoubleGunTurretRateOfFire = 5.f; 
+const float DoubleGunTurretRadarRange = 5.f; 
+const float DoubleGunTurretProjectileRange = 5.f; 
+
 // Projectile properties
 const float BulletSpeed = 5.f;       // 5 tiles per second
 const float BulletFlightRange = 5.f; // 5 tiles
-const int BulletMaxDamage = 50;      // 50 hit points (hit points are integers)
+const int BulletMaxDamage = 20;      // 20 hit points (hit points are integers)
 
 #endif
