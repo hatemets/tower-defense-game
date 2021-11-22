@@ -39,24 +39,21 @@ class Projectile : public Node
 };
 
 
-class Bullet : 
-	public Projectile
+class Bullet : public Projectile
 {
 	public:
 		Bullet(float tileX, float tileY, float direction);
 };
 
 
-class Bomb :
-	public Projectile
+class Bomb : public Projectile
 {
 	public:
 		Bomb(float tileX, float tileY, float directionl);
 };
 
 
-class Missile :
-	public Projectile
+class Missile : public Projectile
 {
 	public:
 		Missile(float tileX, float tileY, float direction);

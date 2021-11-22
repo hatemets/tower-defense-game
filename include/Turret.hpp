@@ -12,7 +12,7 @@ using ProjectileList = std::list<std::shared_ptr<Projectile>>;
 class Turret : public Node
 {
 	public:
-		Turret(int row, int col, int price, float rotationSpeed, float rateOfFire, float radarRange, float projectileRange, 
+		Turret(int row, int col, int price, float rateOfFire, float radarRange, float projectileRange, 
 			   ResourceHolder<sf::Texture, Textures::ID>& textures, Textures::ID turretBaseStyle, Textures::ID turretStyle);
 
 		virtual void update(sf::Time deltaTime, const EnemyList& enemies, ProjectileList& projectiles);
@@ -31,7 +31,6 @@ class Turret : public Node
 		float getTileX() const { return col_ + 0.5f; }                            // turret centre x in tile coordinates
 		float getTileY() const { return row_ + 0.5f; }                            // turret centre y in tile coordinates
 		int getPrice() const { return price_; }                                   // purchase price
-		float getRotationSpeed() const { return rotationSpeed_; }                 // max degrees per second (i.e. 90 means that full round takes 4 seconds)
 		float getRateOfFire() const { return rateOfFire_; }                       // max number of shots per second
 		sf::Time getFireInterval() const { return sf::seconds(1 / rateOfFire_); } // min time between shots
 		float getRadarRange() const { return radarRange_; }                       // radar range as tiles
@@ -43,7 +42,6 @@ class Turret : public Node
 		const int row_;  
 		const int col_;  
 		const int price_;  
-		const float rotationSpeed_;  
 		const float rateOfFire_;  
 		const float radarRange_;
 		const float projectileRange_;  

@@ -37,22 +37,11 @@ const float ButtonPaddingY = 1.f / 8.f * ButtonHeight;
 // Turret properties
 const float TurretTextureOffset = 90; // turret texture angle (90 degrees = turret barrel points down in the texture)
 
-const int GunTurretPrice = 10;
-const float GunTurretRotationSpeed = 90.f; // 90 degrees per second
-const float GunTurretRateOfFire = 5.f; // 5 shots per second
-const float GunTurretRadarRange = 5.f; // 5 tiles
-const float GunTurretProjectileRange = 5.f; // 5 tiles
-
-const int DoubleGunTurretPrice = 30;
-const float DoubleGunTurretRotationSpeed = 90.f; 
-const float DoubleGunTurretRateOfFire = 5.f; 
-const float DoubleGunTurretRadarRange = 5.f; 
-const float DoubleGunTurretProjectileRange = 5.f; 
-
 // Projectile properties
-const float BulletSpeed = 5.f;       // 5 tiles per second
-const float BulletFlightRange = 5.f; // 5 tiles
-const int BulletMaxDamage = 20;      // 20 hit points (hit points are integers)
+const float BulletSpeed = 20.f;       // tiles per second
+const float BulletFlightRange = 5.f; // tiles
+const int BulletMaxDamage = 20;      // hit points (hit points are integers)
+
 
 // Enemy specs
 namespace Enemies
@@ -63,5 +52,29 @@ namespace Enemies
 		static constexpr int hitPoints = 500;
 	};
 }
+
+
+// Turret specs
+namespace Turrets
+{
+	const float rotationSpeed = 180.f; // Degrees per second
+
+	struct Gun
+	{
+		static constexpr int price = 100;
+		static constexpr int firerate = 5.f; // Shots per second
+		static constexpr int radarRange = 5.f;
+		static constexpr int projectileRange = 5.f;
+	};
+
+	struct DoubleGun
+	{
+		static constexpr int price = 300;
+		static constexpr int firerate = 5.f;
+		static constexpr int radarRange = 5.f;
+		static constexpr int projectileRange = 5.f;
+	};
+}
+
 
 #endif

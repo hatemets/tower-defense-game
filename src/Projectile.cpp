@@ -83,8 +83,9 @@ void Projectile::flight(sf::Time deltaTime)
 {
 	float distance = speed_ * deltaTime.asSeconds();
 	float angle = direction_ * DegreesToRadians;
-	float deltaX = distance * cosf(angle);
-	float deltaY = distance * sinf(angle);
+	float deltaX = distance * std::cos(angle);
+	float deltaY = distance * std::sin(angle);
+
 	tileX_ += deltaX;
 	tileY_ += deltaY;
 }

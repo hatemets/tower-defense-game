@@ -4,13 +4,11 @@
 #include <iostream>
 #include <limits>
 
-
-Turret::Turret(int row, int col, int price, float rotationSpeed, float rateOfFire, float radarRange, float projectileRange,
+Turret::Turret(int row, int col, int price, float rateOfFire, float radarRange, float projectileRange,
                ResourceHolder<sf::Texture, Textures::ID>& textures, Textures::ID turretBaseStyle, Textures::ID turretStyle) : 
     row_(row), 
     col_(col), 
     price_(price),  
-    rotationSpeed_(rotationSpeed),  
     rateOfFire_(rateOfFire),  
     radarRange_(radarRange),
     projectileRange_(projectileRange),  
@@ -126,11 +124,11 @@ float Turret::rotateToNearestEnemyInRadar(sf::Time deltaTime, bool estimateEnemy
             float enemySpeed = enemy->getSpeed();
             float enemyMovement = flightTime * enemySpeed; // not exact but close enough
             float enemyAngle = enemy->getDirection() * DegreesToRadians;
-            targetX += enemyMovement * cosf(enemyAngle);
-            targetY += enemyMovement * sinf(enemyAngle);
+            targetX += enemyMovement * std::cos(enemyAngle);
+            targetY += enemyMovement * std::sin(enemyAngle);
         }
 
-        float maxRotation = deltaTime.asSeconds() * rotationSpeed_;
+        float maxRotation = deltaTime.asSeconds() * Turrets::rotationSpeed;
         float angle = Map::calculateAngle(sf::Vector2f(getTileX(), getTileY()), sf::Vector2f(targetX, targetY));
         float neededRotation = angle - currentAngle_;
 
@@ -163,10 +161,13 @@ float Turret::rotateToNearestEnemyInRadar(sf::Time deltaTime, bool estimateEnemy
 }
 
 
+using namespace Turrets;
+
+
 // GunTurret 
 
 GunTurret::GunTurret(int row, int col, ResourceHolder<sf::Texture, Textures::ID>& textures)
- : Turret(row, col, GunTurretPrice, GunTurretRotationSpeed, GunTurretRateOfFire, GunTurretRadarRange, GunTurretProjectileRange, textures, Textures::ID::OrangeBase, Textures::ID::GunTurret)
+ : Turret(row, col, Gun::price, Gun::firerate, Gun::radarRange, Gun::projectileRange, textures, Textures::ID::OrangeBase, Textures::ID::GunTurret)
 {
 }
 
@@ -180,9 +181,12 @@ float GunTurret::rotate(sf::Time deltaTime, const EnemyList& enemies)
 std::vector<std::shared_ptr<Projectile>> GunTurret::shoot()
 {
     std::vector<std::shared_ptr<Projectile>> projectiles;
-    float projectileX = getTileX() + 0.5f * cosf(currentAngle_ * DegreesToRadians); // x coordinate of the tip of the barrel
-    float projectileY = getTileY() + 0.5f * sinf(currentAngle_ * DegreesToRadians); // y coordinate of the tip of the barrel
+
+    float projectileX = getTileX() + 0.5f * std::cos(currentAngle_ * DegreesToRadians); // x coordinate of the tip of the barrel
+    float projectileY = getTileY() + 0.5f * std::sin(currentAngle_ * DegreesToRadians); // y coordinate of the tip of the barrel
+
     projectiles.push_back(std::make_shared<Projectile>(Bullet{projectileX, projectileY, currentAngle_}));
+
     return projectiles; 
 }
 
@@ -190,7 +194,7 @@ std::vector<std::shared_ptr<Projectile>> GunTurret::shoot()
 // DoubleGunTurret 
 
 DoubleGunTurret::DoubleGunTurret(int row, int col, ResourceHolder<sf::Texture, Textures::ID>& textures)
- : Turret(row, col, DoubleGunTurretPrice, DoubleGunTurretRotationSpeed, DoubleGunTurretRateOfFire, DoubleGunTurretRadarRange, DoubleGunTurretProjectileRange, textures, Textures::ID::DoubleGunTurretBase, Textures::ID::DoubleGunTurret)
+ : Turret(row, col, DoubleGun::price, DoubleGun::firerate, DoubleGun::radarRange, DoubleGun::projectileRange, textures, Textures::ID::DoubleGunTurretBase, Textures::ID::DoubleGunTurret)
 {
 }
 
@@ -204,11 +208,14 @@ float DoubleGunTurret::rotate(sf::Time deltaTime, const EnemyList& enemies)
 std::vector<std::shared_ptr<Projectile>> DoubleGunTurret::shoot()
 {
     std::vector<std::shared_ptr<Projectile>> projectiles;
+
     for (auto sign: {1, -1})
     {
         float barrelAngle = (currentAngle_ + sign * 10.f) * DegreesToRadians;
-        float projectileX = getTileX() + 0.5f * cosf(barrelAngle); // x coordinate of the tip of the barrel
-        float projectileY = getTileY() + 0.5f * sinf(barrelAngle); // y coordinate of the tip of the barrel
+
+        float projectileX = getTileX() + 0.5f * std::cos(barrelAngle); // x coordinate of the tip of the barrel
+        float projectileY = getTileY() + 0.5f * std::sin(barrelAngle); // y coordinate of the tip of the barrel
+
         projectiles.push_back(std::make_shared<Projectile>(Bullet{projectileX, projectileY, currentAngle_}));
     }
     return projectiles; 
