@@ -4,12 +4,12 @@
 #include <memory>
 #include <algorithm>
 
-Projectile::Projectile(float tileX, float tileY, float direction, float speed, float flightRange, float explosionRange, int maxDamage, bool drawAsVertex)
+Projectile::Projectile(float tileX, float tileY, float direction, float speed, float flightRange, float explosionRadius, int maxDamage, bool drawAsVertex)
 	: tileX_(tileX),
 	tileY_(tileY),
 	direction_(direction),
 	speed_(speed),
-	explosionRange_(explosionRange),
+	explosionRadius_(explosionRadius),
 	maxDamage_(maxDamage),
 	drawAsVertex_(drawAsVertex)
 {
@@ -47,6 +47,7 @@ void Projectile::update(sf::Time deltaTime, const EnemyList& enemies)
 
 void Projectile::drawSelf(sf::RenderTarget &target, sf::RenderStates states) const
 {
+	// override needed only if shape/sprite used
 }
 
 bool Projectile::isAlive() const
@@ -67,15 +68,40 @@ std::shared_ptr<Enemy> Projectile::checkHit(const EnemyList& enemies)
 	return std::shared_ptr<Enemy>(nullptr);
 }
 
+EnemyList Projectile::getEnemiesInExplosion(const EnemyList &enemies)
+{
+	EnemyList enemiesInExplosion;
+
+	if (explosionRadius_ > 0.f)
+	{
+		sf::Vector2f projectilePosition(getTileX(), getTileY());
+
+		for (auto &enemy : enemies)
+		{
+			float enemyDistance = Map::calculateDistance(projectilePosition, sf::Vector2f(enemy->getTileX(), enemy->getTileY()));
+
+			if (enemyDistance <= explosionRadius_)
+			{
+				enemiesInExplosion.push_back(enemy);
+			}
+		}
+	}
+
+	return enemiesInExplosion;
+}
+
 void Projectile::explode(std::shared_ptr<Enemy> hitEnemy, const EnemyList& enemies)
 {
-	if (explosionRange_ == 0 && hitEnemy)
+	if (explosionRadius_ == 0 && hitEnemy)
 	{
 		hitEnemy->hit(maxDamage_); // damage only the hit enemy
 	}
-	if (explosionRange_ > 0)
+	else if (explosionRadius_ > 0)
 	{
 		//damage all enemies in the range
+		for (auto enemy : getEnemiesInExplosion(enemies)) {
+			enemy->hit(maxDamage_);
+		}
 	}
 }
 
@@ -93,8 +119,27 @@ void Projectile::flight(sf::Time deltaTime)
 
 // Bullet
 
-Bullet::Bullet(float tileX, float tileY, float direction) : Projectile(tileX, tileY, direction, BulletSpeed, BulletFlightRange, 0, BulletMaxDamage, true)
+Bullet::Bullet(float tileX, float tileY, float direction) : Projectile(tileX, tileY, direction, Projectiles::Bullet::speed, Projectiles::Bullet::range, 0, Projectiles::Bullet::damage, true)
 {
 }
 
 
+// Bomb
+
+Bomb::Bomb(float tileX, float tileY, float direction) : Projectile(tileX, tileY, direction, Projectiles::Bomb::speed, Projectiles::Bomb::range, Projectiles::Bomb::explosionRadius, Projectiles::Bomb::damage, false)
+{
+	picture_.setRadius(TileSize / 20.f);
+    picture_.setOrigin(TileSize / 20.f, TileSize / 20.f);
+    picture_.setFillColor(sf::Color::Black);
+}
+
+void Bomb::update(sf::Time deltaTime, const EnemyList& enemies) 
+{
+	Projectile::update(deltaTime, enemies);
+	picture_.setPosition(tileX_ * TileSize, tileY_ * TileSize);
+}
+
+void Bomb::drawSelf(sf::RenderTarget &target, sf::RenderStates states) const
+{
+	target.draw(picture_, states);
+}

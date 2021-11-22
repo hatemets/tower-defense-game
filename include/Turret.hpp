@@ -12,7 +12,7 @@ using ProjectileList = std::list<std::shared_ptr<Projectile>>;
 class Turret : public Node
 {
 	public:
-		Turret(int row, int col, int price, float rateOfFire, float radarRange, float projectileRange, 
+		Turret(int row, int col, int price, float rateOfFire, float radarRange, 
 			   ResourceHolder<sf::Texture, Textures::ID>& textures, Textures::ID turretBaseStyle, Textures::ID turretStyle);
 
 		virtual void update(sf::Time deltaTime, const EnemyList& enemies, ProjectileList& projectiles);
@@ -24,6 +24,7 @@ class Turret : public Node
 
 		std::shared_ptr<Enemy> getNearestEnemyInRadar(const EnemyList& enemies);
 		float rotateToNearestEnemyInRadar(sf::Time deltaTime, bool estimateEnemyMovement, float projectileSpeed, const EnemyList& enemies);
+		sf::Vector2f getProjectileStartPosition(float barrelPositionAngle);
 
 	public:
 		int getRow() const { return row_; }                                       // location tile row
@@ -34,7 +35,6 @@ class Turret : public Node
 		float getRateOfFire() const { return rateOfFire_; }                       // max number of shots per second
 		sf::Time getFireInterval() const { return sf::seconds(1 / rateOfFire_); } // min time between shots
 		float getRadarRange() const { return radarRange_; }                       // radar range as tiles
-		float getProjectileRange() const { return projectileRange_; }             // projectile range as tiles
 		float getCurrentAngle() const { return currentAngle_; }                   // 0-359.999...
 		sf::Time getNextFire() const { return nextFire_; }                        // time before can shoot again
 
@@ -44,7 +44,6 @@ class Turret : public Node
 		const int price_;  
 		const float rateOfFire_;  
 		const float radarRange_;
-		const float projectileRange_;  
 		float currentAngle_; 
 		bool isAimReady_; // is current angle OK for shooting
 		sf::Time nextFire_;  
@@ -71,6 +70,18 @@ class DoubleGunTurret :
 {
 	public:
 		DoubleGunTurret(int row, int col, ResourceHolder<sf::Texture, Textures::ID>& textures);
+
+	private:
+		virtual float rotate(sf::Time deltaTime, const EnemyList& enemies) override;
+        virtual std::vector<std::shared_ptr<Projectile>> shoot() override;
+};
+
+
+class TripleGunTurret :
+	public Turret
+{
+	public:
+		TripleGunTurret(int row, int col, ResourceHolder<sf::Texture, Textures::ID>& textures);
 
 	private:
 		virtual float rotate(sf::Time deltaTime, const EnemyList& enemies) override;

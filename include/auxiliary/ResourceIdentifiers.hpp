@@ -45,13 +45,16 @@ namespace Resources
 			Goblin,
 
 			// Turrets
-			ArrowShooter,
 			GunTurret,
 			DoubleGunTurret,
+			TripleGunTurret,
+			BombTurret,
 
 			// Turret bases
-			OrangeBase,
+			GunTurretBase,
 			DoubleGunTurretBase,
+			TripleGunTurretBase,
+			BombTurretBase,
 		};
 	}
 
