@@ -27,6 +27,7 @@ class Enemy : public Node
 		void hit(int maxDamage);							 // used by projectile
 		float getTileX() const { return tileX_; }	         // enemy centre x in tile coordinates 		 
 		float getTileY() const { return tileY_; }			 // enemy centre y in tile coordinates
+		/* sf::Vector2f getPosition const { return } */
 		float getDirection() const { return direction_; }	 // flight angle
 		float getSpeed() const { return speed_; }			 // speed as tiles / second 
 		int getHitPoints() const { return hitPoints_; }		 // hitpoints left

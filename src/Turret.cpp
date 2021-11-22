@@ -15,18 +15,20 @@ Turret::Turret(int row, int col, int price, float rateOfFire, float radarRange,
     isAimReady_(false)
 {
     // turret base sprite
-    turretBasePicture_.setTexture(textures.get(turretBaseStyle));
-    auto imageBounds = turretBasePicture_.getGlobalBounds();
-    turretBasePicture_.setOrigin(imageBounds.width / 2.f, imageBounds.height / 2.f);
-	turretBasePicture_.setScale(TileSize / imageBounds.width, TileSize / imageBounds.height);
-	turretBasePicture_.setPosition(getTileX() * TileSize, getTileY() * TileSize);
+    turretBaseSprite_.setTexture(textures.get(turretBaseStyle));
+
+    auto imageBounds = turretBaseSprite_.getGlobalBounds();
+
+    turretBaseSprite_.setOrigin(imageBounds.width / 2.f, imageBounds.height / 2.f);
+	turretBaseSprite_.setScale(TurretScaler * TileSize / imageBounds.width, TurretScaler * TileSize / imageBounds.height);
+	turretBaseSprite_.setPosition(getTileX() * TileSize, getTileY() * TileSize);
 
     // turret sprite
-    turretPicture_.setTexture(textures.get(turretStyle));
-    imageBounds = turretPicture_.getGlobalBounds();
-    turretPicture_.setOrigin(imageBounds.width / 2.f, imageBounds.height / 2.f);
-	turretPicture_.setScale(TileSize / imageBounds.width, TileSize / imageBounds.height);
-	turretPicture_.setPosition(getTileX() * TileSize, getTileY() * TileSize);
+    turretSprite_.setTexture(textures.get(turretStyle));
+    imageBounds = turretSprite_.getGlobalBounds();
+    turretSprite_.setOrigin(imageBounds.width / 2.f, imageBounds.height / 2.f);
+	turretSprite_.setScale(TurretScaler * TileSize / imageBounds.width, TurretScaler * TileSize / imageBounds.height);
+	turretSprite_.setPosition(getTileX() * TileSize, getTileY() * TileSize);
  
     nextFire_ = sf::seconds(0);  // ready to shoot immediately 
 }
@@ -47,7 +49,7 @@ void Turret::update(sf::Time deltaTime, const EnemyList& enemies, ProjectileList
         currentAngle_ += 360;
     }
 
-    turretPicture_.setRotation(currentAngle_ - TurretTextureOffset);
+    turretSprite_.setRotation(currentAngle_ - TurretTextureOffset);
 
 	// shoot
 	if (nextFire_ <= deltaTime && isAimReady_)
@@ -78,8 +80,8 @@ void Turret::update(sf::Time deltaTime, const EnemyList& enemies, ProjectileList
 
 void Turret::drawSelf(sf::RenderTarget& target, sf::RenderStates states) const
 {
-    target.draw(turretBasePicture_, states);
-    target.draw(turretPicture_, states);
+    target.draw(turretBaseSprite_, states);
+    target.draw(turretSprite_, states);
 }
 
 
@@ -182,7 +184,7 @@ GunTurret::GunTurret(int row, int col, ResourceHolder<sf::Texture, Textures::ID>
 
 float GunTurret::rotate(sf::Time deltaTime, const EnemyList& enemies)
 {
-    return rotateToNearestEnemyInRadar(deltaTime, true, BulletSpeed, enemies);
+    return rotateToNearestEnemyInRadar(deltaTime, true, Projectiles::Bullet::speed, enemies);
 }
 
 
@@ -207,7 +209,7 @@ DoubleGunTurret::DoubleGunTurret(int row, int col, ResourceHolder<sf::Texture, T
 
 float DoubleGunTurret::rotate(sf::Time deltaTime, const EnemyList& enemies)
 {
-    return rotateToNearestEnemyInRadar(deltaTime, true, BulletSpeed, enemies);
+    return rotateToNearestEnemyInRadar(deltaTime, true, Projectiles::Bullet::speed, enemies);
 }
 
 
@@ -235,7 +237,7 @@ TripleGunTurret::TripleGunTurret(int row, int col, ResourceHolder<sf::Texture, T
 
 float TripleGunTurret::rotate(sf::Time deltaTime, const EnemyList& enemies)
 {
-    return rotateToNearestEnemyInRadar(deltaTime, true, BulletSpeed, enemies);
+    return rotateToNearestEnemyInRadar(deltaTime, true, Projectiles::Bullet::speed, enemies);
 }
 
 
@@ -263,7 +265,7 @@ BombTurret::BombTurret(int row, int col, ResourceHolder<sf::Texture, Textures::I
 
 float BombTurret::rotate(sf::Time deltaTime, const EnemyList& enemies)
 {
-    return rotateToNearestEnemyInRadar(deltaTime, true, BombSpeed, enemies);
+    return rotateToNearestEnemyInRadar(deltaTime, true, Projectiles::Bomb::speed, enemies);
 }
 
 

@@ -36,6 +36,7 @@ const float ButtonPaddingY = 1.f / 8.f * ButtonHeight;
 
 // Turret properties
 const float TurretTextureOffset = 90; // turret texture angle (90 degrees = turret barrel points down in the texture)
+const float TurretScaler = 2.f;
 
 
 namespace Projectiles
@@ -53,6 +54,7 @@ namespace Projectiles
 		static constexpr float range = 3.f;			// tiles
 		static constexpr float explosionRadius = 1.f;  // damages enemies within N tiles
 		static constexpr int damage = 80;				// hit points (hit points are integers)
+		static constexpr float size = 0.1f;
 	};
 }
 

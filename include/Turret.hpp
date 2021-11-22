@@ -48,8 +48,8 @@ class Turret : public Node
 		bool isAimReady_; // is current angle OK for shooting
 		sf::Time nextFire_;  
 
-		sf::Sprite turretBasePicture_;
-		sf::Sprite turretPicture_;
+		sf::Sprite turretBaseSprite_;
+		sf::Sprite turretSprite_;
 };
 
 

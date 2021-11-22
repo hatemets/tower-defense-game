@@ -128,8 +128,11 @@ Bullet::Bullet(float tileX, float tileY, float direction) : Projectile(tileX, ti
 
 Bomb::Bomb(float tileX, float tileY, float direction) : Projectile(tileX, tileY, direction, Projectiles::Bomb::speed, Projectiles::Bomb::range, Projectiles::Bomb::damage, false, Projectiles::Bomb::explosionRadius)
 {
-	picture_.setRadius(TileSize / 20.f);
-    picture_.setOrigin(TileSize / 20.f, TileSize / 20.f);
+	const float divider = 1.f / Projectiles::Bomb::size;
+	const float radius = TileSize / divider;
+
+	picture_.setRadius(radius);
+    picture_.setOrigin(radius, radius);
     picture_.setFillColor(sf::Color::Black);
 }
 
