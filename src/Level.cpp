@@ -28,10 +28,14 @@ void Level::loadResources()
 {
 	textures_.load(Textures::ID::GrassArea, "./include/images/Grass.png");
 	textures_.load(Textures::ID::DirtPath, "./include/images/Ground.png");
-	textures_.load(Textures::ID::OrangeBase, "./include/images/TurretBaseOrange.png");
+	textures_.load(Textures::ID::GunTurretBase, "./include/images/GunTurretBase.png");
 	textures_.load(Textures::ID::GunTurret, "./include/images/GunTurret.png");
 	textures_.load(Textures::ID::DoubleGunTurret, "./include/images/DoubleGunTurret.png");
 	textures_.load(Textures::ID::DoubleGunTurretBase, "./include/images/DoubleGunTurretBase.png");
+	textures_.load(Textures::ID::TripleGunTurret, "./include/images/TripleGunTurret.png");
+	textures_.load(Textures::ID::TripleGunTurretBase, "./include/images/TripleGunTurretBase.png");
+	textures_.load(Textures::ID::BombTurretBase, "./include/images/BombTurretBase.png");
+	textures_.load(Textures::ID::BombTurret, "./include/images/BombTurret.png");
 
 	buttonShapes_.load(Buttons::ID::HomeButton);
 }
@@ -47,8 +51,7 @@ void Level::createScene()
 	// Simulate buying turrets
 	const std::vector<std::pair<int, int>>& turretBaseTiles = map_->getTurretBaseTiles();
 
-	std::size_t turretCreateCount = std::min<std::size_t>(3, turretBaseTiles.size());
-	/* std::size_t turretCreateCount = (3 < turretBaseTiles.size()) ? 3 : turretBaseTiles.size(); */
+	std::size_t turretCreateCount = std::min<std::size_t>(4, turretBaseTiles.size());
 
 	std::vector<std::pair<int, int>> turretTiles;
 
@@ -61,12 +64,23 @@ void Level::createScene()
 		if (!Map::isMember(row, col, turretTiles))
 		{
 			// Add a turret to the turret container
-			if (turretTiles.size() == 0) 
+			switch (turretTiles.size())
 			{
-				turrets_.push_back(std::make_shared<DoubleGunTurret>(DoubleGunTurret{ row, col, textures_ }));
-			} else 
-			{
-				turrets_.push_back(std::make_shared<GunTurret>(GunTurret{ row, col, textures_ }));
+				case 0:
+					turrets_.push_back(std::make_shared<GunTurret>(GunTurret{ row, col, textures_ }));
+					break;
+
+				case 1:
+					turrets_.push_back(std::make_shared<DoubleGunTurret>(DoubleGunTurret{ row, col, textures_ }));
+					break;
+
+				case 2:
+					turrets_.push_back(std::make_shared<TripleGunTurret>(TripleGunTurret{ row, col, textures_ }));
+					break;
+
+				default:
+					turrets_.push_back(std::make_shared<BombTurret>(BombTurret{ row, col, textures_ }));
+					break;
 			}
 			turretTiles.push_back(tile);
 		}
