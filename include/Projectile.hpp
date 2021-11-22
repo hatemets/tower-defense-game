@@ -10,7 +10,7 @@ using EnemyList = std::list<std::shared_ptr<Enemy>>;
 class Projectile : public Node
 {
 	public:
-		Projectile(float tileX, float tileY, float direction, float speed, float flightRange, float explosionRadius, int maxDamage, bool drawAsVertex);
+		Projectile(float tileX, float tileY, float direction, float speed, float flightRange, int maxDamage, bool drawAsVertex, float explosionRadius = 0.f);
 
 		virtual void update(sf::Time deltaTime, const EnemyList& enemies);
 		virtual void drawSelf(sf::RenderTarget& target, sf::RenderStates states) const override;

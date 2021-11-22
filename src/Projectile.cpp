@@ -4,7 +4,7 @@
 #include <memory>
 #include <algorithm>
 
-Projectile::Projectile(float tileX, float tileY, float direction, float speed, float flightRange, float explosionRadius, int maxDamage, bool drawAsVertex)
+Projectile::Projectile(float tileX, float tileY, float direction, float speed, float flightRange, int maxDamage, bool drawAsVertex, float explosionRadius)
 	: tileX_(tileX),
 	tileY_(tileY),
 	direction_(direction),
@@ -119,14 +119,14 @@ void Projectile::flight(sf::Time deltaTime)
 
 // Bullet
 
-Bullet::Bullet(float tileX, float tileY, float direction) : Projectile(tileX, tileY, direction, Projectiles::Bullet::speed, Projectiles::Bullet::range, 0, Projectiles::Bullet::damage, true)
+Bullet::Bullet(float tileX, float tileY, float direction) : Projectile(tileX, tileY, direction, Projectiles::Bullet::speed, Projectiles::Bullet::range, Projectiles::Bullet::damage, true)
 {
 }
 
 
 // Bomb
 
-Bomb::Bomb(float tileX, float tileY, float direction) : Projectile(tileX, tileY, direction, Projectiles::Bomb::speed, Projectiles::Bomb::range, Projectiles::Bomb::explosionRadius, Projectiles::Bomb::damage, false)
+Bomb::Bomb(float tileX, float tileY, float direction) : Projectile(tileX, tileY, direction, Projectiles::Bomb::speed, Projectiles::Bomb::range, Projectiles::Bomb::damage, false, Projectiles::Bomb::explosionRadius)
 {
 	picture_.setRadius(TileSize / 20.f);
     picture_.setOrigin(TileSize / 20.f, TileSize / 20.f);
