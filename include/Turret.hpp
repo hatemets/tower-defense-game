@@ -24,6 +24,7 @@ class Turret : public Node
 
 		std::shared_ptr<Enemy> getNearestEnemyInRadar(const EnemyList& enemies);
 		float rotateToNearestEnemyInRadar(sf::Time deltaTime, bool estimateEnemyMovement, float projectileSpeed, const EnemyList& enemies);
+		sf::Vector2f getProjectileStartPosition(float barrelPositionAngle);
 
 	public:
 		int getRow() const { return row_; }                                       // location tile row
@@ -73,6 +74,18 @@ class DoubleGunTurret :
 {
 	public:
 		DoubleGunTurret(int row, int col, ResourceHolder<sf::Texture, Textures::ID>& textures);
+
+	private:
+		virtual float rotate(sf::Time deltaTime, const EnemyList& enemies) override;
+        virtual std::vector<std::shared_ptr<Projectile>> shoot() override;
+};
+
+
+class TripleGunTurret :
+	public Turret
+{
+	public:
+		TripleGunTurret(int row, int col, ResourceHolder<sf::Texture, Textures::ID>& textures);
 
 	private:
 		virtual float rotate(sf::Time deltaTime, const EnemyList& enemies) override;
