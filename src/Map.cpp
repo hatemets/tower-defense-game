@@ -246,5 +246,5 @@ void Map::loadTextures()
 	loadTileset(roadTiles_);
 	loadTileset(spawnTiles_);
 	loadTileset(baseTiles_);
-	loadTileset(turretBaseTiles_, Textures::ID::GunTurretBase);
+	loadTileset(turretBaseTiles_, Textures::ID::BombTurretBase);
 }
