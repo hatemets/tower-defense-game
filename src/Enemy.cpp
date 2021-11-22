@@ -63,8 +63,8 @@ void Enemy::move(sf::Time deltaTime)
     if (distance != 0)
     {
         float angle = direction_ * DegreesToRadians;
-        float deltaX = distance * cosf(angle);
-        float deltaY = distance * sinf(angle);
+        float deltaX = distance * std::cos(angle);
+        float deltaY = distance * std::sin(angle);
         tileX_ += deltaX;
         tileY_ += deltaY;
     }
@@ -97,6 +97,6 @@ void Enemy::hit(int maxDamage)
 // Goblin
 
 Goblin::Goblin(std::vector<std::pair<int, int>>::const_iterator pathBegin, std::vector<std::pair<int, int>>::const_iterator pathEnd)
-    : Enemy(pathBegin, pathEnd, 1.5, 500)
+    : Enemy(pathBegin, pathEnd, Enemies::Goblin::goblinSpeed, Enemies::Goblin::hitPoints)
 {
 }

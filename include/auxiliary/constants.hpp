@@ -54,4 +54,14 @@ const float BulletSpeed = 5.f;       // 5 tiles per second
 const float BulletFlightRange = 5.f; // 5 tiles
 const int BulletMaxDamage = 20;      // 20 hit points (hit points are integers)
 
+// Enemy specs
+namespace Enemies
+{
+	struct Goblin
+	{
+		static constexpr float goblinSpeed = 3.f;
+		static constexpr int hitPoints = 500;
+	};
+}
+
 #endif
