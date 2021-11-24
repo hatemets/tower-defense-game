@@ -200,7 +200,7 @@ void Map::findPaths(std::vector<std::pair<int, int>>& path)
 }
 
 
-void Map::loadTileset(const std::vector<std::pair<int, int>>& tiles_, Textures::ID style)
+void Map::loadTileset(const std::vector<std::pair<int, int>>& tiles_, Textures::ID style, float scale)
 {
 	for (auto tile : tiles_)
 	{
@@ -209,8 +209,9 @@ void Map::loadTileset(const std::vector<std::pair<int, int>>& tiles_, Textures::
 
 		auto sprite = std::make_shared<sf::Sprite>(textures_.get(style));
 		auto imageBounds = sprite->getGlobalBounds();
-		sprite->setScale(TileSize / imageBounds.width, TileSize / imageBounds.height);
-		sprite->setPosition(col * TileSize, row * TileSize);
+		sprite->setScale(scale * TileSize / imageBounds.width, scale * TileSize / imageBounds.height);
+		float scalingFix = (1.f - scale) / 2.f; 
+		sprite->setPosition((col + scalingFix) * TileSize, (row + scalingFix) * TileSize);
 
 		mapPictures_.push_back(sprite);
 	}
@@ -223,5 +224,6 @@ void Map::loadTextures()
 	loadTileset(roadTiles_);
 	loadTileset(spawnTiles_);
 	loadTileset(baseTiles_);
+	loadTileset(baseTiles_, Textures::ID::Flag, 0.5f);
 	loadTileset(turretBaseTiles_, Textures::ID::BombTurretBase);
 }

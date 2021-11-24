@@ -39,6 +39,7 @@ namespace Resources
 			GrassArea,
 			SandPath,
 			DirtPath,
+			Flag,
 			LevelMenuBackground,
 
 			// Enemies

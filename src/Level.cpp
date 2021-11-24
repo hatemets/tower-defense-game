@@ -28,6 +28,7 @@ void Level::loadResources()
 {
 	textures_.load(Textures::ID::GrassArea, "./include/images/Grass.png");
 	textures_.load(Textures::ID::DirtPath, "./include/images/Ground.png");
+	textures_.load(Textures::ID::Flag, "./include/images/Flag.png");
 	textures_.load(Textures::ID::GunTurretBase, "./include/images/GunTurretBase.png");
 	textures_.load(Textures::ID::GunTurret, "./include/images/GunTurret.png");
 	textures_.load(Textures::ID::DoubleGunTurret, "./include/images/DoubleGunTurret.png");
