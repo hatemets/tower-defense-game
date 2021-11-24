@@ -135,95 +135,72 @@ bool Map::isMember(int row, int col, const std::vector<std::pair<int, int>> &con
 
 void Map::findPaths()
 {
-	std::vector<std::pair<int, int>> path;
-
-	//choose spawning tile 
-
-	if (spawnTiles_.size() == 0)
-	{
-		// fix invalid map, add spawn
-		if (roadTiles_.size() > 0)
-		{
-			spawnTiles_.push_back(*roadTiles_.begin());
-		}
-		else
-		{
-			spawnTiles_.push_back(std::make_pair(0, 0));
-		}
+	for (auto spawnTile : spawnTiles_) {
+		std::vector<std::pair<int, int>> path;
+		path.push_back(spawnTile);
+		findPaths(path);
 	}
-	path.push_back(*spawnTiles_.begin());
+}
 
-	//find the rest of the path (doesn't support multiple paths yet)
 
+void Map::findPaths(std::vector<std::pair<int, int>>& path)
+{
 	do
 	{
 		int row = path.rbegin()->first;
 		int col = path.rbegin()->second;
 
+		if (isBase(row, col)) 
+		{
+			// found a base i.e. the end point of this path
+			paths_.push_back(path);
+			return;
+		}
+
+		// find next road/base tiles
+
 		std::vector<std::pair<int, int>> nextTiles;
 
-		// check if we have a base as a neighbour
-		if (isBase(row + 1, col))
-		{
-			path.push_back(std::make_pair(row + 1, col));
-			break;
-		}
-		if (isBase(row - 1, col))
-		{
-			path.push_back(std::make_pair(row - 1, col));
-			break;
-		}
-		if (isBase(row, col + 1))
-		{
-			path.push_back(std::make_pair(row, col + 1));
-			break;
-		}
-		if (isBase(row, col - 1))
-		{
-			path.push_back(std::make_pair(row, col - 1));
-			break;
-		}
-
-		// otherwise find next road
-		if (!isMember(row + 1, col, path) && isRoad(row + 1, col))
+		if (!isMember(row + 1, col, path) && (isRoad(row + 1, col) || isBase(row + 1, col)))
 		{
 			nextTiles.push_back(std::make_pair(row + 1, col));
 		}
-		if (!isMember(row - 1, col, path) && isRoad(row - 1, col))
+		if (!isMember(row - 1, col, path) && (isRoad(row - 1, col) || isBase(row - 1, col)))
 		{
 			nextTiles.push_back(std::make_pair(row - 1, col));
 		}
-		if (!isMember(row, col + 1, path) && isRoad(row, col + 1))
+		if (!isMember(row, col + 1, path) && (isRoad(row, col + 1) || isBase(row, col + 1)))
 		{
 			nextTiles.push_back(std::make_pair(row, col + 1));
 		}
-		if (!isMember(row, col - 1, path) && isRoad(row, col - 1))
+		if (!isMember(row, col - 1, path) && (isRoad(row, col - 1) || isBase(row, col - 1)))
 		{
 			nextTiles.push_back(std::make_pair(row, col - 1));
 		}
 
-		if (nextTiles.size() == 0)
+		switch (nextTiles.size())
 		{
-			break; // cannot find base or road
-		}
-		else
-		{
-			path.push_back(nextTiles[0]); // here we should follow all next tiles recursively if size > 1
-		}
+			case 0:
+				return; // dead end
 
+			case 1:
+				path.push_back(nextTiles[0]);
+				break;
+
+			default:
+				for (auto nextTile : nextTiles)
+				{
+					std::vector<std::pair<int, int>> pathCopy = path;
+					pathCopy.push_back(nextTile);
+					findPaths(pathCopy);
+				}
+				return; // all path branches are taken care of by the above recursion
+		}
 	} while (true);
-
-	if (!isBase(path.rbegin()->first, path.rbegin()->second))
-	{
-		// fix invalid map, add base
-		baseTiles_.push_back(std::make_pair(path.rbegin()->first, path.rbegin()->second));
-	}
-
-	paths_.push_back(path);
 }
 
 
-void Map::loadTileset(const std::vector<std::pair<int, int>>& tiles_, Textures::ID style)
+void Map::loadTileset(const std::vector<std::pair<int, int>>& tiles_, Textures::ID style, float scale)
 {
 	for (auto tile : tiles_)
 	{
@@ -232,8 +209,9 @@ void Map::loadTileset(const std::vector<std::pair<int, int>>& tiles_, Textures::
 
 		auto sprite = std::make_shared<sf::Sprite>(textures_.get(style));
 		auto imageBounds = sprite->getGlobalBounds();
-		sprite->setScale(TileSize / imageBounds.width, TileSize / imageBounds.height);
-		sprite->setPosition(col * TileSize, row * TileSize);
+		sprite->setScale(scale * TileSize / imageBounds.width, scale * TileSize / imageBounds.height);
+		float scalingFix = (1.f - scale) / 2.f; 
+		sprite->setPosition((col + scalingFix) * TileSize, (row + scalingFix) * TileSize);
 
 		mapPictures_.push_back(sprite);
 	}
@@ -246,5 +224,6 @@ void Map::loadTextures()
 	loadTileset(roadTiles_);
 	loadTileset(spawnTiles_);
 	loadTileset(baseTiles_);
+	loadTileset(baseTiles_, Textures::ID::Flag, 0.5f);
 	loadTileset(turretBaseTiles_, Textures::ID::BombTurretBase);
 }

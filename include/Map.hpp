@@ -32,14 +32,16 @@ class Map : public Node
     private:
         void loadFile(const std::string &fileName);
         void loadTextures();
+
         void findPaths();
+        void findPaths(std::vector<std::pair<int, int>>& path);
+
 		bool isSpawn(int row, int col) const { return isMember(row, col, spawnTiles_); }
 		bool isRoad(int row, int col) const { return isMember(row, col, roadTiles_); }
 		bool isBase(int row, int col) const { return isMember(row, col, baseTiles_); }
 		bool isTurretBase(int row, int col) const { return isMember(row, col, turretBaseTiles_); }
 
-
-		void loadTileset(const std::vector<std::pair<int, int>>& tiles_, Textures::ID style = Textures::ID::DirtPath);
+		void loadTileset(const std::vector<std::pair<int, int>>& tiles_, Textures::ID style = Textures::ID::DirtPath, float scale = 1.f);
 
     private:
 		ResourceHolder<sf::Texture, Textures::ID>& textures_;
@@ -50,8 +52,7 @@ class Map : public Node
         std::vector<std::pair<int, int>> baseTiles_;
         std::vector<std::pair<int, int>> turretBaseTiles_;
         std::vector<std::vector<std::pair<int, int>>> paths_;
-        /* std::vector<std::shared_ptr<sf::Shape>> mapPictures_; // Shapes probably should be replaced with Textures or Sprites */
-        std::vector<std::shared_ptr<sf::Sprite>> mapPictures_; // Shapes probably should be replaced with Textures or Sprites
+        std::vector<std::shared_ptr<sf::Sprite>> mapPictures_; 
 };
 
 #endif
