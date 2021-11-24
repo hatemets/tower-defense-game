@@ -10,7 +10,7 @@ using EnemyList = std::list<std::shared_ptr<Enemy>>;
 class Projectile : public Node
 {
 	public:
-		Projectile(float tileX, float tileY, float direction, float speed, float flightRange, int maxDamage, bool drawAsVertex, float explosionRadius = 0.f);
+		Projectile(sf::Vector2f position, float direction, float speed, float flightRange, int maxDamage, bool drawAsVertex, float explosionRadius = 0.f);
 
 		virtual void update(sf::Time deltaTime, const EnemyList& enemies);
 		virtual void drawSelf(sf::RenderTarget& target, sf::RenderStates states) const override;
@@ -23,14 +23,12 @@ class Projectile : public Node
 
 	public:
 		bool isAlive() const;  							    // has lifetime left
-		float getTileX() const { return tileX_; }  		    // projectile centre x in tile coordinates
-		float getTileY() const { return tileY_; }   		// projectile centre y in tile coordinates
+		sf::Vector2f getPosition() const { return position_; }
 		float getDirection() const { return direction_; }   // flight angle
 		bool drawAsVertex() const { return drawAsVertex_; } // draw as vertex (instead of a shape/sprite)
 
 	protected:
-		float tileX_;  
-		float tileY_;  
+		sf::Vector2f position_;
 		float direction_;  
 
 		const float speed_;          // projectile speed as tiles per second
@@ -45,14 +43,14 @@ class Projectile : public Node
 class Bullet : public Projectile
 {
 	public:
-		Bullet(float tileX, float tileY, float direction);
+		Bullet(sf::Vector2f position, float direction);
 };
 
 
 class Bomb : public Projectile
 {
 	public:
-		Bomb(float tileX, float tileY, float direction);
+		Bomb(sf::Vector2f position, float direction);
 
 		virtual void update(sf::Time deltaTime, const EnemyList& enemies) override;
 		virtual void drawSelf(sf::RenderTarget& target, sf::RenderStates states) const override;
@@ -64,7 +62,7 @@ class Bomb : public Projectile
 class Missile : public Projectile
 {
 	public:
-		Missile(float tileX, float tileY, float direction);
+		Missile(sf::Vector2f position, float direction);
 
 	protected:
 		virtual void flight(sf::Time deltaTime); 

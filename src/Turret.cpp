@@ -192,7 +192,7 @@ std::vector<std::shared_ptr<Projectile>> GunTurret::shoot()
     std::vector<std::shared_ptr<Projectile>> projectiles;
 
     sf::Vector2f position = getProjectileStartPosition(0.f);
-    projectiles.push_back(std::make_shared<Bullet>(Bullet{position.x, position.y, currentAngle_}));
+    projectiles.push_back(std::make_shared<Bullet>(Bullet{position, currentAngle_}));
 
     return projectiles; 
 }
@@ -219,7 +219,7 @@ std::vector<std::shared_ptr<Projectile>> DoubleGunTurret::shoot()
     for (auto angle : {10.f, -10.f})
     {
         sf::Vector2f position = getProjectileStartPosition(angle);
-        projectiles.push_back(std::make_shared<Bullet>(Bullet{position.x, position.y, currentAngle_}));
+        projectiles.push_back(std::make_shared<Bullet>(Bullet{position, currentAngle_}));
     }
 
     return projectiles; 
@@ -247,7 +247,7 @@ std::vector<std::shared_ptr<Projectile>> TripleGunTurret::shoot()
     for (auto angle : {10.f, 0.f, -10.f})
     {
         sf::Vector2f position = getProjectileStartPosition(angle);
-        projectiles.push_back(std::make_shared<Bullet>(Bullet{position.x, position.y, currentAngle_}));
+        projectiles.push_back(std::make_shared<Bullet>(Bullet{position, currentAngle_}));
     }
 
     return projectiles; 
@@ -273,7 +273,7 @@ std::vector<std::shared_ptr<Projectile>> BombTurret::shoot()
     std::vector<std::shared_ptr<Projectile>> projectiles;
 
     sf::Vector2f position = getProjectileStartPosition(0.f);
-    projectiles.push_back(std::make_shared<::Bomb>(::Bomb{position.x, position.y, currentAngle_}));
+    projectiles.push_back(std::make_shared<::Bomb>(::Bomb{position, currentAngle_}));
 
     return projectiles; 
 }

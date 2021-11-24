@@ -4,9 +4,8 @@
 #include <memory>
 #include <algorithm>
 
-Projectile::Projectile(float tileX, float tileY, float direction, float speed, float flightRange, int maxDamage, bool drawAsVertex, float explosionRadius)
-	: tileX_(tileX),
-	tileY_(tileY),
+Projectile::Projectile(sf::Vector2f position, float direction, float speed, float flightRange, int maxDamage, bool drawAsVertex, float explosionRadius)
+	: position_(position),
 	direction_(direction),
 	speed_(speed),
 	explosionRadius_(explosionRadius),
@@ -59,7 +58,7 @@ std::shared_ptr<Enemy> Projectile::checkHit(const EnemyList& enemies)
 {
 	for (std::shared_ptr<Enemy> enemy : enemies)
 	{
-		if (Map::isContact(sf::Vector2f(tileX_, tileY_), 0.f, enemy->getPosition(), enemy->getRadius()))
+		if (Map::isContact(position_, 0.f, enemy->getPosition(), enemy->getRadius()))
 		{
 			return enemy;
 		}
@@ -74,7 +73,7 @@ EnemyList Projectile::getEnemiesInExplosion(const EnemyList &enemies)
 
 	if (explosionRadius_ > 0.f)
 	{
-		sf::Vector2f projectilePosition(getTileX(), getTileY());
+		sf::Vector2f projectilePosition(position_);
 
 		for (auto &enemy : enemies)
 		{
@@ -112,21 +111,20 @@ void Projectile::flight(sf::Time deltaTime)
 	float deltaX = distance * std::cos(angle);
 	float deltaY = distance * std::sin(angle);
 
-	tileX_ += deltaX;
-	tileY_ += deltaY;
+	position_ += sf::Vector2f(deltaX, deltaY);
 }
 
 
 // Bullet
 
-Bullet::Bullet(float tileX, float tileY, float direction) : Projectile(tileX, tileY, direction, Projectiles::Bullet::speed, Projectiles::Bullet::range, Projectiles::Bullet::damage, true)
+Bullet::Bullet(sf::Vector2f position, float direction) : Projectile(position, direction, Projectiles::Bullet::speed, Projectiles::Bullet::range, Projectiles::Bullet::damage, true)
 {
 }
 
 
 // Bomb
 
-Bomb::Bomb(float tileX, float tileY, float direction) : Projectile(tileX, tileY, direction, Projectiles::Bomb::speed, Projectiles::Bomb::range, Projectiles::Bomb::damage, false, Projectiles::Bomb::explosionRadius)
+Bomb::Bomb(sf::Vector2f position, float direction) : Projectile(position, direction, Projectiles::Bomb::speed, Projectiles::Bomb::range, Projectiles::Bomb::damage, false, Projectiles::Bomb::explosionRadius)
 {
 	const float divider = 1.f / Projectiles::Bomb::size;
 	const float radius = TileSize / divider;
@@ -139,7 +137,7 @@ Bomb::Bomb(float tileX, float tileY, float direction) : Projectile(tileX, tileY,
 void Bomb::update(sf::Time deltaTime, const EnemyList& enemies) 
 {
 	Projectile::update(deltaTime, enemies);
-	picture_.setPosition(tileX_ * TileSize, tileY_ * TileSize);
+	picture_.setPosition((float)TileSize * position_);
 }
 
 void Bomb::drawSelf(sf::RenderTarget &target, sf::RenderStates states) const
