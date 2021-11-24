@@ -132,8 +132,8 @@ bool Map::isMember(int row, int col, const std::vector<std::pair<int, int>> &con
 	return std::find(container.cbegin(), container.cend(), std::make_pair(row, col)) != container.cend();
 }
 
-
-void Map::findPaths()
+/*
+void Map::findSinglePath()
 {
 	std::vector<std::pair<int, int>> path;
 
@@ -220,6 +220,73 @@ void Map::findPaths()
 	}
 
 	paths_.push_back(path);
+}*/
+
+
+void Map::findPaths()
+{
+	for (auto spawnTile : spawnTiles_) {
+		std::vector<std::pair<int, int>> path;
+		path.push_back(spawnTile);
+		findPaths(path);
+	}
+}
+
+
+void Map::findPaths(std::vector<std::pair<int, int>>& path)
+{
+	do
+	{
+		int row = path.rbegin()->first;
+		int col = path.rbegin()->second;
+
+		if (isBase(row, col)) 
+		{
+			// found a base i.e. the end point of this path
+			paths_.push_back(path);
+			return;
+		}
+
+		// find next road/base tiles
+
+		std::vector<std::pair<int, int>> nextTiles;
+
+		if (!isMember(row + 1, col, path) && (isRoad(row + 1, col) || isBase(row + 1, col)))
+		{
+			nextTiles.push_back(std::make_pair(row + 1, col));
+		}
+		if (!isMember(row - 1, col, path) && (isRoad(row - 1, col) || isBase(row - 1, col)))
+		{
+			nextTiles.push_back(std::make_pair(row - 1, col));
+		}
+		if (!isMember(row, col + 1, path) && (isRoad(row, col + 1) || isBase(row, col + 1)))
+		{
+			nextTiles.push_back(std::make_pair(row, col + 1));
+		}
+		if (!isMember(row, col - 1, path) && (isRoad(row, col - 1) || isBase(row, col - 1)))
+		{
+			nextTiles.push_back(std::make_pair(row, col - 1));
+		}
+
+		switch (nextTiles.size())
+		{
+			case 0:
+				return; // dead end
+
+			case 1:
+				path.push_back(nextTiles[0]);
+				break;
+
+			default:
+				for (auto nextTile : nextTiles)
+				{
+					std::vector<std::pair<int, int>> pathCopy = path;
+					pathCopy.push_back(nextTile);
+					findPaths(pathCopy);
+				}
+				return; // all path branches are taken care of by the above recursion
+		}
+	} while (true);
 }
 
 

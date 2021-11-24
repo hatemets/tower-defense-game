@@ -91,7 +91,7 @@ void Level::createScene()
 void Level::loadMap()
 {
 	// Map
-	auto map = std::make_unique<Map>(Map{"./include/maps/map1.txt", textures_}); // how the level/map is chosen?
+	auto map = std::make_unique<Map>(Map{"./include/maps/map3.txt", textures_}); // how the level/map is chosen?
 	map_ = map.get();
 	map_->setPosition(0.f, 0.f);
 	layers_[static_cast<std::size_t>(Layers::Background)]->addChild(std::move(map));
@@ -205,7 +205,7 @@ void Level::addBackground()
 	sf::IntRect bounds(windowBounds_);
 
 	auto background = std::make_unique<BackgroundSprite>(BackgroundSprite{backgroundTexture, bounds});
-	background->setColor(sf::Color(192, 192, 192)); // make grass darker so that bullets are more visible
+	background->setColor(sf::Color(128, 128, 128)); // make grass darker so that bullets are more visible
 	background->setPosition(0.f, 0.f);
 	layers_[static_cast<std::size_t>(Layers::Background)]->addChild(std::move(background));
 }

@@ -32,12 +32,14 @@ class Map : public Node
     private:
         void loadFile(const std::string &fileName);
         void loadTextures();
+
         void findPaths();
+        void findPaths(std::vector<std::pair<int, int>>& path);
+
 		bool isSpawn(int row, int col) const { return isMember(row, col, spawnTiles_); }
 		bool isRoad(int row, int col) const { return isMember(row, col, roadTiles_); }
 		bool isBase(int row, int col) const { return isMember(row, col, baseTiles_); }
 		bool isTurretBase(int row, int col) const { return isMember(row, col, turretBaseTiles_); }
-
 
 		void loadTileset(const std::vector<std::pair<int, int>>& tiles_, Textures::ID style = Textures::ID::DirtPath);
 
