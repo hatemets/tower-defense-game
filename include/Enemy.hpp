@@ -25,9 +25,7 @@ class Enemy : public Node
 		bool isAlive() const;								 // alive or dead
 		bool hasReachedBase() const;						 // has succeed to reach the base
 		void hit(int maxDamage);							 // used by projectile
-		float getTileX() const { return tileX_; }	         // enemy centre x in tile coordinates 		 
-		float getTileY() const { return tileY_; }			 // enemy centre y in tile coordinates
-		/* sf::Vector2f getPosition const { return } */
+		sf::Vector2f getPosition() const { return position_; }
 		float getDirection() const { return direction_; }	 // flight angle
 		float getSpeed() const { return speed_; }			 // speed as tiles / second 
 		int getHitPoints() const { return hitPoints_; }		 // hitpoints left
@@ -36,8 +34,7 @@ class Enemy : public Node
 	protected:
 		std::vector<std::pair<int, int>>::const_iterator pathIterator_;
 		std::vector<std::pair<int, int>>::const_iterator pathEnd_;
-		float tileX_;
-		float tileY_;
+		sf::Vector2f position_;
 		float direction_;
 		float speed_;
 		int hitPoints_;

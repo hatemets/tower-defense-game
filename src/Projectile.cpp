@@ -59,7 +59,7 @@ std::shared_ptr<Enemy> Projectile::checkHit(const EnemyList& enemies)
 {
 	for (std::shared_ptr<Enemy> enemy : enemies)
 	{
-		if (Map::isContact(sf::Vector2f(tileX_, tileY_), 0.f, sf::Vector2f(enemy->getTileX(), enemy->getTileY()), enemy->getRadius()))
+		if (Map::isContact(sf::Vector2f(tileX_, tileY_), 0.f, enemy->getPosition(), enemy->getRadius()))
 		{
 			return enemy;
 		}
@@ -78,7 +78,7 @@ EnemyList Projectile::getEnemiesInExplosion(const EnemyList &enemies)
 
 		for (auto &enemy : enemies)
 		{
-			float enemyDistance = Map::calculateDistance(projectilePosition, sf::Vector2f(enemy->getTileX(), enemy->getTileY()));
+			float enemyDistance = Map::calculateDistance(projectilePosition, enemy->getPosition());
 
 			if (enemyDistance <= explosionRadius_)
 			{

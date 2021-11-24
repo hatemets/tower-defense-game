@@ -94,7 +94,7 @@ std::shared_ptr<Enemy> Turret::getNearestEnemyInRadar(const EnemyList& enemies)
 
     for (auto& enemy : enemies)
 	{
-        float enemyDistance = Map::calculateDistance(sf::Vector2f(turretX, turretY), sf::Vector2f(enemy->getTileX(), enemy->getTileY()));
+        float enemyDistance = Map::calculateDistance(sf::Vector2f(turretX, turretY), enemy->getPosition());
 
         if (enemyDistance < minDistance && enemyDistance <= radarRange_)
 		{
@@ -115,22 +115,21 @@ float Turret::rotateToNearestEnemyInRadar(sf::Time deltaTime, bool estimateEnemy
 
     if (enemy)
 	{
-        float targetX = enemy->getTileX();
-        float targetY = enemy->getTileY();
+        auto targetPos = enemy->getPosition();
 
         if (estimateEnemyMovement)
         {
-            float enemyDistance = Map::calculateDistance(sf::Vector2f(getTileX(), getTileY()), sf::Vector2f(targetX, targetY));
+            float enemyDistance = Map::calculateDistance(sf::Vector2f(getTileX(), getTileY()), targetPos);
             float flightTime = enemyDistance / projectileSpeed;
             float enemySpeed = enemy->getSpeed();
             float enemyMovement = flightTime * enemySpeed; // not exact but close enough
             float enemyAngle = enemy->getDirection() * DegreesToRadians;
-            targetX += enemyMovement * std::cos(enemyAngle);
-            targetY += enemyMovement * std::sin(enemyAngle);
+
+			targetPos += sf::Vector2f(enemyMovement * std::cos(enemyAngle), enemyMovement * std::sin(enemyAngle));
         }
 
         float maxRotation = deltaTime.asSeconds() * Turrets::rotationSpeed;
-        float angle = Map::calculateAngle(sf::Vector2f(getTileX(), getTileY()), sf::Vector2f(targetX, targetY));
+        float angle = Map::calculateAngle(sf::Vector2f(getTileX(), getTileY()), targetPos);
         float neededRotation = angle - currentAngle_;
 
         while (neededRotation > 180.f)

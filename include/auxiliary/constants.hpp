@@ -50,7 +50,7 @@ namespace Projectiles
 
 	struct Bomb
 	{
-		static constexpr float speed = 8.f;			// tiles per second
+		static constexpr float speed = 12.f;			// tiles per second
 		static constexpr float range = 3.f;			// tiles
 		static constexpr float explosionRadius = 1.f;  // damages enemies within N tiles
 		static constexpr int damage = 80;				// hit points (hit points are integers)
@@ -64,7 +64,7 @@ namespace Enemies
 {
 	struct Goblin
 	{
-		static constexpr float goblinSpeed = 2.5f;
+		static constexpr float goblinSpeed = 3.5f;
 		static constexpr int hitPoints = 500;
 	};
 }
@@ -73,7 +73,7 @@ namespace Enemies
 // Turret specs
 namespace Turrets
 {
-	const float rotationSpeed = 180.f; // Degrees per second
+	const float rotationSpeed = 270.f; // Degrees per second
 
 	struct Gun
 	{

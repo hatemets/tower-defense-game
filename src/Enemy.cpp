@@ -7,8 +7,7 @@
 Enemy::Enemy(std::vector<std::pair<int, int>>::const_iterator pathBegin, std::vector<std::pair<int, int>>::const_iterator pathEnd, float speed, int hitPoints, float radius)
     : pathIterator_(pathBegin),
       pathEnd_(pathEnd),
-      tileX_(pathBegin->second + 0.5f),
-      tileY_(pathBegin->first + 0.5f),
+	  position_(pathBegin->second + 0.5f, pathBegin->first + 0.5f),
       direction_(0),
       speed_(speed),
       hitPoints_(hitPoints),
@@ -26,18 +25,21 @@ void Enemy::update(sf::Time deltaTime)
     if (isAlive() && !hasReachedBase())
     {
         move(deltaTime);
+
         auto target = *pathIterator_;
+
         float targetX = target.second + 0.5f;
         float targetY = target.first + 0.5f;
 
-        if (Map::isContact(sf::Vector2f(tileX_, tileY_), 0.f, sf::Vector2f(targetX, targetY), 0.25f))
+        if (Map::isContact(position_, 0.f, sf::Vector2f(targetX, targetY), 0.25f))
         {
             pathIterator_++;
             setDirection();
             // picture_.setRotation(direction_);
         }
 
-        picture_.setPosition(tileX_ * TileSize, tileY_ * TileSize);
+        /* picture_.setPosition((float)TileSize * position_); */
+        picture_.setPosition(position_.x * TileSize, position_.y * TileSize);
     }
 }
 
@@ -53,7 +55,7 @@ void Enemy::setDirection()
         auto target = *pathIterator_;
         float targetX = target.second + 0.5f;
         float targetY = target.first + 0.5f;
-        direction_ = Map::calculateAngle(sf::Vector2f(tileX_, tileY_), sf::Vector2f(targetX, targetY));
+        direction_ = Map::calculateAngle(position_, sf::Vector2f(targetX, targetY));
     }
 }
 
@@ -65,8 +67,8 @@ void Enemy::move(sf::Time deltaTime)
         float angle = direction_ * DegreesToRadians;
         float deltaX = distance * std::cos(angle);
         float deltaY = distance * std::sin(angle);
-        tileX_ += deltaX;
-        tileY_ += deltaY;
+
+		position_ = sf::Vector2f(position_.x + deltaX, position_.y + deltaY);
     }
 }
 
