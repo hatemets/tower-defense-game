@@ -119,13 +119,16 @@ float Turret::rotateToNearestEnemyInRadar(sf::Time deltaTime, bool estimateEnemy
 
         if (estimateEnemyMovement)
         {
-            float enemyDistance = Map::calculateDistance(sf::Vector2f(getTileX(), getTileY()), targetPos);
-            float flightTime = enemyDistance / projectileSpeed;
-            float enemySpeed = enemy->getSpeed();
-            float enemyMovement = flightTime * enemySpeed; // not exact but close enough
-            float enemyAngle = enemy->getDirection() * DegreesToRadians;
+            float barrelLength = TurretScaler * 0.5f;
+            float enemyDistance = Map::calculateDistance(sf::Vector2f(getTileX(), getTileY()), targetPos) - barrelLength;
+            if (enemyDistance > 0.f) {
+                float flightTime = enemyDistance / projectileSpeed;
+                float enemySpeed = enemy->getSpeed();
+                float enemyMovement = flightTime * enemySpeed; // not exact but close enough
+                float enemyAngle = enemy->getDirection() * DegreesToRadians;
 
-			targetPos += sf::Vector2f(enemyMovement * std::cos(enemyAngle), enemyMovement * std::sin(enemyAngle));
+			    targetPos += sf::Vector2f(enemyMovement * std::cos(enemyAngle), enemyMovement * std::sin(enemyAngle));
+            }
         }
 
         float maxRotation = deltaTime.asSeconds() * Turrets::rotationSpeed;
@@ -166,8 +169,8 @@ using namespace Turrets;
 sf::Vector2f Turret::getProjectileStartPosition(float barrelPositionAngle)
 {
     float radians = (currentAngle_ + barrelPositionAngle) * DegreesToRadians;
-    float projectileX = getTileX() + 0.5f * cosf(radians); // x coordinate of the tip of the barrel
-    float projectileY = getTileY() + 0.5f * sinf(radians); // y coordinate of the tip of the barrel
+    float projectileX = getTileX() + TurretScaler * 0.5f * cosf(radians); // x coordinate of the tip of the barrel
+    float projectileY = getTileY() + TurretScaler * 0.5f * sinf(radians); // y coordinate of the tip of the barrel
     return sf::Vector2f(projectileX, projectileY);
 }
 
