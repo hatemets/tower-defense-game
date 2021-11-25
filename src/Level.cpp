@@ -187,7 +187,7 @@ void Level::updateProjectiles(sf::Time deltaTime)
 	{
 		if (projectile->drawAsVertex())
 		{
-			projectileVertices_[vertexCount].position = sf::Vector2f(projectile->getTileX() * TileSize, projectile->getTileY() * TileSize);
+			projectileVertices_[vertexCount].position = projectile->getPosition() * (float)TileSize;
 			projectileVertices_[vertexCount].color = sf::Color::White;
 			vertexCount++;
 		}
