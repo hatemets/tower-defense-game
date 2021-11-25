@@ -44,17 +44,18 @@ namespace Projectiles
 	struct Bullet
 	{
 		static constexpr float speed = 20.f;   // tiles per second
-		static constexpr float range = 5.f;	// tiles
+		static constexpr float range = 5.f;    // tiles
 		static constexpr int damage = 20;      // hit points (hit points are integers)
+		static constexpr float size = 0.f;     // bullet diameter (0 -> draw as vertex)
 	};
 
 	struct Bomb
 	{
 		static constexpr float speed = 12.f;			// tiles per second
-		static constexpr float range = 3.f;			// tiles
-		static constexpr float explosionRadius = 1.f;  // damages enemies within N tiles
+		static constexpr float range = 3.f;			    // tiles
+		static constexpr float explosionRadius = 1.f;   // damages enemies within N tiles
 		static constexpr int damage = 80;				// hit points (hit points are integers)
-		static constexpr float size = 0.1f;
+		static constexpr float size = 0.2f;             // bomb diameter is 0.2 tiles
 	};
 }
 
@@ -66,13 +67,13 @@ namespace Enemies
 	{
 		static constexpr float speed = 3.5f;
 		static constexpr int hitPoints = 500;
-		static constexpr float size = 0.5f; // Diameter 0.5 tiles
+		static constexpr float size = 0.5f; // Goblin diameter is 0.5 tiles
 	};
 
 	struct Orc
 	{
 		static constexpr float speed = 1.5f;
-		static constexpr int hitPoints = 1200;
+		static constexpr int hitPoints = 1500;
 		static constexpr float size = 0.7f;
 	};
 }

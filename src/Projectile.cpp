@@ -4,13 +4,13 @@
 #include <memory>
 #include <algorithm>
 
-Projectile::Projectile(sf::Vector2f position, float direction, float speed, float flightRange, int maxDamage, bool drawAsVertex, float explosionRadius)
+Projectile::Projectile(sf::Vector2f position, float direction, float speed, float flightRange, int maxDamage, float size, float explosionRadius)
 	: position_(position),
 	direction_(direction),
 	speed_(speed),
 	explosionRadius_(explosionRadius),
 	maxDamage_(maxDamage),
-	drawAsVertex_(drawAsVertex)
+	size_(size)
 {
 	lifetimeLeft_ = sf::seconds(flightRange / speed);
 }
@@ -58,7 +58,7 @@ std::shared_ptr<Enemy> Projectile::checkHit(const EnemyList& enemies)
 {
 	for (std::shared_ptr<Enemy> enemy : enemies)
 	{
-		if (Map::isContact(position_, 0.f, enemy->getPosition(), enemy->getRadius()))
+		if (Map::isContact(position_, getRadius(), enemy->getPosition(), enemy->getRadius()))
 		{
 			return enemy;
 		}
@@ -117,18 +117,16 @@ void Projectile::flight(sf::Time deltaTime)
 
 // Bullet
 
-Bullet::Bullet(sf::Vector2f position, float direction) : Projectile(position, direction, Projectiles::Bullet::speed, Projectiles::Bullet::range, Projectiles::Bullet::damage, true)
+Bullet::Bullet(sf::Vector2f position, float direction) : Projectile(position, direction, Projectiles::Bullet::speed, Projectiles::Bullet::range, Projectiles::Bullet::damage, Projectiles::Bullet::size)
 {
 }
 
 
 // Bomb
 
-Bomb::Bomb(sf::Vector2f position, float direction) : Projectile(position, direction, Projectiles::Bomb::speed, Projectiles::Bomb::range, Projectiles::Bomb::damage, false, Projectiles::Bomb::explosionRadius)
+Bomb::Bomb(sf::Vector2f position, float direction) : Projectile(position, direction, Projectiles::Bomb::speed, Projectiles::Bomb::range, Projectiles::Bomb::damage, Projectiles::Bomb::size, Projectiles::Bomb::explosionRadius)
 {
-	const float divider = 1.f / Projectiles::Bomb::size;
-	const float radius = TileSize / divider;
-
+	const float radius = getRadius() * TileSize;
 	picture_.setRadius(radius);
     picture_.setOrigin(radius, radius);
     picture_.setFillColor(sf::Color::Black);

@@ -10,7 +10,7 @@ using EnemyList = std::list<std::shared_ptr<Enemy>>;
 class Projectile : public Node
 {
 	public:
-		Projectile(sf::Vector2f position, float direction, float speed, float flightRange, int maxDamage, bool drawAsVertex, float explosionRadius = 0.f);
+		Projectile(sf::Vector2f position, float direction, float speed, float flightRange, int maxDamage, float size, float explosionRadius = 0.f);
 
 		virtual void update(sf::Time deltaTime, const EnemyList& enemies);
 		virtual void drawSelf(sf::RenderTarget& target, sf::RenderStates states) const override;
@@ -25,18 +25,18 @@ class Projectile : public Node
 		bool isAlive() const;  							    // has lifetime left
 		sf::Vector2f getPosition() const { return position_; }
 		float getDirection() const { return direction_; }   // flight angle
-		bool drawAsVertex() const { return drawAsVertex_; } // draw as vertex (instead of a shape/sprite)
+		float getRadius() const  { return size_ / 2.f; }
+		bool drawAsVertex() const { return size_ == 0.f; } // draw as vertex (instead of a shape/sprite)
 
 	protected:
-		sf::Vector2f position_;
-		float direction_;  
-
-		const float speed_;          // projectile speed as tiles per second
+		sf::Vector2f position_;       // position as tile coordinates
+		float direction_;             // flight direction
+		const float speed_;           // projectile speed as tiles per second
 		const float explosionRadius_; // damage area as tiles (0 if requires direct hit)
-		const int maxDamage_;        // max hit points damage 
-		const bool drawAsVertex_;
+		const int maxDamage_;         // max hit points damage 
+		const float size_;            // projectile size (both visual and hit area)
 
-		sf::Time lifetimeLeft_; 
+		sf::Time lifetimeLeft_;       // flight time left (if no hit)
 };
 
 
