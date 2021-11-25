@@ -64,9 +64,16 @@ namespace Enemies
 {
 	struct Goblin
 	{
-		static constexpr float goblinSpeed = 3.5f;
+		static constexpr float speed = 3.5f;
 		static constexpr int hitPoints = 500;
 		static constexpr float size = 0.5f; // Diameter 0.5 tiles
+	};
+
+	struct Orc
+	{
+		static constexpr float speed = 1.5f;
+		static constexpr int hitPoints = 1200;
+		static constexpr float size = 0.7f;
 	};
 }
 

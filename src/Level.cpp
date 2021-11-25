@@ -38,6 +38,7 @@ void Level::loadResources()
 	textures_.load(Textures::ID::BombTurretBase, "./include/images/BombTurretBase.png");
 	textures_.load(Textures::ID::BombTurret, "./include/images/BombTurret.png");
 	textures_.load(Textures::ID::Goblin, "./include/images/Goblin.png");
+	textures_.load(Textures::ID::Orc, "./include/images/Orc.png");
 
 	buttonShapes_.load(Buttons::ID::HomeButton);
 }
@@ -151,8 +152,24 @@ void Level::updateEnemies(sf::Time deltaTime)
 		}
 
 		auto path = map_->getPath();
-		auto goblin = std::make_shared<Goblin>(Goblin{path.first, path.second, textures_});
-		enemies_.push_back(goblin);
+		int level = 2; // FIX THIS: This should be the actual level number
+		switch (rand() % std::min(level, 2)) // 2 is here the number of all different enemies
+		{
+			case 0:
+			{
+				auto goblin = std::make_shared<Goblin>(Goblin{path.first, path.second, textures_});
+				enemies_.push_back(goblin);
+				break;
+			}
+
+			case 1:
+			{
+				auto orc = std::make_shared<Orc>(Orc{path.first, path.second, textures_});
+				enemies_.push_back(orc);
+				break;
+			}
+		}
+		
 	}
 }
 

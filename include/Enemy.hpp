@@ -44,10 +44,18 @@ class Enemy : public Node
 		sf::Sprite enemySprite_;
 };
 
+
 class Goblin : public Enemy
 {
 	public:
 		Goblin(std::vector<std::pair<int, int>>::const_iterator pathBegin, std::vector<std::pair<int, int>>::const_iterator pathEnd, ResourceHolder<sf::Texture, Textures::ID>& textures);
+};
+
+
+class Orc : public Enemy
+{
+	public:
+		Orc(std::vector<std::pair<int, int>>::const_iterator pathBegin, std::vector<std::pair<int, int>>::const_iterator pathEnd, ResourceHolder<sf::Texture, Textures::ID>& textures);
 };
 
 #endif

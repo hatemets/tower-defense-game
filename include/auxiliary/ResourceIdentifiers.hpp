@@ -44,6 +44,7 @@ namespace Resources
 
 			// Enemies
 			Goblin,
+			Orc,
 
 			// Turrets
 			GunTurret,
