@@ -44,6 +44,11 @@ class Bullet : public Projectile
 {
 	public:
 		Bullet(sf::Vector2f position, float direction);
+
+		virtual void update(sf::Time deltaTime, const EnemyList& enemies) override;
+		virtual void drawSelf(sf::RenderTarget& target, sf::RenderStates states) const override;
+		
+		sf::CircleShape picture_;
 };
 
 

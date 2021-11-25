@@ -197,21 +197,25 @@ void Level::updateProjectiles(sf::Time deltaTime)
 		projectile->update(deltaTime, enemies_);
 	}
 
-	// collect all projectiles, that can be drawn as a vertex
-	projectileVertices_.resize(projectiles_.size());
-
-	int vertexCount = 0;
-	for (auto& projectile : projectiles_)
+	if (GameHasVertexProjectiles)
 	{
-		if (projectile->drawAsVertex())
-		{
-			projectileVertices_[vertexCount].position = projectile->getPosition() * (float)TileSize;
-			projectileVertices_[vertexCount].color = sf::Color::White;
-			vertexCount++;
-		}
-	}
+		// collect all projectiles, that can be drawn as a vertex
+		projectileVertices_.resize(projectiles_.size());
 
-	projectileVertices_.resize(vertexCount);
+		int vertexCount = 0;
+		for (auto& projectile : projectiles_)
+		{
+			if (projectile->drawAsVertex())
+			{
+				projectileVertices_[vertexCount].position = projectile->getPosition() * (float)TileSize;
+				projectileVertices_[vertexCount].color = sf::Color::White;
+				vertexCount++;
+			}
+		}
+
+		projectileVertices_.resize(vertexCount);
+	}
+	
 }
 
 
@@ -244,13 +248,13 @@ void Level::drawSelf(sf::RenderTarget& target, sf::RenderStates states) const
 		turret->drawSelf(target, states);
 	}
 
-	// draw vertex projectiles (i.e. bullets)
+	// draw vertex projectiles
 	if (projectileVertices_.getVertexCount() > 0)
 	{
 		target.draw(projectileVertices_, states);
 	}
 
-	// draw sprite projectiles
+	// draw sprite/shape projectiles
 	for (auto& projectile : projectiles_)
 	{
 		if (!projectile->drawAsVertex())

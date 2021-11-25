@@ -119,7 +119,32 @@ void Projectile::flight(sf::Time deltaTime)
 
 Bullet::Bullet(sf::Vector2f position, float direction) : Projectile(position, direction, Projectiles::Bullet::speed, Projectiles::Bullet::range, Projectiles::Bullet::damage, Projectiles::Bullet::size)
 {
+	if (!drawAsVertex()) 
+	{
+		const float radius = getRadius() * TileSize;
+		picture_.setRadius(radius);
+    	picture_.setOrigin(radius, radius);
+    	picture_.setFillColor(sf::Color::White);
+	}
 }
+
+void Bullet::update(sf::Time deltaTime, const EnemyList& enemies) 
+{
+	if (!drawAsVertex()) 
+	{
+		Projectile::update(deltaTime, enemies);
+		picture_.setPosition((float)TileSize * position_);
+	}
+}
+
+void Bullet::drawSelf(sf::RenderTarget &target, sf::RenderStates states) const
+{
+	if (!drawAsVertex()) 
+	{
+		target.draw(picture_, states);
+	}
+}
+
 
 
 // Bomb

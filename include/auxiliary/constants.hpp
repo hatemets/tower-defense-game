@@ -46,7 +46,7 @@ namespace Projectiles
 		static constexpr float speed = 20.f;   // tiles per second
 		static constexpr float range = 5.f;    // tiles
 		static constexpr int damage = 20;      // hit points (hit points are integers)
-		static constexpr float size = 0.f;     // bullet diameter (0 -> draw as vertex)
+		static constexpr float size = 0.05f;   // bullet diameter (if 0, drawn as vertex)
 	};
 
 	struct Bomb
@@ -58,6 +58,9 @@ namespace Projectiles
 		static constexpr float size = 0.2f;             // bomb diameter is 0.2 tiles
 	};
 }
+
+
+const bool GameHasVertexProjectiles = (Projectiles::Bullet::size == 0.f);
 
 
 // Enemy specs
