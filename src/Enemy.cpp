@@ -4,18 +4,23 @@
 #include "../include/auxiliary/constants.hpp"
 #include <math.h>
 
-Enemy::Enemy(std::vector<std::pair<int, int>>::const_iterator pathBegin, std::vector<std::pair<int, int>>::const_iterator pathEnd, float speed, int hitPoints, float radius)
+Enemy::Enemy(std::vector<std::pair<int, int>>::const_iterator pathBegin, std::vector<std::pair<int, int>>::const_iterator pathEnd, float speed, int hitPoints,
+             ResourceHolder<sf::Texture, Textures::ID>& textures, Textures::ID enemyStyle, float size)
     : pathIterator_(pathBegin),
       pathEnd_(pathEnd),
 	  position_(pathBegin->second + 0.5f, pathBegin->first + 0.5f),
       direction_(0),
       speed_(speed),
       hitPoints_(hitPoints),
-	  radius_(radius)
+	  size_(size)
 {
-    picture_.setSize(sf::Vector2f(TileSize / 2.f, TileSize / 2.f));
-    picture_.setOrigin(TileSize / 4.f, TileSize / 4.f);
-    picture_.setFillColor(sf::Color::Green);
+    enemySprite_.setTexture(textures.get(enemyStyle));
+
+    auto imageBounds = enemySprite_.getGlobalBounds();
+
+    enemySprite_.setOrigin(imageBounds.width / 2.f, imageBounds.height / 2.f);
+	enemySprite_.setScale(size_ * TileSize / imageBounds.width, size_ * TileSize / imageBounds.height);
+	enemySprite_.setPosition(position_.x * TileSize, position_.y * TileSize);
 
     update(sf::seconds(0));
 }
@@ -35,17 +40,15 @@ void Enemy::update(sf::Time deltaTime)
         {
             pathIterator_++;
             setDirection();
-            // picture_.setRotation(direction_);
         }
 
-        /* picture_.setPosition((float)TileSize * position_); */
-        picture_.setPosition(position_.x * TileSize, position_.y * TileSize);
+        enemySprite_.setPosition(position_.x * TileSize, position_.y * TileSize);
     }
 }
 
 void Enemy::drawSelf(sf::RenderTarget &target, sf::RenderStates states) const
 {
-    target.draw(picture_, states);
+    target.draw(enemySprite_, states);
 }
 
 void Enemy::setDirection()
@@ -98,7 +101,7 @@ void Enemy::hit(int maxDamage)
 
 // Goblin
 
-Goblin::Goblin(std::vector<std::pair<int, int>>::const_iterator pathBegin, std::vector<std::pair<int, int>>::const_iterator pathEnd)
-    : Enemy(pathBegin, pathEnd, Enemies::Goblin::goblinSpeed, Enemies::Goblin::hitPoints)
+Goblin::Goblin(std::vector<std::pair<int, int>>::const_iterator pathBegin, std::vector<std::pair<int, int>>::const_iterator pathEnd, ResourceHolder<sf::Texture, Textures::ID>& textures)
+    : Enemy(pathBegin, pathEnd, Enemies::Goblin::goblinSpeed, Enemies::Goblin::hitPoints, textures, Textures::ID::Goblin, Enemies::Goblin::size)
 {
 }

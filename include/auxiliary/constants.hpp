@@ -66,6 +66,7 @@ namespace Enemies
 	{
 		static constexpr float goblinSpeed = 3.5f;
 		static constexpr int hitPoints = 500;
+		static constexpr float size = 0.5f; // Diameter 0.5 tiles
 	};
 }
 

@@ -12,7 +12,8 @@ class Enemy : public Node
 {
 	public:
 		// TODO: Remove hardcoded values
-		Enemy(std::vector<std::pair<int, int>>::const_iterator pathBegin, std::vector<std::pair<int, int>>::const_iterator pathEnd, float speed, int hitPoints, float radius = 0.25f);
+		Enemy(std::vector<std::pair<int, int>>::const_iterator pathBegin, std::vector<std::pair<int, int>>::const_iterator pathEnd, float speed, int hitPoints, 
+			  ResourceHolder<sf::Texture, Textures::ID>& textures, Textures::ID enemyStyle, float size);
 
 		virtual void update(sf::Time deltaTime) override;
 		virtual void drawSelf(sf::RenderTarget& target, sf::RenderStates states) const override;
@@ -29,7 +30,7 @@ class Enemy : public Node
 		float getDirection() const { return direction_; }	 // flight angle
 		float getSpeed() const { return speed_; }			 // speed as tiles / second 
 		int getHitPoints() const { return hitPoints_; }		 // hitpoints left
-		float getRadius() const { return radius_; }			 // the hit radius of the enemy
+		float getRadius() const { return size_ / 2.f; }	     // the hit radius of the enemy
 
 	protected:
 		std::vector<std::pair<int, int>>::const_iterator pathIterator_;
@@ -38,15 +39,15 @@ class Enemy : public Node
 		float direction_;
 		float speed_;
 		int hitPoints_;
-		float radius_;
+		float size_;
 
-		sf::RectangleShape picture_; // Shape should be replaced with a Sprite
+		sf::Sprite enemySprite_;
 };
 
 class Goblin : public Enemy
 {
 	public:
-		Goblin(std::vector<std::pair<int, int>>::const_iterator pathBegin, std::vector<std::pair<int, int>>::const_iterator pathEnd);
+		Goblin(std::vector<std::pair<int, int>>::const_iterator pathBegin, std::vector<std::pair<int, int>>::const_iterator pathEnd, ResourceHolder<sf::Texture, Textures::ID>& textures);
 };
 
 #endif

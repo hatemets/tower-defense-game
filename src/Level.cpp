@@ -37,6 +37,7 @@ void Level::loadResources()
 	textures_.load(Textures::ID::TripleGunTurretBase, "./include/images/TripleGunTurretBase.png");
 	textures_.load(Textures::ID::BombTurretBase, "./include/images/BombTurretBase.png");
 	textures_.load(Textures::ID::BombTurret, "./include/images/BombTurret.png");
+	textures_.load(Textures::ID::Goblin, "./include/images/Goblin.png");
 
 	buttonShapes_.load(Buttons::ID::HomeButton);
 }
@@ -150,7 +151,7 @@ void Level::updateEnemies(sf::Time deltaTime)
 		}
 
 		auto path = map_->getPath();
-		auto goblin = std::make_shared<Goblin>(Goblin{path.first, path.second});
+		auto goblin = std::make_shared<Goblin>(Goblin{path.first, path.second, textures_});
 		enemies_.push_back(goblin);
 	}
 }
