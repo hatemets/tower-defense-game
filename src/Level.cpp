@@ -131,9 +131,14 @@ void Level::update(sf::Time deltaTime)
 
 void Level::updateEnemies(sf::Time deltaTime)
 {
+	EnemyList newEnemies;
 	for (auto& enemy : enemies_)
 	{
-		enemy->spawnNewEnemies(enemies_);
+		enemy->spawnNewEnemies(newEnemies);
+	}
+	for (auto& enemy : newEnemies) 
+	{
+		enemies_.push_back(enemy);
 	}
 
 	enemies_.erase(std::remove_if(enemies_.begin(), enemies_.end(),
