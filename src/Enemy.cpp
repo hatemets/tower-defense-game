@@ -114,3 +114,11 @@ Orc::Orc(std::vector<std::pair<int, int>>::const_iterator pathBegin, std::vector
     : Enemy(pathBegin, pathEnd, Enemies::Orc::speed, Enemies::Orc::hitPoints, textures, Textures::ID::Orc, Enemies::Orc::size)
 {
 }
+
+
+// Troll
+
+Troll::Troll(std::vector<std::pair<int, int>>::const_iterator pathBegin, std::vector<std::pair<int, int>>::const_iterator pathEnd, ResourceHolder<sf::Texture, Textures::ID>& textures)
+    : Enemy(pathBegin, pathEnd, Enemies::Troll::speed, Enemies::Troll::hitPoints, textures, Textures::ID::Troll, Enemies::Troll::size)
+{
+}

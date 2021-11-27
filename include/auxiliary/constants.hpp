@@ -75,6 +75,13 @@ namespace Enemies
 
 	struct Orc
 	{
+		static constexpr float speed = 2.5f;
+		static constexpr int hitPoints = 800;
+		static constexpr float size = 0.6f;
+	};
+
+	struct Troll
+	{
 		static constexpr float speed = 1.5f;
 		static constexpr int hitPoints = 1500;
 		static constexpr float size = 0.7f;

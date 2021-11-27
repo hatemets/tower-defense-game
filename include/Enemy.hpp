@@ -58,4 +58,11 @@ class Orc : public Enemy
 		Orc(std::vector<std::pair<int, int>>::const_iterator pathBegin, std::vector<std::pair<int, int>>::const_iterator pathEnd, ResourceHolder<sf::Texture, Textures::ID>& textures);
 };
 
+
+class Troll : public Enemy
+{
+	public:
+		Troll(std::vector<std::pair<int, int>>::const_iterator pathBegin, std::vector<std::pair<int, int>>::const_iterator pathEnd, ResourceHolder<sf::Texture, Textures::ID>& textures);
+};
+
 #endif

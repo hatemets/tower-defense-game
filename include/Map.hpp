@@ -5,9 +5,6 @@
 #include "Node.hpp"
 #include "auxiliary/ResourceIdentifiers.hpp"
 #include "ResourceHolder.hpp"
-/* #include "Turret.hpp" */
-/* #include "Projectile.hpp" */
-/* #include "Enemy.hpp" */
 
 using namespace Resources;
 
@@ -25,7 +22,10 @@ class Map : public Node
 		static bool isContact(const sf::Vector2f posA, float aRadius, const sf::Vector2f posB, float bRadius);
 
     public:
-        std::pair<std::vector<std::pair<int, int>>::const_iterator, std::vector<std::pair<int, int>>::const_iterator> getPath() const;
+        // returns random path from a random spawn to a random base
+        std::pair<std::vector<std::pair<int, int>>::const_iterator, std::vector<std::pair<int, int>>::const_iterator> getRandomPath() const;
+        // returns the shortest path from a random spawn to the nearest base
+        std::pair<std::vector<std::pair<int, int>>::const_iterator, std::vector<std::pair<int, int>>::const_iterator> getShortestPath() const;
         const std::vector<std::pair<int, int>>& getTurretBaseTiles() const;
         bool static isMember(int row, int col, const std::vector<std::pair<int, int>>& container);
 
@@ -52,6 +52,7 @@ class Map : public Node
         std::vector<std::pair<int, int>> baseTiles_;
         std::vector<std::pair<int, int>> turretBaseTiles_;
         std::vector<std::vector<std::pair<int, int>>> paths_;
+        std::vector<int> shortestPathIndexes_;
         std::vector<std::shared_ptr<sf::Sprite>> mapPictures_; 
 };
 

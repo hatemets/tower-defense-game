@@ -39,6 +39,7 @@ void Level::loadResources()
 	textures_.load(Textures::ID::BombTurret, "./include/images/BombTurret.png");
 	textures_.load(Textures::ID::Goblin, "./include/images/Goblin.png");
 	textures_.load(Textures::ID::Orc, "./include/images/Orc.png");
+	textures_.load(Textures::ID::Troll, "./include/images/Troll.png");
 
 	buttonShapes_.load(Buttons::ID::HomeButton);
 }
@@ -151,12 +152,12 @@ void Level::updateEnemies(sf::Time deltaTime)
 			nextSpawn_ = minSpawnInterval_;
 		}
 
-		auto path = map_->getPath();
-		int level = 2; // FIX THIS: This should be the actual level number
-		switch (rand() % std::min(level, 2)) // 2 is here the number of all different enemies
+		int level = 3; // FIX THIS: This should be the actual level number
+		switch (rand() % std::min(level, 3)) // 2 is here the number of all different enemies
 		{
 			case 0:
 			{
+				auto path = map_->getRandomPath();
 				auto goblin = std::make_shared<Goblin>(Goblin{path.first, path.second, textures_});
 				enemies_.push_back(goblin);
 				break;
@@ -164,8 +165,17 @@ void Level::updateEnemies(sf::Time deltaTime)
 
 			case 1:
 			{
+				auto path = map_->getRandomPath();
 				auto orc = std::make_shared<Orc>(Orc{path.first, path.second, textures_});
 				enemies_.push_back(orc);
+				break;
+			}
+
+			case 2:
+			{
+				auto path = map_->getShortestPath();
+				auto troll = std::make_shared<Troll>(Troll{path.first, path.second, textures_});
+				enemies_.push_back(troll);
 				break;
 			}
 		}
