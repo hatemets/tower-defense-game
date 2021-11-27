@@ -188,7 +188,6 @@ Troll::Troll(std::vector<std::pair<int, int>>::const_iterator pathBegin, std::ve
 Slime::Slime(std::vector<std::pair<int, int>>::const_iterator pathBegin, std::vector<std::pair<int, int>>::const_iterator pathEnd, ResourceHolder<sf::Texture, Textures::ID>& textures)
     : Enemy(pathBegin, pathEnd, Enemies::Slime::speed, Enemies::Slime::hitPoints, textures, Textures::ID::Slime, Enemies::Slime::size)
 {
-    size_ *= 0.6f; // fix hit radius since the texture has empty area around the enemy picture
 }
 
 
@@ -210,7 +209,6 @@ void Slime::spawnNewEnemies(EnemyList& enemies) const
 BabySlime::BabySlime(std::vector<std::pair<int, int>>::const_iterator pathBegin, std::vector<std::pair<int, int>>::const_iterator pathEnd, ResourceHolder<sf::Texture, Textures::ID>& textures)
     : Enemy(pathBegin, pathEnd, Enemies::BabySlime::speed, Enemies::BabySlime::hitPoints, textures, Textures::ID::Slime, Enemies::BabySlime::size)
 {
-    size_ *= 0.8f; // fix hit radius since the texture has empty area around the enemy picture
     float deltaX = (rand() % 101 - 50) / 100.f; // random value between -0.5 and +0.5
     float deltaY = (rand() % 101 - 50) / 100.f; // random value between -0.5 and +0.5
     position_ += sf::Vector2f(deltaX, deltaY);
