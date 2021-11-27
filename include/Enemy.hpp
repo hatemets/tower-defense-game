@@ -16,7 +16,6 @@ using EnemyList = std::list<std::shared_ptr<Enemy>>;
 class Enemy : public Node
 {
 	public:
-		// TODO: Remove hardcoded values
 		Enemy(std::vector<std::pair<int, int>>::const_iterator pathBegin, std::vector<std::pair<int, int>>::const_iterator pathEnd, float speed, int hitPoints, 
 			  ResourceHolder<sf::Texture, Textures::ID>& textures, Textures::ID enemyStyle, float size);
 
@@ -26,6 +25,7 @@ class Enemy : public Node
 	protected:
 		void setDirection();
 		void move(sf::Time deltaTime);
+		Textures::ID getHealthTextureID() const;
 
 	public:
 		bool isAlive() const;								 // alive or dead
@@ -36,7 +36,7 @@ class Enemy : public Node
 		float getSpeed() const { return speed_; }			 // speed as tiles / second 
 		int getHitPoints() const { return hitPoints_; }		 // hitpoints left
 		float getRadius() const { return size_ / 2.f; }	     // the hit radius of the enemy
-		virtual void spawnNewEnemies(EnemyList& enemies, ResourceHolder<sf::Texture, Textures::ID>& textures) const;
+		virtual void spawnNewEnemies(EnemyList& enemies) const;
 
 	protected:
 		std::vector<std::pair<int, int>>::const_iterator pathIterator_;
@@ -45,9 +45,13 @@ class Enemy : public Node
 		float direction_;
 		float speed_;
 		int hitPoints_;
+		int maxHitPoints_;
 		float size_;
 
 		sf::Sprite enemySprite_;
+		sf::Sprite healthSprite_;
+		ResourceHolder<sf::Texture, Textures::ID>& textures_;
+		Textures::ID currentHealthTextureId_;
 };
 
 
@@ -77,7 +81,7 @@ class Slime : public Enemy
 	public:
 		Slime(std::vector<std::pair<int, int>>::const_iterator pathBegin, std::vector<std::pair<int, int>>::const_iterator pathEnd, ResourceHolder<sf::Texture, Textures::ID>& textures);
 
-		virtual void spawnNewEnemies(EnemyList& enemies, ResourceHolder<sf::Texture, Textures::ID>& textures) const;
+		virtual void spawnNewEnemies(EnemyList& enemies) const;
 };
 
 

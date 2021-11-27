@@ -41,6 +41,11 @@ void Level::loadResources()
 	textures_.load(Textures::ID::Orc, "./include/images/Orc.png");
 	textures_.load(Textures::ID::Troll, "./include/images/Troll.png");
 	textures_.load(Textures::ID::Slime, "./include/images/Slime.png");
+	textures_.load(Textures::ID::Health100, "./include/images/Health100.png");
+	textures_.load(Textures::ID::Health80, "./include/images/Health80.png");
+	textures_.load(Textures::ID::Health60, "./include/images/Health60.png");
+	textures_.load(Textures::ID::Health40, "./include/images/Health40.png");
+	textures_.load(Textures::ID::Health20, "./include/images/Health20.png");
 
 	buttonShapes_.load(Buttons::ID::HomeButton);
 }
@@ -128,7 +133,7 @@ void Level::updateEnemies(sf::Time deltaTime)
 {
 	for (auto& enemy : enemies_)
 	{
-		enemy->spawnNewEnemies(enemies_, textures_);
+		enemy->spawnNewEnemies(enemies_);
 	}
 
 	enemies_.erase(std::remove_if(enemies_.begin(), enemies_.end(),

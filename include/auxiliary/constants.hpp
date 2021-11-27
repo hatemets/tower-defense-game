@@ -66,6 +66,8 @@ const bool GameHasVertexProjectiles = (Projectiles::Bullet::size == 0.f);
 // Enemy specs
 namespace Enemies
 {
+	const float HealthBarMargin = 0.8f;
+
 	struct Goblin
 	{
 		static constexpr float speed = 3.5f;

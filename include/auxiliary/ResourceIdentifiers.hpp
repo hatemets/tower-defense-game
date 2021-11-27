@@ -48,6 +48,13 @@ namespace Resources
 			Troll,
 			Slime, // used also by BabySlime
 
+			// Health
+			Health100,
+			Health80,
+			Health60,
+			Health40,
+			Health20,
+
 			// Turrets
 			GunTurret,
 			DoubleGunTurret,
