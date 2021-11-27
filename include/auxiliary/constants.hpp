@@ -86,6 +86,21 @@ namespace Enemies
 		static constexpr int hitPoints = 1500;
 		static constexpr float size = 0.7f;
 	};
+
+	struct Slime
+	{
+		static constexpr float speed = 1.0f;
+		static constexpr int hitPoints = 2000;
+		static constexpr float size = 1.0f;    // size including the empty texture area around the enemy picture
+		static constexpr int babies = 5;       // number of baby slimes created when dying
+	};
+
+	struct BabySlime
+	{
+		static constexpr float speed = 1.0f;
+		static constexpr int hitPoints = 100;
+		static constexpr float size = 0.4f; // size including the empty texture area around the enemy picture
+	};
 }
 
 

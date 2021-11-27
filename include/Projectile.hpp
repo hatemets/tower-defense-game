@@ -4,7 +4,6 @@
 #include <SFML/Graphics.hpp>
 #include "Enemy.hpp"
 
-using EnemyList = std::list<std::shared_ptr<Enemy>>;
 
 // The base class of projectiles
 class Projectile : public Node

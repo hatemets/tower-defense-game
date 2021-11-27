@@ -40,6 +40,7 @@ void Level::loadResources()
 	textures_.load(Textures::ID::Goblin, "./include/images/Goblin.png");
 	textures_.load(Textures::ID::Orc, "./include/images/Orc.png");
 	textures_.load(Textures::ID::Troll, "./include/images/Troll.png");
+	textures_.load(Textures::ID::Slime, "./include/images/Slime.png");
 
 	buttonShapes_.load(Buttons::ID::HomeButton);
 }
@@ -125,6 +126,11 @@ void Level::update(sf::Time deltaTime)
 
 void Level::updateEnemies(sf::Time deltaTime)
 {
+	for (auto& enemy : enemies_)
+	{
+		enemy->spawnNewEnemies(enemies_, textures_);
+	}
+
 	enemies_.erase(std::remove_if(enemies_.begin(), enemies_.end(),
 				[](const std::shared_ptr<Enemy> &enemy)
 				{
@@ -132,7 +138,7 @@ void Level::updateEnemies(sf::Time deltaTime)
 				}),
 			enemies_.end());
 
-	for (auto enemy : enemies_)
+	for (auto& enemy : enemies_)
 	{
 		enemy->update(deltaTime);
 	}
@@ -152,22 +158,22 @@ void Level::updateEnemies(sf::Time deltaTime)
 			nextSpawn_ = minSpawnInterval_;
 		}
 
-		int level = 3; // FIX THIS: This should be the actual level number
-		switch (rand() % std::min(level, 3)) // 2 is here the number of all different enemies
+		int level = 4; // FIX THIS: This should be the actual level number
+		switch (rand() % std::min(level, 4)) // 4 is here the number of all different enemies
 		{
 			case 0:
 			{
 				auto path = map_->getRandomPath();
-				auto goblin = std::make_shared<Goblin>(Goblin{path.first, path.second, textures_});
-				enemies_.push_back(goblin);
+				auto orc = std::make_shared<Orc>(Orc{path.first, path.second, textures_});
+				enemies_.push_back(orc);
 				break;
 			}
 
 			case 1:
 			{
 				auto path = map_->getRandomPath();
-				auto orc = std::make_shared<Orc>(Orc{path.first, path.second, textures_});
-				enemies_.push_back(orc);
+				auto goblin = std::make_shared<Goblin>(Goblin{path.first, path.second, textures_});
+				enemies_.push_back(goblin);
 				break;
 			}
 
@@ -176,6 +182,14 @@ void Level::updateEnemies(sf::Time deltaTime)
 				auto path = map_->getShortestPath();
 				auto troll = std::make_shared<Troll>(Troll{path.first, path.second, textures_});
 				enemies_.push_back(troll);
+				break;
+			}
+
+			case 3:
+			{
+				auto path = map_->getShortestPath();
+				auto slime = std::make_shared<Slime>(Slime{path.first, path.second, textures_});
+				enemies_.push_back(slime);
 				break;
 			}
 		}

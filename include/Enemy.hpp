@@ -7,6 +7,11 @@
 #include "Node.hpp"
 #include "Map.hpp"
 
+
+class Enemy;
+using EnemyList = std::list<std::shared_ptr<Enemy>>;
+
+
 /// The base class of enemies
 class Enemy : public Node
 {
@@ -31,6 +36,7 @@ class Enemy : public Node
 		float getSpeed() const { return speed_; }			 // speed as tiles / second 
 		int getHitPoints() const { return hitPoints_; }		 // hitpoints left
 		float getRadius() const { return size_ / 2.f; }	     // the hit radius of the enemy
+		virtual void spawnNewEnemies(EnemyList& enemies, ResourceHolder<sf::Texture, Textures::ID>& textures) const;
 
 	protected:
 		std::vector<std::pair<int, int>>::const_iterator pathIterator_;
@@ -64,5 +70,22 @@ class Troll : public Enemy
 	public:
 		Troll(std::vector<std::pair<int, int>>::const_iterator pathBegin, std::vector<std::pair<int, int>>::const_iterator pathEnd, ResourceHolder<sf::Texture, Textures::ID>& textures);
 };
+
+
+class Slime : public Enemy
+{
+	public:
+		Slime(std::vector<std::pair<int, int>>::const_iterator pathBegin, std::vector<std::pair<int, int>>::const_iterator pathEnd, ResourceHolder<sf::Texture, Textures::ID>& textures);
+
+		virtual void spawnNewEnemies(EnemyList& enemies, ResourceHolder<sf::Texture, Textures::ID>& textures) const;
+};
+
+
+class BabySlime : public Enemy
+{
+	public:
+		BabySlime(std::vector<std::pair<int, int>>::const_iterator pathBegin, std::vector<std::pair<int, int>>::const_iterator pathEnd, ResourceHolder<sf::Texture, Textures::ID>& textures);
+};
+
 
 #endif

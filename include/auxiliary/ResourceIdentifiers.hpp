@@ -46,6 +46,7 @@ namespace Resources
 			Goblin,
 			Orc,
 			Troll,
+			Slime, // used also by BabySlime
 
 			// Turrets
 			GunTurret,

@@ -25,6 +25,7 @@ Enemy::Enemy(std::vector<std::pair<int, int>>::const_iterator pathBegin, std::ve
     update(sf::seconds(0));
 }
 
+
 void Enemy::update(sf::Time deltaTime)
 {
     if (isAlive() && !hasReachedBase())
@@ -46,6 +47,7 @@ void Enemy::update(sf::Time deltaTime)
     }
 }
 
+
 void Enemy::drawSelf(sf::RenderTarget &target, sf::RenderStates states) const
 {
     target.draw(enemySprite_, states);
@@ -62,6 +64,7 @@ void Enemy::setDirection()
     }
 }
 
+
 void Enemy::move(sf::Time deltaTime)
 {
     float distance = speed_ * deltaTime.asSeconds();
@@ -75,15 +78,18 @@ void Enemy::move(sf::Time deltaTime)
     }
 }
 
+
 bool Enemy::isAlive() const
 {
     return hitPoints_ > 0;
 }
 
+
 bool Enemy::hasReachedBase() const
 {
     return pathIterator_ == pathEnd_;
 }
+
 
 void Enemy::hit(int maxDamage)
 {
@@ -97,6 +103,11 @@ void Enemy::hit(int maxDamage)
     {
         hitPoints_ -= 1 + halfDamage + rand() % halfDamage;
     }
+}
+
+
+void Enemy::spawnNewEnemies(EnemyList& enemies, ResourceHolder<sf::Texture, Textures::ID>& textures) const
+{
 }
 
 
@@ -122,3 +133,39 @@ Troll::Troll(std::vector<std::pair<int, int>>::const_iterator pathBegin, std::ve
     : Enemy(pathBegin, pathEnd, Enemies::Troll::speed, Enemies::Troll::hitPoints, textures, Textures::ID::Troll, Enemies::Troll::size)
 {
 }
+
+
+// Slime
+
+Slime::Slime(std::vector<std::pair<int, int>>::const_iterator pathBegin, std::vector<std::pair<int, int>>::const_iterator pathEnd, ResourceHolder<sf::Texture, Textures::ID>& textures)
+    : Enemy(pathBegin, pathEnd, Enemies::Slime::speed, Enemies::Slime::hitPoints, textures, Textures::ID::Slime, Enemies::Slime::size)
+{
+    size_ *= 0.6f; // fix hit radius since the texture has empty area around the enemy picture
+}
+
+
+void Slime::spawnNewEnemies(EnemyList& enemies, ResourceHolder<sf::Texture, Textures::ID>& textures) const
+{
+    if (!isAlive())
+    {
+        for (int i = 0; i < Enemies::Slime::babies; i++) 
+        {
+            auto babySlime = std::make_shared<BabySlime>(BabySlime{pathIterator_, pathEnd_, textures});
+			enemies.push_back(babySlime);
+        }
+    }
+}
+
+
+// BabySlime
+
+BabySlime::BabySlime(std::vector<std::pair<int, int>>::const_iterator pathBegin, std::vector<std::pair<int, int>>::const_iterator pathEnd, ResourceHolder<sf::Texture, Textures::ID>& textures)
+    : Enemy(pathBegin, pathEnd, Enemies::BabySlime::speed, Enemies::BabySlime::hitPoints, textures, Textures::ID::Slime, Enemies::BabySlime::size)
+{
+    size_ *= 0.6f; // fix hit radius since the texture has empty area around the enemy picture
+    float deltaX = (rand() % 101 - 50) / 100.f; // random value between -0.5 and +0.5
+    float deltaY = (rand() % 101 - 50) / 100.f; // random value between -0.5 and +0.5
+    position_ += sf::Vector2f(deltaX, deltaY);
+    setDirection(); // fix direction for the changed position
+}
+
