@@ -48,73 +48,46 @@ bool Map::isContact(const sf::Vector2f posA, float aRadius, const sf::Vector2f p
 }
 
 
-std::pair<std::vector<std::pair<int, int>>::const_iterator, std::vector<std::pair<int, int>>::const_iterator> Map::getRandomPath() const
+std::pair<std::vector<std::pair<int, int>>::const_iterator, std::vector<std::pair<int, int>>::const_iterator> Map::getPath(const std::vector<int>& pathIndexes) const
 {
-	switch (paths_.size())
+	switch (pathIndexes.size())
 	{
 		case 0:
-			throw std::runtime_error("No paths available!");
+			throw std::runtime_error("No path indexes available!");
 			break;
 
 		case 1:
-			return std::make_pair(paths_[0].cbegin(), paths_[0].cend());
-			break;
-
-		default:
-			int pathIndex = rand() % paths_.size();
+		{
+			int pathIndex = pathIndexes[0];
 			return std::make_pair(paths_[pathIndex].cbegin(), paths_[pathIndex].cend());
 			break;
+		}
+
+		default:
+		{
+			int pathIndex = pathIndexes[rand() % pathIndexes.size()];
+			return std::make_pair(paths_[pathIndex].cbegin(), paths_[pathIndex].cend());
+			break;
+		}
 	}
+}
+
+
+std::pair<std::vector<std::pair<int, int>>::const_iterator, std::vector<std::pair<int, int>>::const_iterator> Map::getRandomPath() const
+{
+	return getPath(pathIndexes_);
 }
 
 
 std::pair<std::vector<std::pair<int, int>>::const_iterator, std::vector<std::pair<int, int>>::const_iterator> Map::getShortestPath() const
 {
-	switch (shortestPathIndexes_.size())
-	{
-		case 0:
-			throw std::runtime_error("No shortest paths available!");
-			break;
-
-		case 1:
-		{
-			int pathIndex = shortestPathIndexes_[0];
-			return std::make_pair(paths_[pathIndex].cbegin(), paths_[pathIndex].cend());
-			break;
-		}
-
-		default:
-		{
-			int pathIndex = shortestPathIndexes_[rand() % shortestPathIndexes_.size()];
-			return std::make_pair(paths_[pathIndex].cbegin(), paths_[pathIndex].cend());
-			break;
-		}
-	}
+	return getPath(shortestPathIndexes_);
 }
 
 
 std::pair<std::vector<std::pair<int, int>>::const_iterator, std::vector<std::pair<int, int>>::const_iterator> Map::getSafestPath() const
 {
-	switch (safestPathIndexes_.size())
-	{
-		case 0:
-			throw std::runtime_error("No safest paths available!");
-			break;
-
-		case 1:
-		{
-			int pathIndex = safestPathIndexes_[0];
-			return std::make_pair(paths_[pathIndex].cbegin(), paths_[pathIndex].cend());
-			break;
-		}
-
-		default:
-		{
-			int pathIndex = safestPathIndexes_[rand() % safestPathIndexes_.size()];
-			return std::make_pair(paths_[pathIndex].cbegin(), paths_[pathIndex].cend());
-			break;
-		}
-	}
+	return getPath(safestPathIndexes_);
 }
 
 
@@ -192,6 +165,11 @@ void Map::findPaths()
 		std::vector<std::pair<int, int>> path;
 		path.push_back(spawnTile);
 		findPaths(path);
+	}
+
+	for (int i = 0; i < static_cast<int>(paths_.size()); i++)
+	{
+		pathIndexes_.push_back(i);
 	}
 
 	findShortestPaths();

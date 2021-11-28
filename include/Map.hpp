@@ -41,6 +41,8 @@ class Map : public Node
         void loadFile(const std::string &fileName);
         void loadTextures();
 
+        std::pair<std::vector<std::pair<int, int>>::const_iterator, std::vector<std::pair<int, int>>::const_iterator> getPath(const std::vector<int>& pathIndexes) const;
+
         void findPaths();
         void findPaths(std::vector<std::pair<int, int>>& path);
         void findShortestPaths();
@@ -61,6 +63,7 @@ class Map : public Node
         std::vector<std::pair<int, int>> baseTiles_;
         std::vector<std::pair<int, int>> turretBaseTiles_;
         std::vector<std::vector<std::pair<int, int>>> paths_;
+        std::vector<int> pathIndexes_;
         std::vector<int> shortestPathIndexes_;
         std::vector<int> safestPathIndexes_;
         std::vector<std::shared_ptr<sf::Sprite>> mapPictures_; 
