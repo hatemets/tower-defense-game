@@ -168,28 +168,7 @@ void Map::findPaths()
 		findPaths(path);
 	}
 
-	// find shortest path for each spawn tile
-	for (auto spawnTile : spawnTiles_) 
-	{
-		int minLength = std::numeric_limits<int>::max();
-		int shortestIndex = -1;
-		for (int i = 0; i < static_cast<int>(paths_.size()); i++)
-		{
-			if (*paths_[i].begin() == spawnTile)
-			{
-				int pathLength = paths_[i].size();
-				if (pathLength < minLength)
-				{
-					minLength = pathLength;
-					shortestIndex = i; 
-				}
-			}
-		}
-		if (shortestIndex >= 0) 
-		{
-			shortestPathIndexes_.push_back(shortestIndex);
-		}
-	}
+	findShortestPaths();
 }
 
 
@@ -247,6 +226,33 @@ void Map::findPaths(std::vector<std::pair<int, int>>& path)
 				return; // all path branches are taken care of by the above recursion
 		}
 	} while (true);
+}
+
+
+// find shortest path for each spawn tile
+void Map::findShortestPaths()
+{
+	for (auto spawnTile : spawnTiles_) 
+	{
+		int minLength = std::numeric_limits<int>::max();
+		int shortestIndex = -1;
+		for (int i = 0; i < static_cast<int>(paths_.size()); i++)
+		{
+			if (*paths_[i].begin() == spawnTile)
+			{
+				int pathLength = paths_[i].size();
+				if (pathLength < minLength)
+				{
+					minLength = pathLength;
+					shortestIndex = i; 
+				}
+			}
+		}
+		if (shortestIndex >= 0) 
+		{
+			shortestPathIndexes_.push_back(shortestIndex);
+		}
+	}
 }
 
 

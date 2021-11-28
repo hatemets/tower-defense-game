@@ -188,7 +188,7 @@ Slime::Slime(std::vector<std::pair<int, int>>::const_iterator pathBegin, std::ve
 
 void Slime::spawnNewEnemies(EnemyList& newEnemies) const
 {
-    if (!isAlive())
+    if (!isAlive() && !hasReachedBase())
     {
         for (int i = 0; i < Enemies::Slime::babies; i++) 
         {

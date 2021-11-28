@@ -35,6 +35,7 @@ class Map : public Node
 
         void findPaths();
         void findPaths(std::vector<std::pair<int, int>>& path);
+        void findShortestPaths();
 
 		bool isSpawn(int row, int col) const { return isMember(row, col, spawnTiles_); }
 		bool isRoad(int row, int col) const { return isMember(row, col, roadTiles_); }
