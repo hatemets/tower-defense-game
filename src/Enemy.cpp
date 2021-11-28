@@ -154,11 +154,6 @@ void Enemy::hit(int maxDamage)
 }
 
 
-void Enemy::spawnNewEnemies(EnemyList& enemies) const
-{
-}
-
-
 // Goblin
 
 Goblin::Goblin(std::vector<std::pair<int, int>>::const_iterator pathBegin, std::vector<std::pair<int, int>>::const_iterator pathEnd, ResourceHolder<sf::Texture, Textures::ID>& textures)
@@ -191,14 +186,14 @@ Slime::Slime(std::vector<std::pair<int, int>>::const_iterator pathBegin, std::ve
 }
 
 
-void Slime::spawnNewEnemies(EnemyList& enemies) const
+void Slime::spawnNewEnemies(EnemyList& newEnemies) const
 {
     if (!isAlive())
     {
         for (int i = 0; i < Enemies::Slime::babies; i++) 
         {
-            auto babySlime = std::make_shared<BabySlime>(BabySlime{pathIterator_, pathEnd_, textures_});
-			enemies.push_back(babySlime);
+            auto babySlime = std::make_shared<BabySlime>(BabySlime{*this, pathIterator_, pathEnd_, textures_});
+            newEnemies.push_back(babySlime);
         }
     }
 }
@@ -206,12 +201,13 @@ void Slime::spawnNewEnemies(EnemyList& enemies) const
 
 // BabySlime
 
-BabySlime::BabySlime(std::vector<std::pair<int, int>>::const_iterator pathBegin, std::vector<std::pair<int, int>>::const_iterator pathEnd, ResourceHolder<sf::Texture, Textures::ID>& textures)
+BabySlime::BabySlime(const Slime& parent, std::vector<std::pair<int, int>>::const_iterator pathBegin, std::vector<std::pair<int, int>>::const_iterator pathEnd, ResourceHolder<sf::Texture, Textures::ID>& textures)
     : Enemy(pathBegin, pathEnd, Enemies::BabySlime::speed, Enemies::BabySlime::hitPoints, textures, Textures::ID::Slime, Enemies::BabySlime::size)
 {
     float deltaX = (rand() % 101 - 50) / 100.f; // random value between -0.5 and +0.5
     float deltaY = (rand() % 101 - 50) / 100.f; // random value between -0.5 and +0.5
-    position_ += sf::Vector2f(deltaX, deltaY);
+    position_ = parent.getPosition() + sf::Vector2f(deltaX, deltaY);
     setDirection(); // fix direction for the changed position
+    update(sf::seconds(0));
 }
 

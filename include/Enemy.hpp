@@ -36,7 +36,7 @@ class Enemy : public Node
 		float getSpeed() const { return speed_; }			 // speed as tiles / second 
 		int getHitPoints() const { return hitPoints_; }		 // hitpoints left
 		float getRadius() const { return size_ / 2.f; }	     // the hit radius of the enemy
-		virtual void spawnNewEnemies(EnemyList& enemies) const;
+		virtual void spawnNewEnemies(EnemyList& newEnemies) const {}; // possibility to spawn new enemies
 
 	protected:
 		std::vector<std::pair<int, int>>::const_iterator pathIterator_;
@@ -81,14 +81,14 @@ class Slime : public Enemy
 	public:
 		Slime(std::vector<std::pair<int, int>>::const_iterator pathBegin, std::vector<std::pair<int, int>>::const_iterator pathEnd, ResourceHolder<sf::Texture, Textures::ID>& textures);
 
-		virtual void spawnNewEnemies(EnemyList& enemies) const;
+		virtual void spawnNewEnemies(EnemyList& newEnemies) const;
 };
 
 
 class BabySlime : public Enemy
 {
 	public:
-		BabySlime(std::vector<std::pair<int, int>>::const_iterator pathBegin, std::vector<std::pair<int, int>>::const_iterator pathEnd, ResourceHolder<sf::Texture, Textures::ID>& textures);
+		BabySlime(const Slime& parent, std::vector<std::pair<int, int>>::const_iterator pathBegin, std::vector<std::pair<int, int>>::const_iterator pathEnd, ResourceHolder<sf::Texture, Textures::ID>& textures);
 };
 
 
