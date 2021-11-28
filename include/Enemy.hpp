@@ -92,4 +92,11 @@ class BabySlime : public Enemy
 };
 
 
+class Kobold : public Enemy
+{
+	public:
+		Kobold(std::vector<std::pair<int, int>>::const_iterator pathBegin, std::vector<std::pair<int, int>>::const_iterator pathEnd, ResourceHolder<sf::Texture, Textures::ID>& textures);
+};
+
+
 #endif

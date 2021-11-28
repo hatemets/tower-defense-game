@@ -47,6 +47,7 @@ namespace Resources
 			Orc,
 			Troll,
 			Slime, // used also by BabySlime
+			Kobold,
 
 			// Health
 			Health100,

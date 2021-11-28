@@ -94,7 +94,7 @@ namespace Enemies
 		static constexpr float speed = 1.0f;
 		static constexpr int hitPoints = 2000;
 		static constexpr float size = 0.6f;    
-		static constexpr int babies = 5;       // number of baby slimes created when dying
+		static constexpr int babies = 5; // number of baby slimes created when dying
 	};
 
 	struct BabySlime
@@ -102,6 +102,13 @@ namespace Enemies
 		static constexpr float speed = 1.0f;
 		static constexpr int hitPoints = 100;
 		static constexpr float size = 0.3f;
+	};
+
+	struct Kobold
+	{
+		static constexpr float speed = 4.0f;
+		static constexpr int hitPoints = 250;
+		static constexpr float size = 0.4f;
 	};
 }
 

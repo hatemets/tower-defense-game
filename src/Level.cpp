@@ -41,6 +41,7 @@ void Level::loadResources()
 	textures_.load(Textures::ID::Orc, "./include/images/Orc.png");
 	textures_.load(Textures::ID::Troll, "./include/images/Troll.png");
 	textures_.load(Textures::ID::Slime, "./include/images/Slime.png");
+	textures_.load(Textures::ID::Kobold, "./include/images/Kobold.png");
 	textures_.load(Textures::ID::Health100, "./include/images/Health100.png");
 	textures_.load(Textures::ID::Health80, "./include/images/Health80.png");
 	textures_.load(Textures::ID::Health60, "./include/images/Health60.png");
@@ -169,8 +170,8 @@ void Level::updateEnemies(sf::Time deltaTime)
 			nextSpawn_ = minSpawnInterval_;
 		}
 
-		int level = 4; // FIX THIS: This should be the actual level number
-		switch (rand() % std::min(level, 4)) // 4 is here the number of all different enemies
+		int level = 5; // FIX THIS: This should be the actual level number
+		switch (rand() % std::min(level, 5)) // 5 is here the number of all different enemies
 		{
 			case 0:
 			{
@@ -201,6 +202,14 @@ void Level::updateEnemies(sf::Time deltaTime)
 				auto path = map_->getShortestPath();
 				auto slime = std::make_shared<Slime>(Slime{path.first, path.second, textures_});
 				enemies_.push_back(slime);
+				break;
+			}
+
+			case 4:
+			{
+				auto path = map_->getSafestPath();
+				auto kobold = std::make_shared<Kobold>(Kobold{path.first, path.second, textures_});
+				enemies_.push_back(kobold);
 				break;
 			}
 		}

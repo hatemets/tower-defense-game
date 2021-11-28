@@ -211,3 +211,10 @@ BabySlime::BabySlime(const Slime& parent, std::vector<std::pair<int, int>>::cons
     update(sf::seconds(0));
 }
 
+
+// Kobold
+
+Kobold::Kobold(std::vector<std::pair<int, int>>::const_iterator pathBegin, std::vector<std::pair<int, int>>::const_iterator pathEnd, ResourceHolder<sf::Texture, Textures::ID>& textures)
+    : Enemy(pathBegin, pathEnd, Enemies::Kobold::speed, Enemies::Kobold::hitPoints, textures, Textures::ID::Kobold, Enemies::Kobold::size)
+{
+}
