@@ -5,6 +5,10 @@
 #include "Node.hpp"
 #include "auxiliary/ResourceIdentifiers.hpp"
 #include "ResourceHolder.hpp"
+#include <list>
+
+class Turret;
+using TurretList = std::list<std::shared_ptr<Turret>>;
 
 using namespace Resources;
 
@@ -26,8 +30,12 @@ class Map : public Node
         std::pair<std::vector<std::pair<int, int>>::const_iterator, std::vector<std::pair<int, int>>::const_iterator> getRandomPath() const;
         // returns the shortest path from a random spawn to the nearest base
         std::pair<std::vector<std::pair<int, int>>::const_iterator, std::vector<std::pair<int, int>>::const_iterator> getShortestPath() const;
+        // returns the safest path from a random spawn to a base
+        std::pair<std::vector<std::pair<int, int>>::const_iterator, std::vector<std::pair<int, int>>::const_iterator> getSafestPath() const;
         const std::vector<std::pair<int, int>>& getTurretBaseTiles() const;
         bool static isMember(int row, int col, const std::vector<std::pair<int, int>>& container);
+
+        void findSafestPaths(TurretList& turrets); // this has to called everytime turrets are updated
 
     private:
         void loadFile(const std::string &fileName);
@@ -54,6 +62,7 @@ class Map : public Node
         std::vector<std::pair<int, int>> turretBaseTiles_;
         std::vector<std::vector<std::pair<int, int>>> paths_;
         std::vector<int> shortestPathIndexes_;
+        std::vector<int> safestPathIndexes_;
         std::vector<std::shared_ptr<sf::Sprite>> mapPictures_; 
 };
 

@@ -25,6 +25,7 @@ class Projectile : public Node
 		sf::Vector2f getPosition() const { return position_; }
 		float getDirection() const { return direction_; }   // flight angle
 		float getRadius() const  { return size_ / 2.f; }
+		int getMaxDamage() const { return maxDamage_; }
 		bool drawAsVertex() const { return size_ == 0.f; } // draw as vertex (instead of a shape/sprite)
 
 	protected:

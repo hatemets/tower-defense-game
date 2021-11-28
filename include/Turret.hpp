@@ -16,11 +16,11 @@ class Turret : public Node
 			   ResourceHolder<sf::Texture, Textures::ID>& textures, Textures::ID turretBaseStyle, Textures::ID turretStyle);
 
 		virtual void update(sf::Time deltaTime, const EnemyList& enemies, ProjectileList& projectiles);
-		virtual void drawSelf(sf::RenderTarget& target, sf::RenderStates states) const override;       
+		virtual void drawSelf(sf::RenderTarget& target, sf::RenderStates states) const override;  
+		virtual std::vector<std::shared_ptr<Projectile>> shoot() = 0;     
 
 	protected:
 		virtual float rotate(sf::Time deltaTime, const EnemyList& enemies) = 0;
-        virtual std::vector<std::shared_ptr<Projectile>> shoot() = 0;
 
 		std::shared_ptr<Enemy> getNearestEnemyInRadar(const EnemyList& enemies);
 		float rotateToNearestEnemyInRadar(sf::Time deltaTime, bool estimateEnemyMovement, float projectileSpeed, const EnemyList& enemies);
@@ -31,6 +31,7 @@ class Turret : public Node
 		int getCol() const { return col_; }                                       // location tile column
 		float getTileX() const { return col_ + 0.5f; }                            // turret centre x in tile coordinates
 		float getTileY() const { return row_ + 0.5f; }                            // turret centre y in tile coordinates
+		sf::Vector2f getPosition() const { return sf::Vector2f(getTileX(), getTileY()); }
 		int getPrice() const { return price_; }                                   // purchase price
 		float getRateOfFire() const { return rateOfFire_; }                       // max number of shots per second
 		sf::Time getFireInterval() const { return sf::seconds(1 / rateOfFire_); } // min time between shots

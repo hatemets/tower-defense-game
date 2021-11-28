@@ -1,5 +1,6 @@
 #include "../include/Map.hpp"
 #include "../include/auxiliary/constants.hpp"
+#include "../include/Turret.hpp"
 #include <cmath>
 #include <fstream>
 #include <sstream> 
@@ -72,7 +73,7 @@ std::pair<std::vector<std::pair<int, int>>::const_iterator, std::vector<std::pai
 	switch (shortestPathIndexes_.size())
 	{
 		case 0:
-			throw std::runtime_error("No paths available!");
+			throw std::runtime_error("No shortest paths available!");
 			break;
 
 		case 1:
@@ -85,6 +86,31 @@ std::pair<std::vector<std::pair<int, int>>::const_iterator, std::vector<std::pai
 		default:
 		{
 			int pathIndex = shortestPathIndexes_[rand() % shortestPathIndexes_.size()];
+			return std::make_pair(paths_[pathIndex].cbegin(), paths_[pathIndex].cend());
+			break;
+		}
+	}
+}
+
+
+std::pair<std::vector<std::pair<int, int>>::const_iterator, std::vector<std::pair<int, int>>::const_iterator> Map::getSafestPath() const
+{
+	switch (safestPathIndexes_.size())
+	{
+		case 0:
+			throw std::runtime_error("No safest paths available!");
+			break;
+
+		case 1:
+		{
+			int pathIndex = safestPathIndexes_[0];
+			return std::make_pair(paths_[pathIndex].cbegin(), paths_[pathIndex].cend());
+			break;
+		}
+
+		default:
+		{
+			int pathIndex = safestPathIndexes_[rand() % safestPathIndexes_.size()];
 			return std::make_pair(paths_[pathIndex].cbegin(), paths_[pathIndex].cend());
 			break;
 		}
@@ -251,6 +277,66 @@ void Map::findShortestPaths()
 		if (shortestIndex >= 0) 
 		{
 			shortestPathIndexes_.push_back(shortestIndex);
+		}
+	}
+}
+
+
+// find safest path for each spawn tile
+void Map::findSafestPaths(TurretList& turrets)
+{
+	safestPathIndexes_.clear();
+
+	std::vector<std::tuple<sf::Vector2f, float, int>> turretInfos;
+
+	for (auto& turret : turrets)
+	{
+		int maxDamage = 0;
+		for (auto& projectile : turret->shoot())
+		{
+			maxDamage += projectile->getMaxDamage();
+		}
+		turretInfos.push_back(std::make_tuple(turret->getPosition(), turret->getRadarRange(), maxDamage));
+	}
+
+	std::vector<int> pathTotalDamages;
+	for (auto& path : paths_)
+	{
+		int pathTotalDamage = 0;
+		for (auto ite = path.begin(); ite != path.end(); ite++)
+		{
+			float roadX = ite->second + 0.5f;
+			float roadY = ite->first + 0.5f;
+			sf::Vector2f roadPosition(roadX, roadY);
+			for (auto& turretInfo : turretInfos)
+			{
+				if (isContact(roadPosition, 0.f, std::get<0>(turretInfo), std::get<1>(turretInfo)))
+				{
+					pathTotalDamage += std::get<2>(turretInfo);
+				}
+			}
+		}
+		pathTotalDamages.push_back(pathTotalDamage);
+	}
+
+	for (auto spawnTile : spawnTiles_) 
+	{
+		int minTotalDamage = std::numeric_limits<int>::max();
+		int safestIndex = -1;
+		for (int i = 0; i < static_cast<int>(paths_.size()); i++)
+		{
+			if (*paths_[i].begin() == spawnTile)
+			{
+				if (pathTotalDamages[i] < minTotalDamage)
+				{
+					minTotalDamage = pathTotalDamages[i];
+					safestIndex = i; 
+				}
+			}
+		}
+		if (safestIndex >= 0) 
+		{
+			safestPathIndexes_.push_back(safestIndex);
 		}
 	}
 }
