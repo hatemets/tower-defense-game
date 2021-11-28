@@ -173,6 +173,12 @@ void Map::findPaths()
 	}
 
 	findShortestPaths();
+	
+	// safest = shortest before any turrets are added
+	for (int pathIndex : shortestPathIndexes_)
+	{
+		safestPathIndexes_.push_back(pathIndex);
+	}
 }
 
 
