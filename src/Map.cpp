@@ -3,11 +3,10 @@
 #include "../include/Turret.hpp"
 #include <cmath>
 #include <fstream>
-#include <sstream> 
+#include <sstream>
 #include <limits>
 
-
-Map::Map(const std::string& filename, ResourceHolder<sf::Texture, Textures::ID>& textures)
+Map::Map(const std::string &filename, ResourceHolder<sf::Texture, Textures::ID> &textures)
 	: textures_(textures)
 {
 	loadFile(filename);
@@ -18,7 +17,7 @@ Map::Map(const std::string& filename, ResourceHolder<sf::Texture, Textures::ID>&
 
 void Map::drawSelf(sf::RenderTarget &target, sf::RenderStates states) const
 {
-	for (auto& pic : mapPictures_)
+	for (auto &pic : mapPictures_)
 	{
 		target.draw(*pic, states);
 	}
@@ -48,7 +47,7 @@ bool Map::isContact(const sf::Vector2f posA, float aRadius, const sf::Vector2f p
 }
 
 
-std::pair<std::vector<std::pair<int, int>>::const_iterator, std::vector<std::pair<int, int>>::const_iterator> Map::getPath(const std::vector<int>& pathIndexes) const
+std::pair<std::vector<std::pair<int, int>>::const_iterator, std::vector<std::pair<int, int>>::const_iterator> Map::getPath(const std::vector<int> &pathIndexes) const
 {
 	switch (pathIndexes.size())
 	{
@@ -123,24 +122,24 @@ void Map::loadFile(const std::string &fileName)
 					{
 						switch (line[col])
 						{
-						case 'S':
-							spawnTiles_.push_back(std::make_pair(row, col));
-							break;
+							case 'S':
+								spawnTiles_.push_back(std::make_pair(row, col));
+								break;
 
-						case '#':
-							roadTiles_.push_back(std::make_pair(row, col));
-							break;
+							case '#':
+								roadTiles_.push_back(std::make_pair(row, col));
+								break;
 
-						case 'B':
-							baseTiles_.push_back(std::make_pair(row, col));
-							break;
+							case 'B':
+								baseTiles_.push_back(std::make_pair(row, col));
+								break;
 
-						case 'O':
-							turretBaseTiles_.push_back(std::make_pair(row, col));
-							break;
+							case 'O':
+								turretBaseTiles_.push_back(std::make_pair(row, col));
+								break;
 
-						default:
-							break;
+							default:
+								break;
 						}
 					}
 				}
@@ -160,7 +159,7 @@ bool Map::isMember(int row, int col, const std::vector<std::pair<int, int>> &con
 
 void Map::findPaths()
 {
-	for (auto spawnTile : spawnTiles_) 
+	for (auto spawnTile : spawnTiles_)
 	{
 		std::vector<std::pair<int, int>> path;
 		path.push_back(spawnTile);
@@ -173,7 +172,7 @@ void Map::findPaths()
 	}
 
 	findShortestPaths();
-	
+
 	// safest = shortest before any turrets are added
 	for (int pathIndex : shortestPathIndexes_)
 	{
@@ -182,14 +181,14 @@ void Map::findPaths()
 }
 
 
-void Map::findPaths(std::vector<std::pair<int, int>>& path)
+void Map::findPaths(std::vector<std::pair<int, int>> &path)
 {
 	do
 	{
 		int row = path.rbegin()->first;
 		int col = path.rbegin()->second;
 
-		if (isBase(row, col)) 
+		if (isBase(row, col))
 		{
 			// found a base i.e. the end point of this path
 			paths_.push_back(path);
@@ -242,7 +241,7 @@ void Map::findPaths(std::vector<std::pair<int, int>>& path)
 // find shortest path for each spawn tile
 void Map::findShortestPaths()
 {
-	for (auto spawnTile : spawnTiles_) 
+	for (auto spawnTile : spawnTiles_)
 	{
 		int minLength = std::numeric_limits<int>::max();
 		int shortestIndex = -1;
@@ -254,11 +253,11 @@ void Map::findShortestPaths()
 				if (pathLength < minLength)
 				{
 					minLength = pathLength;
-					shortestIndex = i; 
+					shortestIndex = i;
 				}
 			}
 		}
-		if (shortestIndex >= 0) 
+		if (shortestIndex >= 0)
 		{
 			shortestPathIndexes_.push_back(shortestIndex);
 		}
@@ -267,16 +266,16 @@ void Map::findShortestPaths()
 
 
 // find safest path for each spawn tile
-void Map::findSafestPaths(TurretList& turrets)
+void Map::findSafestPaths(TurretList &turrets)
 {
 	safestPathIndexes_.clear();
 
 	std::vector<std::tuple<sf::Vector2f, float, int>> turretInfos;
 
-	for (auto& turret : turrets)
+	for (auto &turret : turrets)
 	{
 		int maxDamage = 0;
-		for (auto& projectile : turret->shoot())
+		for (auto &projectile : turret->shoot())
 		{
 			maxDamage += projectile->getMaxDamage();
 		}
@@ -284,7 +283,7 @@ void Map::findSafestPaths(TurretList& turrets)
 	}
 
 	std::vector<int> pathTotalDamages;
-	for (auto& path : paths_)
+	for (auto &path : paths_)
 	{
 		int pathTotalDamage = 0;
 		for (auto ite = path.begin(); ite != path.end(); ite++)
@@ -292,7 +291,7 @@ void Map::findSafestPaths(TurretList& turrets)
 			float roadX = ite->second + 0.5f;
 			float roadY = ite->first + 0.5f;
 			sf::Vector2f roadPosition(roadX, roadY);
-			for (auto& turretInfo : turretInfos)
+			for (auto &turretInfo : turretInfos)
 			{
 				if (isContact(roadPosition, 0.f, std::get<0>(turretInfo), std::get<1>(turretInfo)))
 				{
@@ -303,7 +302,7 @@ void Map::findSafestPaths(TurretList& turrets)
 		pathTotalDamages.push_back(pathTotalDamage);
 	}
 
-	for (auto spawnTile : spawnTiles_) 
+	for (auto spawnTile : spawnTiles_)
 	{
 		int minTotalDamage = std::numeric_limits<int>::max();
 		int safestIndex = -1;
@@ -314,11 +313,11 @@ void Map::findSafestPaths(TurretList& turrets)
 				if (pathTotalDamages[i] < minTotalDamage)
 				{
 					minTotalDamage = pathTotalDamages[i];
-					safestIndex = i; 
+					safestIndex = i;
 				}
 			}
 		}
-		if (safestIndex >= 0) 
+		if (safestIndex >= 0)
 		{
 			safestPathIndexes_.push_back(safestIndex);
 		}
@@ -326,7 +325,7 @@ void Map::findSafestPaths(TurretList& turrets)
 }
 
 
-void Map::loadTileset(const std::vector<std::pair<int, int>>& tiles_, Textures::ID style, float scale)
+void Map::loadTileset(const std::vector<std::pair<int, int>> &tiles_, Textures::ID style, float scale)
 {
 	for (auto tile : tiles_)
 	{
@@ -336,7 +335,7 @@ void Map::loadTileset(const std::vector<std::pair<int, int>>& tiles_, Textures::
 		auto sprite = std::make_shared<sf::Sprite>(textures_.get(style));
 		auto imageBounds = sprite->getGlobalBounds();
 		sprite->setScale(scale * TileSize / imageBounds.width, scale * TileSize / imageBounds.height);
-		float scalingFix = (1.f - scale) / 2.f; 
+		float scalingFix = (1.f - scale) / 2.f;
 		sprite->setPosition((col + scalingFix) * TileSize, (row + scalingFix) * TileSize);
 
 		mapPictures_.push_back(sprite);

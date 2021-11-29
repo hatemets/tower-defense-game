@@ -171,44 +171,39 @@ void Level::updateEnemies(sf::Time deltaTime)
 		}
 
 		int level = 5; // FIX THIS: This should be the actual level number
-		switch (rand() % std::min(level, 5)) // 5 is here the number of all different enemies
+		switch (rand() % std::min(level, 5))
 		{
 			case 0:
 			{
-				auto path = map_->getRandomPath();
-				auto orc = std::make_shared<Orc>(Orc{path.first, path.second, textures_});
+				auto orc = std::make_shared<Orc>(Orc{*map_, textures_});
 				enemies_.push_back(orc);
 				break;
 			}
 
 			case 1:
 			{
-				auto path = map_->getRandomPath();
-				auto goblin = std::make_shared<Goblin>(Goblin{path.first, path.second, textures_});
+				auto goblin = std::make_shared<Goblin>(Goblin{*map_, textures_});
 				enemies_.push_back(goblin);
 				break;
 			}
 
 			case 2:
 			{
-				auto path = map_->getShortestPath();
-				auto troll = std::make_shared<Troll>(Troll{path.first, path.second, textures_});
+				auto troll = std::make_shared<Troll>(Troll{*map_, textures_});
 				enemies_.push_back(troll);
 				break;
 			}
 
 			case 3:
 			{
-				auto path = map_->getShortestPath();
-				auto slime = std::make_shared<Slime>(Slime{path.first, path.second, textures_});
+				auto slime = std::make_shared<Slime>(Slime{*map_, textures_});
 				enemies_.push_back(slime);
 				break;
 			}
 
 			case 4:
 			{
-				auto path = map_->getSafestPath();
-				auto kobold = std::make_shared<Kobold>(Kobold{path.first, path.second, textures_});
+				auto kobold = std::make_shared<Kobold>(Kobold{*map_, textures_});
 				enemies_.push_back(kobold);
 				break;
 			}

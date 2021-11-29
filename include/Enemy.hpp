@@ -7,20 +7,18 @@
 #include "Node.hpp"
 #include "Map.hpp"
 
-
 class Enemy;
 using EnemyList = std::list<std::shared_ptr<Enemy>>;
-
 
 /// The base class of enemies
 class Enemy : public Node
 {
 	public:
-		Enemy(std::vector<std::pair<int, int>>::const_iterator pathBegin, std::vector<std::pair<int, int>>::const_iterator pathEnd, float speed, int hitPoints, 
-			  ResourceHolder<sf::Texture, Textures::ID>& textures, Textures::ID enemyStyle, float size);
+		Enemy(std::pair<std::vector<std::pair<int, int>>::const_iterator, std::vector<std::pair<int, int>>::const_iterator> path, float speed, int hitPoints,
+			ResourceHolder<sf::Texture, Textures::ID> &textures, Textures::ID enemyStyle, float size);
 
 		virtual void update(sf::Time deltaTime) override;
-		virtual void drawSelf(sf::RenderTarget& target, sf::RenderStates states) const override;
+		virtual void drawSelf(sf::RenderTarget &target, sf::RenderStates states) const override;
 
 	protected:
 		void setDirection();
@@ -28,15 +26,15 @@ class Enemy : public Node
 		Textures::ID getHealthTextureID() const;
 
 	public:
-		bool isAlive() const;								 // alive or dead
-		bool hasReachedBase() const;						 // has succeed to reach the base
-		void hit(int maxDamage);							 // used by projectile
+		bool isAlive() const;		 // alive or dead
+		bool hasReachedBase() const; // has succeed to reach the base
+		void hit(int maxDamage);	 // used by projectile
 		sf::Vector2f getPosition() const { return position_; }
-		float getDirection() const { return direction_; }	 // flight angle
-		float getSpeed() const { return speed_; }			 // speed as tiles / second 
-		int getHitPoints() const { return hitPoints_; }		 // hitpoints left
-		float getRadius() const { return size_ / 2.f; }	     // the hit radius of the enemy
-		virtual void spawnNewEnemies(EnemyList& newEnemies) const {}; // possibility to spawn new enemies
+		float getDirection() const { return direction_; }			  // flight angle
+		float getSpeed() const { return speed_; }					  // speed as tiles / second
+		int getHitPoints() const { return hitPoints_; }				  // hitpoints left
+		float getRadius() const { return size_ / 2.f; }				  // the hit radius of the enemy
+		virtual void spawnNewEnemies(EnemyList &newEnemies) const {}; // possibility to spawn new enemies
 
 	protected:
 		std::vector<std::pair<int, int>>::const_iterator pathIterator_;
@@ -50,7 +48,7 @@ class Enemy : public Node
 
 		sf::Sprite enemySprite_;
 		sf::Sprite healthSprite_;
-		ResourceHolder<sf::Texture, Textures::ID>& textures_;
+		ResourceHolder<sf::Texture, Textures::ID> &textures_;
 		Textures::ID currentHealthTextureId_;
 };
 
@@ -58,45 +56,47 @@ class Enemy : public Node
 class Goblin : public Enemy
 {
 	public:
-		Goblin(std::vector<std::pair<int, int>>::const_iterator pathBegin, std::vector<std::pair<int, int>>::const_iterator pathEnd, ResourceHolder<sf::Texture, Textures::ID>& textures);
+		Goblin(const Map &map, ResourceHolder<sf::Texture, Textures::ID> &textures);
 };
 
 
 class Orc : public Enemy
 {
 	public:
-		Orc(std::vector<std::pair<int, int>>::const_iterator pathBegin, std::vector<std::pair<int, int>>::const_iterator pathEnd, ResourceHolder<sf::Texture, Textures::ID>& textures);
+		Orc(const Map &map, ResourceHolder<sf::Texture, Textures::ID> &textures);
 };
 
 
 class Troll : public Enemy
 {
 	public:
-		Troll(std::vector<std::pair<int, int>>::const_iterator pathBegin, std::vector<std::pair<int, int>>::const_iterator pathEnd, ResourceHolder<sf::Texture, Textures::ID>& textures);
+		Troll(const Map &map, ResourceHolder<sf::Texture, Textures::ID> &textures);
 };
 
 
 class Slime : public Enemy
 {
 	public:
-		Slime(std::vector<std::pair<int, int>>::const_iterator pathBegin, std::vector<std::pair<int, int>>::const_iterator pathEnd, ResourceHolder<sf::Texture, Textures::ID>& textures);
+		Slime(const Map &map, ResourceHolder<sf::Texture, Textures::ID> &textures);
 
-		virtual void spawnNewEnemies(EnemyList& newEnemies) const;
+		virtual void spawnNewEnemies(EnemyList &newEnemies) const;
+
+		std::vector<std::pair<int, int>>::const_iterator getPathIterator() const { return pathIterator_; }
+		std::vector<std::pair<int, int>>::const_iterator getPathEnd() const { return pathEnd_; }
 };
 
 
 class BabySlime : public Enemy
 {
 	public:
-		BabySlime(const Slime& parent, std::vector<std::pair<int, int>>::const_iterator pathBegin, std::vector<std::pair<int, int>>::const_iterator pathEnd, ResourceHolder<sf::Texture, Textures::ID>& textures);
+		BabySlime(const Slime &parent, ResourceHolder<sf::Texture, Textures::ID> &textures);
 };
 
 
 class Kobold : public Enemy
 {
 	public:
-		Kobold(std::vector<std::pair<int, int>>::const_iterator pathBegin, std::vector<std::pair<int, int>>::const_iterator pathEnd, ResourceHolder<sf::Texture, Textures::ID>& textures);
+		Kobold(const Map &map, ResourceHolder<sf::Texture, Textures::ID> &textures);
 };
-
 
 #endif
