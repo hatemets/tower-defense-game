@@ -43,19 +43,28 @@ namespace Projectiles
 {
 	struct Bullet
 	{
-		static constexpr float speed = 20.f;   // tiles per second
-		static constexpr float range = 5.f;    // tiles
-		static constexpr int damage = 20;      // hit points (hit points are integers)
-		static constexpr float size = 0.05f;   // bullet diameter (if 0, drawn as vertex)
+		static constexpr float speed = 20.f; // tiles per second
+		static constexpr float range = 5.f;	 // tiles
+		static constexpr int damage = 20;	 // hit points (hit points are integers)
+		static constexpr float size = 0.05f; // bullet diameter (if 0, drawn as vertex)
 	};
 
 	struct Bomb
 	{
-		static constexpr float speed = 12.f;			// tiles per second
-		static constexpr float range = 3.f;			    // tiles
-		static constexpr float explosionRadius = 1.f;   // damages enemies within N tiles
-		static constexpr int damage = 80;				// hit points (hit points are integers)
-		static constexpr float size = 0.2f;             // bomb diameter is 0.2 tiles
+		static constexpr float speed = 12.f;		  // tiles per second
+		static constexpr float range = 3.f;			  // tiles
+		static constexpr float explosionRadius = 1.f; // damages enemies within N tiles
+		static constexpr int damage = 80;			  // hit points (hit points are integers)
+		static constexpr float size = 0.2f;			  // bomb diameter is 0.2 tiles
+	};
+
+	struct Missile
+	{
+		static constexpr float speed = 8.f;			   // tiles per second
+		static constexpr float range = 15.f;		   // tiles
+		static constexpr float explosionRadius = 1.5f; // damages enemies within N tiles
+		static constexpr int damage = 200;			   // hit points (hit points are integers)
+		static constexpr float size = 0.2f;			   // hit diameter is 0.2 tiles
 	};
 }
 
@@ -93,7 +102,7 @@ namespace Enemies
 	{
 		static constexpr float speed = 1.0f;
 		static constexpr int hitPoints = 2000;
-		static constexpr float size = 0.6f;    
+		static constexpr float size = 0.6f;
 		static constexpr int babies = 5; // number of baby slimes created when dying
 	};
 
@@ -121,31 +130,37 @@ namespace Turrets
 	struct Gun
 	{
 		static constexpr int price = 100;
-		static constexpr int firerate = 5.f; // Shots per second
-		static constexpr int radarRange = 5.f;
+		static constexpr float firerate = 5.f; // Shots per second
+		static constexpr float radarRange = 5.f;
 	};
 
 	struct DoubleGun
 	{
 		static constexpr int price = 300;
-		static constexpr int firerate = 5.f;
-		static constexpr int radarRange = 5.f;
+		static constexpr float firerate = 5.f;
+		static constexpr float radarRange = 5.f;
 	};
 
 	struct TripleGun
 	{
 		static constexpr int price = 800;
-		static constexpr int firerate = 5.f;
-		static constexpr int radarRange = 5.f;
+		static constexpr float firerate = 5.f;
+		static constexpr float radarRange = 5.f;
 	};
 
 	struct Bomb
 	{
 		static constexpr int price = 500;
-		static constexpr int firerate = 2.f;
-		static constexpr int radarRange = 5.f;
+		static constexpr float firerate = 2.f;
+		static constexpr float radarRange = 5.f;
+	};
+
+	struct Missile
+	{
+		static constexpr int price = 1000;
+		static constexpr float firerate = 0.3f;
+		static constexpr float radarRange = 12.f;
 	};
 }
-
 
 #endif

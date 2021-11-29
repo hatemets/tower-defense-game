@@ -61,12 +61,14 @@ namespace Resources
 			DoubleGunTurret,
 			TripleGunTurret,
 			BombTurret,
+			Missile,
 
 			// Turret bases
 			GunTurretBase,
 			DoubleGunTurretBase,
 			TripleGunTurretBase,
 			BombTurretBase,
+			MissileBase,
 		};
 	}
 

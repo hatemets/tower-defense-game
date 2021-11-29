@@ -37,6 +37,8 @@ void Level::loadResources()
 	textures_.load(Textures::ID::TripleGunTurretBase, "./include/images/TripleGunTurretBase.png");
 	textures_.load(Textures::ID::BombTurretBase, "./include/images/BombTurretBase.png");
 	textures_.load(Textures::ID::BombTurret, "./include/images/BombTurret.png");
+	textures_.load(Textures::ID::MissileBase, "./include/images/MissileBase.png");
+	textures_.load(Textures::ID::Missile, "./include/images/Missile.png");
 	textures_.load(Textures::ID::Goblin, "./include/images/Goblin.png");
 	textures_.load(Textures::ID::Orc, "./include/images/Orc.png");
 	textures_.load(Textures::ID::Troll, "./include/images/Troll.png");
@@ -62,7 +64,7 @@ void Level::createScene()
 	// Simulate buying turrets
 	const std::vector<std::pair<int, int>>& turretBaseTiles = map_->getTurretBaseTiles();
 
-	std::size_t turretCreateCount = std::min<std::size_t>(4, turretBaseTiles.size());
+	std::size_t turretCreateCount = std::min<std::size_t>(5, turretBaseTiles.size());
 
 	std::vector<std::pair<int, int>> turretTiles;
 
@@ -89,8 +91,12 @@ void Level::createScene()
 					turrets_.push_back(std::make_shared<TripleGunTurret>(TripleGunTurret{ row, col, textures_ }));
 					break;
 
-				default:
+				case 3:
 					turrets_.push_back(std::make_shared<BombTurret>(BombTurret{ row, col, textures_ }));
+					break;
+
+				default:
+					turrets_.push_back(std::make_shared<MissileTurret>(MissileTurret{ row, col, textures_ }));
 					break;
 			}
 			turretTiles.push_back(tile);
