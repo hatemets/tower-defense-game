@@ -49,6 +49,24 @@ ModeState Mode::handleInput(sf::Vector2i mousePos)
 		{
 			case Buttons::ID::StartButton:
 				return ModeState(Type::NewGame);
+			case Buttons::ID::Level1Button:
+				return ModeState(Type::Level1);
+			case Buttons::ID::Level2Button:
+				return ModeState(Type::Level2);
+			case Buttons::ID::Level3Button:
+				return ModeState(Type::Level3);
+			case Buttons::ID::Level4Button:
+				return ModeState(Type::Level4);
+			case Buttons::ID::Level5Button:
+				return ModeState(Type::Level5);
+			case Buttons::ID::Level6Button:
+				return ModeState(Type::Level6);
+			case Buttons::ID::Level7Button:
+				return ModeState(Type::Level7);
+			case Buttons::ID::Level8Button:
+				return ModeState(Type::Level8);
+			case Buttons::ID::Level9Button:
+				return ModeState(Type::Level9);
 			case Buttons::ID::HomeButton:
 				return ModeState(Type::MainMenu);
 			case Buttons::ID::LevelMenuButton:

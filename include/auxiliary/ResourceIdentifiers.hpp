@@ -9,6 +9,15 @@ namespace Resources
 		{
 			// To level menu
 			StartButton,
+			Level1Button,
+			Level2Button,
+			Level3Button,
+			Level4Button,
+			Level5Button,
+			Level6Button,
+			Level7Button,
+			Level8Button,
+			Level9Button,
 
 			// To main menu
 			HomeButton,

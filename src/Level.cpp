@@ -14,9 +14,8 @@ Level::Level(sf::RenderWindow& window, std::shared_ptr<GameData> gameData)
 	map_(nullptr),
 	gameData_(gameData),
 	enemies_(),
-	minSpawnInterval_(sf::seconds(3.f)),
-	maxSpawnInterval_(sf::seconds(10.f)),
-	// TODO: Remove hardcoded values
+	minSpawnInterval_(sf::seconds(LevelMinSpawnIntervals[gameData->getLevel() - 1])),
+	maxSpawnInterval_(sf::seconds(LevelMaxSpawnIntervals[gameData->getLevel() - 1])),
 	nextSpawn_(sf::seconds(1)),
 	turrets_(),
 	projectileVertices_(sf::Points, 0)
@@ -65,6 +64,7 @@ void Level::loadResources()
 	textures_.load(Textures::ID::Health20, "./include/images/Health20.png");
 
 	buttonShapes_.load(Buttons::ID::HomeButton);
+	buttonShapes_.load(Buttons::ID::LevelMenuButton);
 }
 
 
@@ -135,7 +135,7 @@ void Level::loadMap()
 void Level::addButtons()
 {
 	// Home button
-	auto homeButton = std::make_unique<Button>("X", fonts_, Fonts::ID::SourceCodePro, buttonShapes_, Buttons::ID::HomeButton);
+	auto homeButton = std::make_unique<Button>("X", fonts_, Fonts::ID::SourceCodePro, buttonShapes_, Buttons::ID::LevelMenuButton);
 	auto homeButtonSize = homeButton->getButton().getSize();
 
 	// NOTE: Added button padding y for it to stick to the upper side of the window

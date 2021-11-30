@@ -40,11 +40,23 @@ void World::changeMode(Type newMode)
 			gameData_ = std::make_shared<GameData>();
 			mode_.reset(new Level(window_, gameData_));
 			break;
+		case Type::Level1:
+		case Type::Level2:
+		case Type::Level3:
+		case Type::Level4:
+		case Type::Level5:
+		case Type::Level6:
+		case Type::Level7:
+		case Type::Level8:
+		case Type::Level9:
+			gameData_->setLevel(static_cast<int>(newMode) - static_cast<int>(Type::Level1) + 1);
+			mode_.reset(new Level(window_, gameData_));
+			break;
 		case Type::MainMenu:
 			mode_.reset(new MainMenu(window_));
 			break;
 		case Type::LevelMenu:
-			mode_.reset(new LevelMenu(window_));
+			mode_.reset(new LevelMenu(window_, gameData_));
 			break;
 	}
 }
