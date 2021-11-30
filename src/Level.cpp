@@ -26,7 +26,15 @@ Level::Level(sf::RenderWindow& window, std::shared_ptr<GameData> gameData)
 
 	creditsText_.setFont(fonts_.get(Fonts::ID::SourceCodePro));
 	creditsText_.setCharacterSize(CreditsTextFontSize);
+	creditsText_.setFillColor(sf::Color::White);
 	creditsText_.setPosition(CreditsTextPaddingX, 0.f);
+
+	gameOverText_.setString("Game Over");
+	gameOverText_.setFont(fonts_.get(Fonts::ID::SourceCodePro));
+	gameOverText_.setCharacterSize(GameOverTextFontSize);
+	gameOverText_.setFillColor(sf::Color::Red);
+	gameOverText_.setPosition(WindowWidth / 2.f, WindowHeight / 2.f);
+	gameOverText_.setOrigin(gameOverText_.getLocalBounds().width / 2.f, gameOverText_.getLocalBounds().height);
 }
 
 
@@ -353,5 +361,10 @@ void Level::drawSelf(sf::RenderTarget& target, sf::RenderStates states) const
 	}
 
 	target.draw(creditsText_, states);
+
+	if (gameData_->isGameOver())
+	{
+		target.draw(gameOverText_, states);
+	}
 }
 

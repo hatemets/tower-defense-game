@@ -39,6 +39,9 @@ const int NewGameCredits = 300;
 const int CreditsTextFontSize = 24;
 const float CreditsTextPaddingX = 5.f;
 
+// Game Over
+const int GameOverTextFontSize = 96;
+
 // Turret properties
 const float TurretTextureOffset = 90; // turret texture angle (90 degrees = turret barrel points down in the texture)
 const float TurretScaler = 2.f;

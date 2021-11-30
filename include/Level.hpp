@@ -48,6 +48,7 @@ class Level : public Mode
 		ResourceHolder<sf::Texture, Textures::ID> textures_;
 
 		sf::Text creditsText_;
+		sf::Text gameOverText_;
 
 		Map* map_; ///< Hold by unique pointer elsewhere.
 		std::shared_ptr<GameData> gameData_;
