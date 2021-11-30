@@ -344,7 +344,7 @@ std::vector<std::shared_ptr<Projectile>> MissileTurret::shoot()
 {
     std::vector<std::shared_ptr<Projectile>> projectiles;
 
-    if (target_ && target_->isAlive())
+    if (target_ && target_->isAlive() && !target_->hasReachedBase())
     {
         sf::Vector2f position = getProjectileStartPosition(0.f);
         projectiles.push_back(std::make_shared<::Missile>(::Missile{position, currentAngle_, target_, textures_}));

@@ -48,7 +48,7 @@ ModeState Mode::handleInput(sf::Vector2i mousePos)
 		switch (button->getType())
 		{
 			case Buttons::ID::StartButton:
-				return ModeState(Type::Level);
+				return ModeState(Type::NewGame);
 			case Buttons::ID::HomeButton:
 				return ModeState(Type::MainMenu);
 			case Buttons::ID::LevelMenuButton:

@@ -5,7 +5,7 @@
 #include <math.h>
 
 Enemy::Enemy(std::pair<std::vector<std::pair<int, int>>::const_iterator, std::vector<std::pair<int, int>>::const_iterator> path, float speed, int hitPoints,
-             ResourceHolder<sf::Texture, Textures::ID> &textures, Textures::ID enemyStyle, float size)
+             ResourceHolder<sf::Texture, Textures::ID> &textures, Textures::ID enemyStyle, float size, int reward)
     : pathIterator_(path.first),
       pathEnd_(path.second),
       position_(path.first->second + 0.5f, path.first->first + 0.5f),
@@ -14,6 +14,7 @@ Enemy::Enemy(std::pair<std::vector<std::pair<int, int>>::const_iterator, std::ve
       hitPoints_(hitPoints),
       maxHitPoints_(hitPoints),
       size_(size),
+      reward_(reward),
       textures_(textures),
       currentHealthTextureId_(Textures::ID::Health100)
 {
@@ -158,7 +159,7 @@ void Enemy::hit(int maxDamage)
 // Goblin
 
 Goblin::Goblin(const Map &map, ResourceHolder<sf::Texture, Textures::ID> &textures)
-    : Enemy(map.getRandomPath(), Enemies::Goblin::speed, Enemies::Goblin::hitPoints, textures, Textures::ID::Goblin, Enemies::Goblin::size)
+    : Enemy(map.getRandomPath(), Enemies::Goblin::speed, Enemies::Goblin::hitPoints, textures, Textures::ID::Goblin, Enemies::Goblin::size, Enemies::Goblin::reward)
 {
 }
 
@@ -166,7 +167,7 @@ Goblin::Goblin(const Map &map, ResourceHolder<sf::Texture, Textures::ID> &textur
 // Orc
 
 Orc::Orc(const Map &map, ResourceHolder<sf::Texture, Textures::ID> &textures)
-    : Enemy(map.getRandomPath(), Enemies::Orc::speed, Enemies::Orc::hitPoints, textures, Textures::ID::Orc, Enemies::Orc::size)
+    : Enemy(map.getRandomPath(), Enemies::Orc::speed, Enemies::Orc::hitPoints, textures, Textures::ID::Orc, Enemies::Orc::size, Enemies::Orc::reward)
 {
 }
 
@@ -174,7 +175,7 @@ Orc::Orc(const Map &map, ResourceHolder<sf::Texture, Textures::ID> &textures)
 // Troll
 
 Troll::Troll(const Map &map, ResourceHolder<sf::Texture, Textures::ID> &textures)
-    : Enemy(map.getShortestPath(), Enemies::Troll::speed, Enemies::Troll::hitPoints, textures, Textures::ID::Troll, Enemies::Troll::size)
+    : Enemy(map.getShortestPath(), Enemies::Troll::speed, Enemies::Troll::hitPoints, textures, Textures::ID::Troll, Enemies::Troll::size, Enemies::Troll::reward)
 {
 }
 
@@ -182,7 +183,7 @@ Troll::Troll(const Map &map, ResourceHolder<sf::Texture, Textures::ID> &textures
 // Slime
 
 Slime::Slime(const Map &map, ResourceHolder<sf::Texture, Textures::ID> &textures)
-    : Enemy(map.getShortestPath(), Enemies::Slime::speed, Enemies::Slime::hitPoints, textures, Textures::ID::Slime, Enemies::Slime::size)
+    : Enemy(map.getShortestPath(), Enemies::Slime::speed, Enemies::Slime::hitPoints, textures, Textures::ID::Slime, Enemies::Slime::size, Enemies::Slime::reward)
 {
 }
 
@@ -203,7 +204,7 @@ void Slime::spawnNewEnemies(EnemyList &newEnemies) const
 // BabySlime
 
 BabySlime::BabySlime(const Slime &parent, ResourceHolder<sf::Texture, Textures::ID> &textures)
-    : Enemy(std::make_pair(parent.getPathIterator(), parent.getPathEnd()), Enemies::BabySlime::speed, Enemies::BabySlime::hitPoints, textures, Textures::ID::Slime, Enemies::BabySlime::size)
+    : Enemy(std::make_pair(parent.getPathIterator(), parent.getPathEnd()), Enemies::BabySlime::speed, Enemies::BabySlime::hitPoints, textures, Textures::ID::Slime, Enemies::BabySlime::size, Enemies::BabySlime::reward)
 {
     float deltaX = (rand() % 101 - 50) / 100.f; // random value between -0.5 and +0.5
     float deltaY = (rand() % 101 - 50) / 100.f; // random value between -0.5 and +0.5
@@ -216,6 +217,6 @@ BabySlime::BabySlime(const Slime &parent, ResourceHolder<sf::Texture, Textures::
 // Kobold
 
 Kobold::Kobold(const Map &map, ResourceHolder<sf::Texture, Textures::ID> &textures)
-    : Enemy(map.getSafestPath(), Enemies::Kobold::speed, Enemies::Kobold::hitPoints, textures, Textures::ID::Kobold, Enemies::Kobold::size)
+    : Enemy(map.getSafestPath(), Enemies::Kobold::speed, Enemies::Kobold::hitPoints, textures, Textures::ID::Kobold, Enemies::Kobold::size, Enemies::Kobold::reward)
 {
 }

@@ -6,6 +6,7 @@
 #include <memory>
 #include "Mode.hpp"
 #include "MainMenu.hpp"
+#include "GameData.hpp"
 #include "auxiliary/ModeIdentifiers.hpp"
 
 using namespace Modes;
@@ -29,6 +30,8 @@ class World
 
 		// The current mode of the game
 		std::unique_ptr<Mode> mode_;
+
+		std::shared_ptr<GameData> gameData_;
 };
 
 #endif

@@ -34,6 +34,11 @@ const float ButtonHeight = 1.f / 6.f * WindowHeight;
 const float ButtonPaddingX = 1.f / 4.f * ButtonWidth;
 const float ButtonPaddingY = 1.f / 8.f * ButtonHeight;
 
+// Credits
+const int NewGameCredits = 300;
+const int CreditsTextFontSize = 24;
+const float CreditsTextPaddingX = 5.f;
+
 // Turret properties
 const float TurretTextureOffset = 90; // turret texture angle (90 degrees = turret barrel points down in the texture)
 const float TurretScaler = 2.f;
@@ -77,46 +82,52 @@ namespace Enemies
 {
 	const float HealthBarMargin = 0.8f;
 
-	struct Goblin
-	{
-		static constexpr float speed = 3.5f;
-		static constexpr int hitPoints = 500;
-		static constexpr float size = 0.5f; // Goblin diameter is 0.5 tiles
-	};
-
 	struct Orc
 	{
-		static constexpr float speed = 2.5f;
 		static constexpr int hitPoints = 800;
+		static constexpr int reward = 10;
+		static constexpr float speed = 2.5f;
 		static constexpr float size = 0.6f;
+	};
+
+	struct Goblin
+	{
+		static constexpr int hitPoints = 500;
+		static constexpr int reward = 20;
+		static constexpr float speed = 3.5f;
+		static constexpr float size = 0.5f; // Goblin diameter is 0.5 tiles
 	};
 
 	struct Troll
 	{
-		static constexpr float speed = 1.5f;
 		static constexpr int hitPoints = 1500;
+		static constexpr int reward = 30;
+		static constexpr float speed = 1.5f;
 		static constexpr float size = 0.7f;
 	};
 
 	struct Slime
 	{
-		static constexpr float speed = 1.0f;
 		static constexpr int hitPoints = 2000;
+		static constexpr int reward = 50;
+		static constexpr float speed = 1.0f;
 		static constexpr float size = 0.6f;
 		static constexpr int babies = 5; // number of baby slimes created when dying
 	};
 
 	struct BabySlime
 	{
-		static constexpr float speed = 1.0f;
 		static constexpr int hitPoints = 100;
+		static constexpr int reward = 10;
+		static constexpr float speed = 1.0f;
 		static constexpr float size = 0.3f;
 	};
 
 	struct Kobold
 	{
-		static constexpr float speed = 4.0f;
 		static constexpr int hitPoints = 250;
+		static constexpr int reward = 40;
+		static constexpr float speed = 4.0f;
 		static constexpr float size = 0.4f;
 	};
 }

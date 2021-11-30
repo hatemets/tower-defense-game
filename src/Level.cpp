@@ -6,14 +6,16 @@
 #include <memory>
 #include <algorithm>
 #include <iostream>
+#include <sstream>
 
-Level::Level(sf::RenderWindow& window, sf::Time minSpawnInterval, sf::Time maxSpawnInterval)
+Level::Level(sf::RenderWindow& window, std::shared_ptr<GameData> gameData)
 	: Mode(window),
 	textures_(),
 	map_(nullptr),
+	gameData_(gameData),
 	enemies_(),
-	minSpawnInterval_(minSpawnInterval),
-	maxSpawnInterval_(maxSpawnInterval),
+	minSpawnInterval_(sf::seconds(3.f)),
+	maxSpawnInterval_(sf::seconds(10.f)),
 	// TODO: Remove hardcoded values
 	nextSpawn_(sf::seconds(1)),
 	turrets_(),
@@ -21,6 +23,10 @@ Level::Level(sf::RenderWindow& window, sf::Time minSpawnInterval, sf::Time maxSp
 {
 	loadResources();
 	createScene();
+
+	creditsText_.setFont(fonts_.get(Fonts::ID::SourceCodePro));
+	creditsText_.setCharacterSize(CreditsTextFontSize);
+	creditsText_.setPosition(CreditsTextPaddingX, 0.f);
 }
 
 
@@ -109,7 +115,9 @@ void Level::createScene()
 void Level::loadMap()
 {
 	// Map
-	auto map = std::make_unique<Map>(Map{"./include/maps/map2.txt", textures_}); // how the level/map is chosen?
+	std::stringstream ss;
+	ss << "./include/maps/map" << gameData_->getLevel() << ".txt";
+	auto map = std::make_unique<Map>(Map{ss.str(), textures_}); // how the level/map is chosen?
 	map_ = map.get();
 	map_->setPosition(0.f, 0.f);
 	layers_[static_cast<std::size_t>(Layers::Background)]->addChild(std::move(map));
@@ -131,9 +139,46 @@ void Level::addButtons()
 
 void Level::update(sf::Time deltaTime)
 {
-	updateEnemies(deltaTime);
-	updateTurrets(deltaTime);
-	updateProjectiles(deltaTime);
+	checkGameOver();
+	if (!gameData_->isGameOver())
+	{
+		collectRewards();
+		updateEnemies(deltaTime);
+		updateTurrets(deltaTime);
+		updateProjectiles(deltaTime);
+	}
+}
+
+
+void Level::checkGameOver()
+{
+	if (!gameData_->isGameOver())
+	{
+		for (auto& enemy : enemies_)
+		{
+			if (enemy->hasReachedBase())
+			{
+				gameData_->setGameOver();
+				return;
+			}
+		}
+	}
+}
+
+
+void Level::collectRewards()
+{
+	for (auto& enemy : enemies_)
+	{
+		if (!enemy->isAlive())
+		{
+			gameData_->addCredits(enemy->getReward());
+		}
+	}
+
+	std::stringstream ss;
+	ss << "Credits: " << gameData_->getCredits();
+	creditsText_.setString(ss.str());
 }
 
 
@@ -176,8 +221,7 @@ void Level::updateEnemies(sf::Time deltaTime)
 			nextSpawn_ = minSpawnInterval_;
 		}
 
-		int level = 5; // FIX THIS: This should be the actual level number
-		switch (rand() % std::min(level, 5))
+		switch (rand() % std::min(gameData_->getLevel(), 5))
 		{
 			case 0:
 			{
@@ -307,5 +351,7 @@ void Level::drawSelf(sf::RenderTarget& target, sf::RenderStates states) const
 			projectile->drawSelf(target, states);
 		}
 	}
+
+	target.draw(creditsText_, states);
 }
 

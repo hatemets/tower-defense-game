@@ -15,7 +15,7 @@ class Enemy : public Node
 {
 	public:
 		Enemy(std::pair<std::vector<std::pair<int, int>>::const_iterator, std::vector<std::pair<int, int>>::const_iterator> path, float speed, int hitPoints,
-			ResourceHolder<sf::Texture, Textures::ID> &textures, Textures::ID enemyStyle, float size);
+			ResourceHolder<sf::Texture, Textures::ID> &textures, Textures::ID enemyStyle, float size, int reward);
 
 		virtual void update(sf::Time deltaTime) override;
 		virtual void drawSelf(sf::RenderTarget &target, sf::RenderStates states) const override;
@@ -34,6 +34,7 @@ class Enemy : public Node
 		float getSpeed() const { return speed_; }					  // speed as tiles / second
 		int getHitPoints() const { return hitPoints_; }				  // hitpoints left
 		float getRadius() const { return size_ / 2.f; }				  // the hit radius of the enemy
+		int getReward() const { return reward_; }                     // price credits for killing
 		virtual void spawnNewEnemies(EnemyList &newEnemies) const {}; // possibility to spawn new enemies
 
 	protected:
@@ -45,6 +46,7 @@ class Enemy : public Node
 		int hitPoints_;
 		int maxHitPoints_;
 		float size_;
+		int reward_;
 
 		sf::Sprite enemySprite_;
 		sf::Sprite healthSprite_;
