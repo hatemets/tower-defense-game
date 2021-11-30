@@ -56,14 +56,16 @@ void LevelMenu::addBackground()
 
 void LevelMenu::addButtons()
 {
+	int maxOpenLevel = gameData_->getMaxOpenLevel();
+
 	// Configure the buttons
 	// NOTE: Start button is the one that leads the user to the first level (subject to change)
 	auto startButton = std::make_unique<Button>("New Game", fonts_, Fonts::ID::SourceCodePro, buttonShapes_, Buttons::ID::StartButton);
-	startButton->setPosition(WindowWidth / 2.f, WindowHeight / 6.f);
+	startButton->setPosition(WindowWidth / 2.f, WindowHeight / (2.f + maxOpenLevel));
 	buttons_.push_back(startButton.get());
 	layers_[static_cast<std::size_t>(Layers::Buttons)]->addChild(std::move(startButton));
 
-	for (int level = 1; level <= MaxLevel; level++)
+	for (int level = 1; level <= maxOpenLevel; level++)
 	{
 		std::stringstream ss;
 		ss << "Level " << level;
