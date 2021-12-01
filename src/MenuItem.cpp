@@ -8,7 +8,7 @@ MenuItem::MenuItem(int price, Textures::ID textureID, TextureHolder& textureHold
     turretSprite_(textureHolder.get(textureID))
 {
     // TODO: Remove hardcoded values
-    text_.setFont(fonts_.get(Fonts::ID::SourceCodePro)),
+    text_.setFont(fonts_.get(Fonts::ID::SourceCodePro));
 
     auto menuBounds = sideMenu_.getGlobalBounds();
 
