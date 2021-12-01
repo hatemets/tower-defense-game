@@ -12,6 +12,8 @@
 using namespace Modes;
 using namespace Resources;
 
+using FontHolder = ResourceHolder<sf::Font, Fonts::ID>;
+
 // Mode is an abstract class used for representing one "scene" currently
 // displayed on the game window
 // Each Mode object must have an enum of layers
@@ -48,7 +50,7 @@ class Mode : public Node
 		sf::FloatRect windowBounds_;
 
 		// Fonts
-		ResourceHolder<sf::Font, Fonts::ID> fonts_;
+		FontHolder fonts_;
 
 		// A container storing button pointers
 		std::vector<const Button*> buttons_;

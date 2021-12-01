@@ -116,6 +116,7 @@ void Level::createScene()
 			turretTiles.push_back(tile);
 		}
 	}
+
 	map_->findSafestPaths(turrets_); // this has to be called everytime turrets are updated
 }
 

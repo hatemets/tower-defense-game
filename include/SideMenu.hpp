@@ -13,6 +13,10 @@ class SideMenu : public Node
 	public:
 
 	private:
+        // The rectangle shaped background of the sidemenu
+        sf::Texture background_;
+
+        // The list of items that are open for purchase
 		std::array<MenuItem, totalTurrets> menuItems_;
 };
 
