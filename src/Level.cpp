@@ -130,10 +130,9 @@ void Level::createScene()
 
 void Level::loadMap()
 {
-	// Map
 	std::stringstream ss;
 	ss << "./include/maps/map" << gameData_->getLevel() << ".txt";
-	auto map = std::make_unique<Map>(Map{ss.str(), textures_}); // how the level/map is chosen?
+	auto map = std::make_unique<Map>(Map{ss.str(), textures_}); 
 	map_ = map.get();
 	map_->setPosition(0.f, 0.f);
 	layers_[static_cast<std::size_t>(Layers::Background)]->addChild(std::move(map));

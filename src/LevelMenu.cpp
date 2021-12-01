@@ -57,16 +57,14 @@ void LevelMenu::addBackground()
 
 void LevelMenu::addButtons()
 {
+	const float buttonMargin = 10.f;
 	int maxOpenLevel = gameData_->getMaxOpenLevel();
 	int buttonCount = 2 + maxOpenLevel;
 	if (CheatModeEnabled)
 	{
 		buttonCount += 1;
 	}
-
-	const float buttonMargin = 10.f;
-	// Configure the buttons
-	// NOTE: Start button is the one that leads the user to the first level
+	
 	auto startButton = std::make_unique<Button>("New Game", fonts_, Fonts::ID::SourceCodePro, buttonShapes_, Buttons::ID::StartButton);
 	startButton->setPosition(WindowWidth / 2.f, WindowHeight / 2.f - ((buttonCount - 1) / 2.f) * (startButton->getButton().getSize().y + buttonMargin));
 	buttons_.push_back(startButton.get());
