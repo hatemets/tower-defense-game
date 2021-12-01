@@ -40,6 +40,7 @@ const int CreditsTextFontSize = 24;
 const float CreditsTextPaddingX = 5.f;
 
 // Levels
+const int LevelTextFontSize = 24;
 const int MaxLevel = 5;
 const std::array<int, MaxLevel> LevelLimits = {0, 500, 1000, 2000, 4000};
 const std::array<float, MaxLevel> LevelMinSpawnIntervals = {5.f, 4.f, 3.f, 2.f, 1.f};

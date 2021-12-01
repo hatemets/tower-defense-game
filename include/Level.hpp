@@ -41,12 +41,14 @@ class Level : public Mode
 		void updateEnemies(sf::Time deltaTime);
 		void updateTurrets(sf::Time deltaTime);
 		void updateProjectiles(sf::Time deltaTime);
+		void updateTexts();
 
 		void loadMap();
 
 	private:
 		ResourceHolder<sf::Texture, Textures::ID> textures_;
 
+		sf::Text levelText_;
 		sf::Text creditsText_;
 		sf::Text gameOverText_;
 
