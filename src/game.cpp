@@ -23,7 +23,7 @@ void Game::run()
 		// so far (achieves a fixed timestep)
 		while (elapsedTime > TimePerFrame)
 		{
-			elapsedTime -= TimePerFrame; //clock.restart();
+			elapsedTime -= TimePerFrame;
 			processEvents();
 			update(TimePerFrame);
 		}

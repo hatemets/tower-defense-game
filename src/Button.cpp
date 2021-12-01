@@ -11,6 +11,15 @@ std::pair<std::array<int, 3>, std::array<int, 3>> getColor(Buttons::ID id)
 	{
 		// TODO: Add more colors
 		case Buttons::ID::StartButton:
+		case Buttons::ID::Level1Button:
+		case Buttons::ID::Level2Button:
+		case Buttons::ID::Level3Button:
+		case Buttons::ID::Level4Button:
+		case Buttons::ID::Level5Button:
+		case Buttons::ID::Level6Button:
+		case Buttons::ID::Level7Button:
+		case Buttons::ID::Level8Button:
+		case Buttons::ID::Level9Button:
 		case Buttons::ID::QuitButton:
 		case Buttons::ID::PauseButton:
 		case Buttons::ID::HomeButton:

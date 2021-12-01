@@ -4,21 +4,41 @@
 #include "../include/auxiliary/constants.hpp"
 #include <math.h>
 
-Enemy::Enemy(std::vector<std::pair<int, int>>::const_iterator pathBegin, std::vector<std::pair<int, int>>::const_iterator pathEnd, float speed, int hitPoints, float radius)
-    : pathIterator_(pathBegin),
-      pathEnd_(pathEnd),
-	  position_(pathBegin->second + 0.5f, pathBegin->first + 0.5f),
+Enemy::Enemy(std::pair<std::vector<std::pair<int, int>>::const_iterator, std::vector<std::pair<int, int>>::const_iterator> path, float speed, int hitPoints,
+             ResourceHolder<sf::Texture, Textures::ID> &textures, Textures::ID enemyStyle, float size, int reward)
+    : pathIterator_(path.first),
+      pathEnd_(path.second),
+      position_(path.first->second + 0.5f, path.first->first + 0.5f),
       direction_(0),
       speed_(speed),
       hitPoints_(hitPoints),
-	  radius_(radius)
+      maxHitPoints_(hitPoints),
+      size_(size),
+      reward_(reward),
+      textures_(textures),
+      currentHealthTextureId_(Textures::ID::Health100)
 {
-    picture_.setSize(sf::Vector2f(TileSize / 2.f, TileSize / 2.f));
-    picture_.setOrigin(TileSize / 4.f, TileSize / 4.f);
-    picture_.setFillColor(sf::Color::Green);
+    // enemy sprite
+
+    enemySprite_.setTexture(textures.get(enemyStyle));
+    auto imageBounds = enemySprite_.getGlobalBounds();
+
+    enemySprite_.setOrigin(imageBounds.width / 2.f, imageBounds.height / 2.f);
+    enemySprite_.setScale(size_ * TileSize / imageBounds.width, size_ * TileSize / imageBounds.width); // scale based on width
+    enemySprite_.setPosition(position_.x * TileSize, position_.y * TileSize);
+
+    // health sprite
+
+    healthSprite_.setTexture(textures.get(currentHealthTextureId_));
+    imageBounds = healthSprite_.getGlobalBounds();
+
+    healthSprite_.setOrigin(imageBounds.width / 2.f, imageBounds.height / 2.f);
+    healthSprite_.setScale(size_ * TileSize / imageBounds.width, size_ * TileSize / imageBounds.width); // scale based on width
+    healthSprite_.setPosition(position_.x * TileSize, (position_.y - Enemies::HealthBarMargin * size_) * TileSize);
 
     update(sf::seconds(0));
 }
+
 
 void Enemy::update(sf::Time deltaTime)
 {
@@ -35,18 +55,27 @@ void Enemy::update(sf::Time deltaTime)
         {
             pathIterator_++;
             setDirection();
-            // picture_.setRotation(direction_);
         }
 
-        /* picture_.setPosition((float)TileSize * position_); */
-        picture_.setPosition(position_.x * TileSize, position_.y * TileSize);
+        Textures::ID healthTextureId = getHealthTextureID();
+        if (healthTextureId != currentHealthTextureId_)
+        {
+            healthSprite_.setTexture(textures_.get(healthTextureId));
+            currentHealthTextureId_ = healthTextureId;
+        }
+
+        enemySprite_.setPosition(position_.x * TileSize, position_.y * TileSize);
+        healthSprite_.setPosition(position_.x * TileSize, (position_.y - Enemies::HealthBarMargin * size_) * TileSize);
     }
 }
 
+
 void Enemy::drawSelf(sf::RenderTarget &target, sf::RenderStates states) const
 {
-    target.draw(picture_, states);
+    target.draw(enemySprite_, states);
+    target.draw(healthSprite_, states);
 }
+
 
 void Enemy::setDirection()
 {
@@ -59,6 +88,7 @@ void Enemy::setDirection()
     }
 }
 
+
 void Enemy::move(sf::Time deltaTime)
 {
     float distance = speed_ * deltaTime.asSeconds();
@@ -68,19 +98,48 @@ void Enemy::move(sf::Time deltaTime)
         float deltaX = distance * std::cos(angle);
         float deltaY = distance * std::sin(angle);
 
-		position_ = sf::Vector2f(position_.x + deltaX, position_.y + deltaY);
+        position_ = sf::Vector2f(position_.x + deltaX, position_.y + deltaY);
     }
 }
+
+
+Textures::ID Enemy::getHealthTextureID() const
+{
+    int health = 100 * hitPoints_ / maxHitPoints_;
+    if (health > 80)
+    {
+        return Textures::ID::Health100;
+    }
+    else if (health > 60)
+    {
+        return Textures::ID::Health80;
+    }
+    else if (health > 40)
+    {
+        return Textures::ID::Health60;
+    }
+    else if (health > 20)
+    {
+        return Textures::ID::Health40;
+    }
+    else
+    {
+        return Textures::ID::Health20;
+    }
+}
+
 
 bool Enemy::isAlive() const
 {
     return hitPoints_ > 0;
 }
 
+
 bool Enemy::hasReachedBase() const
 {
     return pathIterator_ == pathEnd_;
 }
+
 
 void Enemy::hit(int maxDamage)
 {
@@ -96,9 +155,68 @@ void Enemy::hit(int maxDamage)
     }
 }
 
+
 // Goblin
 
-Goblin::Goblin(std::vector<std::pair<int, int>>::const_iterator pathBegin, std::vector<std::pair<int, int>>::const_iterator pathEnd)
-    : Enemy(pathBegin, pathEnd, Enemies::Goblin::goblinSpeed, Enemies::Goblin::hitPoints)
+Goblin::Goblin(const Map &map, ResourceHolder<sf::Texture, Textures::ID> &textures)
+    : Enemy(map.getRandomPath(), Enemies::Goblin::speed, Enemies::Goblin::hitPoints, textures, Textures::ID::Goblin, Enemies::Goblin::size, Enemies::Goblin::reward)
+{
+}
+
+
+// Orc
+
+Orc::Orc(const Map &map, ResourceHolder<sf::Texture, Textures::ID> &textures)
+    : Enemy(map.getRandomPath(), Enemies::Orc::speed, Enemies::Orc::hitPoints, textures, Textures::ID::Orc, Enemies::Orc::size, Enemies::Orc::reward)
+{
+}
+
+
+// Troll
+
+Troll::Troll(const Map &map, ResourceHolder<sf::Texture, Textures::ID> &textures)
+    : Enemy(map.getShortestPath(), Enemies::Troll::speed, Enemies::Troll::hitPoints, textures, Textures::ID::Troll, Enemies::Troll::size, Enemies::Troll::reward)
+{
+}
+
+
+// Slime
+
+Slime::Slime(const Map &map, ResourceHolder<sf::Texture, Textures::ID> &textures)
+    : Enemy(map.getShortestPath(), Enemies::Slime::speed, Enemies::Slime::hitPoints, textures, Textures::ID::Slime, Enemies::Slime::size, Enemies::Slime::reward)
+{
+}
+
+
+void Slime::spawnNewEnemies(EnemyList &newEnemies) const
+{
+    if (!isAlive() && !hasReachedBase())
+    {
+        for (int i = 0; i < Enemies::Slime::babies; i++)
+        {
+            auto babySlime = std::make_shared<BabySlime>(BabySlime{*this, textures_});
+            newEnemies.push_back(babySlime);
+        }
+    }
+}
+
+
+// BabySlime
+
+BabySlime::BabySlime(const Slime &parent, ResourceHolder<sf::Texture, Textures::ID> &textures)
+    : Enemy(std::make_pair(parent.getPathIterator(), parent.getPathEnd()), Enemies::BabySlime::speed, Enemies::BabySlime::hitPoints, textures, Textures::ID::Slime, Enemies::BabySlime::size, Enemies::BabySlime::reward)
+{
+    float deltaX = (rand() % 101 - 50) / 100.f; // random value between -0.5 and +0.5
+    float deltaY = (rand() % 101 - 50) / 100.f; // random value between -0.5 and +0.5
+    position_ = parent.getPosition() + sf::Vector2f(deltaX, deltaY);
+    setDirection(); // fix direction for the changed position
+    update(sf::seconds(0));
+}
+
+
+// Kobold
+
+Kobold::Kobold(const Map &map, ResourceHolder<sf::Texture, Textures::ID> &textures)
+    : Enemy(map.getSafestPath(), Enemies::Kobold::speed, Enemies::Kobold::hitPoints, textures, Textures::ID::Kobold, Enemies::Kobold::size, Enemies::Kobold::reward)
 {
 }

@@ -6,21 +6,34 @@
 #include <memory>
 #include <algorithm>
 #include <iostream>
+#include <sstream>
 
-Level::Level(sf::RenderWindow& window, sf::Time minSpawnInterval, sf::Time maxSpawnInterval)
+Level::Level(sf::RenderWindow& window, std::shared_ptr<GameData> gameData)
 	: Mode(window),
 	textures_(),
 	map_(nullptr),
+	gameData_(gameData),
 	enemies_(),
-	minSpawnInterval_(minSpawnInterval),
-	maxSpawnInterval_(maxSpawnInterval),
-	// TODO: Remove hardcoded values
+	minSpawnInterval_(sf::seconds(LevelMinSpawnIntervals[gameData->getLevel() - 1])),
+	maxSpawnInterval_(sf::seconds(LevelMaxSpawnIntervals[gameData->getLevel() - 1])),
 	nextSpawn_(sf::seconds(1)),
 	turrets_(),
 	projectileVertices_(sf::Points, 0)
 {
 	loadResources();
 	createScene();
+
+	creditsText_.setFont(fonts_.get(Fonts::ID::SourceCodePro));
+	creditsText_.setCharacterSize(CreditsTextFontSize);
+	creditsText_.setFillColor(sf::Color::White);
+	creditsText_.setPosition(CreditsTextPaddingX, 0.f);
+
+	gameOverText_.setString("Game Over");
+	gameOverText_.setFont(fonts_.get(Fonts::ID::SourceCodePro));
+	gameOverText_.setCharacterSize(GameOverTextFontSize);
+	gameOverText_.setFillColor(sf::Color::Red);
+	gameOverText_.setPosition(WindowWidth / 2.f, WindowHeight / 2.f);
+	gameOverText_.setOrigin(gameOverText_.getLocalBounds().width / 2.f, gameOverText_.getLocalBounds().height);
 }
 
 
@@ -37,8 +50,21 @@ void Level::loadResources()
 	textures_.load(Textures::ID::TripleGunTurretBase, "./include/images/TripleGunTurretBase.png");
 	textures_.load(Textures::ID::BombTurretBase, "./include/images/BombTurretBase.png");
 	textures_.load(Textures::ID::BombTurret, "./include/images/BombTurret.png");
+	textures_.load(Textures::ID::MissileBase, "./include/images/MissileBase.png");
+	textures_.load(Textures::ID::Missile, "./include/images/Missile.png");
+	textures_.load(Textures::ID::Goblin, "./include/images/Goblin.png");
+	textures_.load(Textures::ID::Orc, "./include/images/Orc.png");
+	textures_.load(Textures::ID::Troll, "./include/images/Troll.png");
+	textures_.load(Textures::ID::Slime, "./include/images/Slime.png");
+	textures_.load(Textures::ID::Kobold, "./include/images/Kobold.png");
+	textures_.load(Textures::ID::Health100, "./include/images/Health100.png");
+	textures_.load(Textures::ID::Health80, "./include/images/Health80.png");
+	textures_.load(Textures::ID::Health60, "./include/images/Health60.png");
+	textures_.load(Textures::ID::Health40, "./include/images/Health40.png");
+	textures_.load(Textures::ID::Health20, "./include/images/Health20.png");
 
 	buttonShapes_.load(Buttons::ID::HomeButton);
+	buttonShapes_.load(Buttons::ID::LevelMenuButton);
 }
 
 
@@ -52,7 +78,7 @@ void Level::createScene()
 	// Simulate buying turrets
 	const std::vector<std::pair<int, int>>& turretBaseTiles = map_->getTurretBaseTiles();
 
-	std::size_t turretCreateCount = std::min<std::size_t>(4, turretBaseTiles.size());
+	std::size_t turretCreateCount = std::min<std::size_t>(5, turretBaseTiles.size());
 
 	std::vector<std::pair<int, int>> turretTiles;
 
@@ -79,20 +105,27 @@ void Level::createScene()
 					turrets_.push_back(std::make_shared<TripleGunTurret>(TripleGunTurret{ row, col, textures_ }));
 					break;
 
-				default:
+				case 3:
 					turrets_.push_back(std::make_shared<BombTurret>(BombTurret{ row, col, textures_ }));
+					break;
+
+				default:
+					turrets_.push_back(std::make_shared<MissileTurret>(MissileTurret{ row, col, textures_ }));
 					break;
 			}
 			turretTiles.push_back(tile);
 		}
 	}
+	map_->findSafestPaths(turrets_); // this has to be called everytime turrets are updated
 }
 
 
 void Level::loadMap()
 {
 	// Map
-	auto map = std::make_unique<Map>(Map{"./include/maps/map2.txt", textures_}); // how the level/map is chosen?
+	std::stringstream ss;
+	ss << "./include/maps/map" << gameData_->getLevel() << ".txt";
+	auto map = std::make_unique<Map>(Map{ss.str(), textures_}); // how the level/map is chosen?
 	map_ = map.get();
 	map_->setPosition(0.f, 0.f);
 	layers_[static_cast<std::size_t>(Layers::Background)]->addChild(std::move(map));
@@ -102,7 +135,7 @@ void Level::loadMap()
 void Level::addButtons()
 {
 	// Home button
-	auto homeButton = std::make_unique<Button>("X", fonts_, Fonts::ID::SourceCodePro, buttonShapes_, Buttons::ID::HomeButton);
+	auto homeButton = std::make_unique<Button>("X", fonts_, Fonts::ID::SourceCodePro, buttonShapes_, Buttons::ID::LevelMenuButton);
 	auto homeButtonSize = homeButton->getButton().getSize();
 
 	// NOTE: Added button padding y for it to stick to the upper side of the window
@@ -114,14 +147,61 @@ void Level::addButtons()
 
 void Level::update(sf::Time deltaTime)
 {
-	updateEnemies(deltaTime);
-	updateTurrets(deltaTime);
-	updateProjectiles(deltaTime);
+	checkGameOver();
+	if (!gameData_->isGameOver())
+	{
+		collectRewards();
+		updateEnemies(deltaTime);
+		updateTurrets(deltaTime);
+		updateProjectiles(deltaTime);
+	}
+}
+
+
+void Level::checkGameOver()
+{
+	if (!gameData_->isGameOver())
+	{
+		for (auto& enemy : enemies_)
+		{
+			if (enemy->hasReachedBase())
+			{
+				gameData_->setGameOver();
+				return;
+			}
+		}
+	}
+}
+
+
+void Level::collectRewards()
+{
+	for (auto& enemy : enemies_)
+	{
+		if (!enemy->isAlive())
+		{
+			gameData_->addCredits(enemy->getReward());
+		}
+	}
+
+	std::stringstream ss;
+	ss << "Credits: " << gameData_->getCredits();
+	creditsText_.setString(ss.str());
 }
 
 
 void Level::updateEnemies(sf::Time deltaTime)
 {
+	EnemyList newEnemies;
+	for (auto& enemy : enemies_)
+	{
+		enemy->spawnNewEnemies(newEnemies);
+	}
+	for (auto& enemy : newEnemies) 
+	{
+		enemies_.push_back(enemy);
+	}
+
 	enemies_.erase(std::remove_if(enemies_.begin(), enemies_.end(),
 				[](const std::shared_ptr<Enemy> &enemy)
 				{
@@ -129,7 +209,7 @@ void Level::updateEnemies(sf::Time deltaTime)
 				}),
 			enemies_.end());
 
-	for (auto enemy : enemies_)
+	for (auto& enemy : enemies_)
 	{
 		enemy->update(deltaTime);
 	}
@@ -149,9 +229,44 @@ void Level::updateEnemies(sf::Time deltaTime)
 			nextSpawn_ = minSpawnInterval_;
 		}
 
-		auto path = map_->getPath();
-		auto goblin = std::make_shared<Goblin>(Goblin{path.first, path.second});
-		enemies_.push_back(goblin);
+		switch (rand() % std::min(gameData_->getLevel(), 5))
+		{
+			case 0:
+			{
+				auto orc = std::make_shared<Orc>(Orc{*map_, textures_});
+				enemies_.push_back(orc);
+				break;
+			}
+
+			case 1:
+			{
+				auto goblin = std::make_shared<Goblin>(Goblin{*map_, textures_});
+				enemies_.push_back(goblin);
+				break;
+			}
+
+			case 2:
+			{
+				auto troll = std::make_shared<Troll>(Troll{*map_, textures_});
+				enemies_.push_back(troll);
+				break;
+			}
+
+			case 3:
+			{
+				auto slime = std::make_shared<Slime>(Slime{*map_, textures_});
+				enemies_.push_back(slime);
+				break;
+			}
+
+			case 4:
+			{
+				auto kobold = std::make_shared<Kobold>(Kobold{*map_, textures_});
+				enemies_.push_back(kobold);
+				break;
+			}
+		}
+		
 	}
 }
 
@@ -179,21 +294,25 @@ void Level::updateProjectiles(sf::Time deltaTime)
 		projectile->update(deltaTime, enemies_);
 	}
 
-	// collect all projectiles, that can be drawn as a vertex
-	projectileVertices_.resize(projectiles_.size());
-
-	int vertexCount = 0;
-	for (auto& projectile : projectiles_)
+	if (GameHasVertexProjectiles)
 	{
-		if (projectile->drawAsVertex())
-		{
-			projectileVertices_[vertexCount].position = sf::Vector2f(projectile->getTileX() * TileSize, projectile->getTileY() * TileSize);
-			projectileVertices_[vertexCount].color = sf::Color::White;
-			vertexCount++;
-		}
-	}
+		// collect all projectiles, that can be drawn as a vertex
+		projectileVertices_.resize(projectiles_.size());
 
-	projectileVertices_.resize(vertexCount);
+		int vertexCount = 0;
+		for (auto& projectile : projectiles_)
+		{
+			if (projectile->drawAsVertex())
+			{
+				projectileVertices_[vertexCount].position = projectile->getPosition() * (float)TileSize;
+				projectileVertices_[vertexCount].color = sf::Color::White;
+				vertexCount++;
+			}
+		}
+
+		projectileVertices_.resize(vertexCount);
+	}
+	
 }
 
 
@@ -226,19 +345,26 @@ void Level::drawSelf(sf::RenderTarget& target, sf::RenderStates states) const
 		turret->drawSelf(target, states);
 	}
 
-	// draw vertex projectiles (i.e. bullets)
+	// draw vertex projectiles
 	if (projectileVertices_.getVertexCount() > 0)
 	{
 		target.draw(projectileVertices_, states);
 	}
 
-	// draw sprite projectiles
+	// draw sprite/shape projectiles
 	for (auto& projectile : projectiles_)
 	{
 		if (!projectile->drawAsVertex())
 		{
 			projectile->drawSelf(target, states);
 		}
+	}
+
+	target.draw(creditsText_, states);
+
+	if (gameData_->isGameOver())
+	{
+		target.draw(gameOverText_, states);
 	}
 }
 

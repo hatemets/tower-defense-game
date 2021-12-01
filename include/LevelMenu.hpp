@@ -7,6 +7,7 @@
 #include "auxiliary/ResourceIdentifiers.hpp"
 #include "Mode.hpp"
 #include "Button.hpp"
+#include "GameData.hpp"
 
 // TODO: Create a menu class for LevelMenu, MainMenu and BuyMenu
 
@@ -14,7 +15,7 @@
 class LevelMenu : public Mode
 {
 	public:
-		LevelMenu(sf::RenderWindow& window);
+		LevelMenu(sf::RenderWindow& window, std::shared_ptr<GameData> gameData);
 		virtual void update(sf::Time deltaTime) final;
 	
 	private:
@@ -34,6 +35,8 @@ class LevelMenu : public Mode
 
 	private:
 		ResourceHolder<sf::Texture, Textures::ID> textures_;
+
+		std::shared_ptr<GameData> gameData_;
 };
 
 #endif

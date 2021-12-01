@@ -9,12 +9,13 @@
 #include "Enemy.hpp"
 #include "Turret.hpp"
 #include "Projectile.hpp"
+#include "GameData.hpp"
 
 // Controls the turrets, enemies, map
 class Level : public Mode
 {
 	public:
-		Level(sf::RenderWindow& window, sf::Time minSpawnInterval, sf::Time maxSpawnInterval);
+		Level(sf::RenderWindow& window, std::shared_ptr<GameData> gameData);
 		virtual void update(sf::Time deltaTime) final;
 		virtual void drawSelf(sf::RenderTarget& target, sf::RenderStates states) const override;
 	
@@ -35,6 +36,8 @@ class Level : public Mode
 		virtual void addButtons() override;
 		virtual void addBackground() override;
 
+		void checkGameOver();
+		void collectRewards();
 		void updateEnemies(sf::Time deltaTime);
 		void updateTurrets(sf::Time deltaTime);
 		void updateProjectiles(sf::Time deltaTime);
@@ -44,7 +47,11 @@ class Level : public Mode
 	private:
 		ResourceHolder<sf::Texture, Textures::ID> textures_;
 
+		sf::Text creditsText_;
+		sf::Text gameOverText_;
+
 		Map* map_; ///< Hold by unique pointer elsewhere.
+		std::shared_ptr<GameData> gameData_;
 
 		// Enemies
 		std::list<std::shared_ptr<Enemy>> enemies_;
