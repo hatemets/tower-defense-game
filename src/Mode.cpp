@@ -49,6 +49,8 @@ ModeState Mode::handleInput(sf::Vector2i mousePos)
 		{
 			case Buttons::ID::StartButton:
 				return ModeState(Type::NewGame);
+			case Buttons::ID::CheatModeButton:
+				return ModeState(Type::CheatMode);
 			case Buttons::ID::Level1Button:
 				return ModeState(Type::Level1);
 			case Buttons::ID::Level2Button:

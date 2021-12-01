@@ -38,6 +38,7 @@ const float ButtonPaddingY = 1.f / 8.f * ButtonHeight;
 const int NewGameCredits = 300;
 const int CreditsTextFontSize = 24;
 const float CreditsTextPaddingX = 5.f;
+const bool CheatModeEnabled = true;
 
 // Levels
 const int LevelTextFontSize = 24;
