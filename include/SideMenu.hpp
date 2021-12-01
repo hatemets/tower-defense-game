@@ -9,10 +9,12 @@
 // TODO: Remove to constants
 constexpr int totalTurrets = 5;
 
+using TextureHolder = ResourceHolder<sf::Texture, Textures::ID>;
+
 class SideMenu : public Node
 {
 	public:
-        SideMenu();
+        SideMenu(TextureHolder& textures_);
 
 	private:
         // The rectangle shaped background of the sidemenu

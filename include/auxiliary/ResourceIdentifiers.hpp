@@ -50,6 +50,7 @@ namespace Resources
 			DirtPath,
 			Flag,
 			LevelMenuBackground,
+            SideMenuBackground,
 
 			// Enemies
 			Goblin,

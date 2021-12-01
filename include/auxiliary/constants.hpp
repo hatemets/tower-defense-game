@@ -13,8 +13,8 @@ const int WindowHeight = 600;
 
 const int TileCols = 20;
 const int TileRows = 15;
-
 const int TileSize = WindowWidth / TileCols;
+
 
 // Primary theme color for buttons
 const std::array<int, 3> PrimaryColor = {00, 00, 80};

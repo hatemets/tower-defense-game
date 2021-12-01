@@ -62,6 +62,7 @@ void Level::loadResources()
 	textures_.load(Textures::ID::Health60, "./include/images/Health60.png");
 	textures_.load(Textures::ID::Health40, "./include/images/Health40.png");
 	textures_.load(Textures::ID::Health20, "./include/images/Health20.png");
+	textures_.load(Textures::ID::SideMenuBackground, "./include/images/WoodenBackground.jpg");
 
 	buttonShapes_.load(Buttons::ID::HomeButton);
 	buttonShapes_.load(Buttons::ID::LevelMenuButton);
