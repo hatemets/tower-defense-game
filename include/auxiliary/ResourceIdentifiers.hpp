@@ -9,6 +9,7 @@ namespace Resources
 		{
 			// To level menu
 			StartButton,
+			CheatModeButton,
 			Level1Button,
 			Level2Button,
 			Level3Button,

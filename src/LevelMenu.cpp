@@ -19,6 +19,7 @@ void LevelMenu::loadResources()
 {
 	textures_.load(Textures::ID::LevelMenuBackground, "./include/images/GreenTile.png");
 	buttonShapes_.load(Buttons::ID::HomeButton);
+	buttonShapes_.load(Buttons::ID::CheatModeButton);
 	buttonShapes_.load(Buttons::ID::Level1Button);
 	buttonShapes_.load(Buttons::ID::Level2Button);
 	buttonShapes_.load(Buttons::ID::Level3Button);
@@ -56,15 +57,28 @@ void LevelMenu::addBackground()
 
 void LevelMenu::addButtons()
 {
+	const float buttonMargin = 10.f;
 	int maxOpenLevel = gameData_->getMaxOpenLevel();
-
-	// Configure the buttons
-	// NOTE: Start button is the one that leads the user to the first level (subject to change)
+	int buttonCount = 2 + maxOpenLevel;
+	if (CheatModeEnabled)
+	{
+		buttonCount += 1;
+	}
+	
 	auto startButton = std::make_unique<Button>("New Game", fonts_, Fonts::ID::SourceCodePro, buttonShapes_, Buttons::ID::StartButton);
-	startButton->setPosition(WindowWidth / 2.f, WindowHeight / (2.f + maxOpenLevel));
+	startButton->setPosition(WindowWidth / 2.f, WindowHeight / 2.f - ((buttonCount - 1) / 2.f) * (startButton->getButton().getSize().y + buttonMargin));
 	buttons_.push_back(startButton.get());
 	layers_[static_cast<std::size_t>(Layers::Buttons)]->addChild(std::move(startButton));
 
+	if (CheatModeEnabled)
+	{
+		auto cheatButton = std::make_unique<Button>("Cheat Mode", fonts_, Fonts::ID::SourceCodePro, buttonShapes_, Buttons::ID::CheatModeButton);
+		auto pos = buttons_[buttons_.size() - 1]->getButton().getPosition();
+		cheatButton->setPosition(pos.x, pos.y + cheatButton->getButton().getSize().y + buttonMargin);
+		buttons_.push_back(cheatButton.get());
+		layers_[static_cast<std::size_t>(Layers::Buttons)]->addChild(std::move(cheatButton));
+	}
+	
 	for (int level = 1; level <= maxOpenLevel; level++)
 	{
 		std::stringstream ss;
@@ -72,7 +86,7 @@ void LevelMenu::addButtons()
 		Buttons::ID levelButtonId = static_cast<Buttons::ID>(static_cast<int>(Buttons::ID::Level1Button) + level - 1);
 		auto levelButton = std::make_unique<Button>(ss.str(), fonts_, Fonts::ID::SourceCodePro, buttonShapes_, levelButtonId);
 		auto pos = buttons_[buttons_.size() - 1]->getButton().getPosition();
-		levelButton->setPosition(pos.x, pos.y + levelButton->getButton().getSize().y + 25.f);
+		levelButton->setPosition(pos.x, pos.y + levelButton->getButton().getSize().y + buttonMargin);
 		buttons_.push_back(levelButton.get());
 		layers_[static_cast<std::size_t>(Layers::Buttons)]->addChild(std::move(levelButton));
 	}
@@ -80,7 +94,7 @@ void LevelMenu::addButtons()
 	auto homeButton = std::make_unique<Button>("Main Menu", fonts_, Fonts::ID::SourceCodePro, buttonShapes_, Buttons::ID::HomeButton);
 	// NOTE: Position is based on the previous button
 	auto pos = buttons_[buttons_.size() - 1]->getButton().getPosition();
-	homeButton->setPosition(pos.x, pos.y + homeButton->getButton().getSize().y + 25.f);
+	homeButton->setPosition(pos.x, pos.y + homeButton->getButton().getSize().y + buttonMargin);
 	buttons_.push_back(homeButton.get());
 	layers_[static_cast<std::size_t>(Layers::Buttons)]->addChild(std::move(homeButton));
 }

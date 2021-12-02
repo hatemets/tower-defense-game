@@ -23,6 +23,14 @@ Level::Level(sf::RenderWindow& window, std::shared_ptr<GameData> gameData)
 	loadResources();
 	createScene();
 
+	updateTexts();
+
+	levelText_.setFont(fonts_.get(Fonts::ID::SourceCodePro));
+	levelText_.setCharacterSize(LevelTextFontSize);
+	levelText_.setFillColor(sf::Color::White);
+	levelText_.setPosition(WindowWidth / 2.f, 0.f);
+	levelText_.setOrigin(levelText_.getLocalBounds().width / 2.f, 0.f);
+
 	creditsText_.setFont(fonts_.get(Fonts::ID::SourceCodePro));
 	creditsText_.setCharacterSize(CreditsTextFontSize);
 	creditsText_.setFillColor(sf::Color::White);
@@ -124,10 +132,9 @@ void Level::createScene()
 
 void Level::loadMap()
 {
-	// Map
 	std::stringstream ss;
 	ss << "./include/maps/map" << gameData_->getLevel() << ".txt";
-	auto map = std::make_unique<Map>(Map{ss.str(), textures_}); // how the level/map is chosen?
+	auto map = std::make_unique<Map>(Map{ss.str(), textures_}); 
 	map_ = map.get();
 	map_->setPosition(0.f, 0.f);
 	layers_[static_cast<std::size_t>(Layers::Background)]->addChild(std::move(map));
@@ -156,6 +163,7 @@ void Level::update(sf::Time deltaTime)
 		updateEnemies(deltaTime);
 		updateTurrets(deltaTime);
 		updateProjectiles(deltaTime);
+		updateTexts();
 	}
 }
 
@@ -185,10 +193,6 @@ void Level::collectRewards()
 			gameData_->addCredits(enemy->getReward());
 		}
 	}
-
-	std::stringstream ss;
-	ss << "Credits: " << gameData_->getCredits();
-	creditsText_.setString(ss.str());
 }
 
 
@@ -318,6 +322,19 @@ void Level::updateProjectiles(sf::Time deltaTime)
 }
 
 
+void Level::updateTexts()
+{
+	std::stringstream ss1;
+	ss1 << "Level " << gameData_->getLevel();
+	ss1 << "/" << std::max(gameData_->getMaxOpenLevel(), 1);
+	levelText_.setString(ss1.str());
+
+	std::stringstream ss2;
+	ss2 << "Credits: " << gameData_->getCredits();
+	creditsText_.setString(ss2.str());
+}
+
+
 void Level::addBackground()
 {
 	// Background
@@ -362,6 +379,7 @@ void Level::drawSelf(sf::RenderTarget& target, sf::RenderStates states) const
 		}
 	}
 
+	target.draw(levelText_, states);
 	target.draw(creditsText_, states);
 
 	if (gameData_->isGameOver())

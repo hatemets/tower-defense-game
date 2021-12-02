@@ -8,6 +8,7 @@ namespace Modes
 		MainMenu,
 		LevelMenu,
 		NewGame,
+		CheatMode,
 		Level1,
 		Level2,
 		Level3,

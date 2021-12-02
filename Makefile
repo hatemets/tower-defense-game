@@ -10,8 +10,8 @@ LIBS = -lsfml-graphics -lsfml-window -lsfml-system
 
 ifeq ($(OS),Windows_NT)
 	# Windows specific definitions
-	IFLAGS = -I.\libs\SFML-2.5.1-windows-gcc-7.3.0-mingw-32-bit\SFML-2.5.1\include
-	LFLAGS = -L.\libs\SFML-2.5.1-windows-gcc-7.3.0-mingw-32-bit\SFML-2.5.1\lib
+	IFLAGS = -I.\libs\windows\SFML-2.5.1\include
+	LFLAGS = -L.\libs\windows\SFML-2.5.1\lib
 	SRC_FILES := $(wildcard ./src/*.cpp)
 	CONST_FILES := $(wildcard ./include/auxiliary/*.hpp)
 	HPP_FILES := $(wildcard ./include/*.hpp)
@@ -21,6 +21,8 @@ ifeq ($(OS),Windows_NT)
 	MKDIR_OBJ = -@if not exist .\obj mkdir .\obj
 else
 	# Linux specific definitions
+	IFLAGS = -I ./libs/linux
+	LFLAGS = -L ./libs/linux/sfml-libs
 	SRC_FILES := $(shell find $(SRC_DIR) -type f -name *.cpp)
 	CONST_FILES := $(shell find $(HEADER_DIR)/auxiliary/ -type f -name *.hpp)
 	HEADER_FILES := $(shell find $(HEADER_DIR) -type f -name *.hpp)
