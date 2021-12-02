@@ -160,6 +160,8 @@ void Level::update(sf::Time deltaTime)
 		collectRewards();
 		updateEnemies(deltaTime);
 		updateTurrets(deltaTime);
+		updateExplosions(deltaTime);
+		createExplosions();
 		updateProjectiles(deltaTime);
 		updateTexts();
 	}
@@ -284,6 +286,34 @@ void Level::updateTurrets(sf::Time deltaTime)
 }
 
 
+void Level::createExplosions()
+{
+	for (auto& projectile : projectiles_)
+	{
+		if (!projectile->isAlive() && projectile->getExplosionRadius() > 0.f)
+		{
+			explosions_.push_back(std::make_shared<Explosion>(Explosion{projectile->getPosition(), projectile->getExplosionRadius()}));
+		}
+	}
+}
+
+
+void Level::updateExplosions(sf::Time deltaTime)
+{
+	// remove outdated explosions
+	explosions_.erase(std::remove_if(explosions_.begin(), explosions_.end(),
+				[](const std::shared_ptr<Explosion> &explosion)
+				{
+				return !explosion->isAlive();
+				}), explosions_.end());
+
+	for (auto& explosion : explosions_)
+	{
+		explosion->update(deltaTime);
+	}
+}
+
+
 void Level::updateProjectiles(sf::Time deltaTime)
 {
 	// remove outdated projectiles
@@ -360,6 +390,11 @@ void Level::drawSelf(sf::RenderTarget& target, sf::RenderStates states) const
 	for (auto& turret : turrets_)
 	{
 		turret->drawSelf(target, states);
+	}
+
+	for (auto& explosion : explosions_)
+	{
+		explosion->drawSelf(target, states);
 	}
 
 	// draw vertex projectiles

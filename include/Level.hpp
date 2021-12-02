@@ -9,6 +9,7 @@
 #include "Enemy.hpp"
 #include "Turret.hpp"
 #include "Projectile.hpp"
+#include "Explosion.hpp"
 #include "GameData.hpp"
 
 // Controls the turrets, enemies, map
@@ -40,6 +41,8 @@ class Level : public Mode
 		void collectRewards();
 		void updateEnemies(sf::Time deltaTime);
 		void updateTurrets(sf::Time deltaTime);
+		void updateExplosions(sf::Time deltaTime);
+		void createExplosions();
 		void updateProjectiles(sf::Time deltaTime);
 		void updateTexts();
 
@@ -67,6 +70,9 @@ class Level : public Mode
 		// Projectiles 
 		std::list<std::shared_ptr<Projectile>> projectiles_;
 		sf::VertexArray projectileVertices_; // combined picture of all projectiles that can be drawn as a vertex
+
+		// Explosions
+		std::list<std::shared_ptr<Explosion>> explosions_;
 };
 
 #endif

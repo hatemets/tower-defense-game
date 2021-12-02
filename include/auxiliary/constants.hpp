@@ -50,6 +50,10 @@ const std::array<float, MaxLevel> LevelMaxSpawnIntervals = {10.f, 8.f, 6.f, 4.f,
 // Game Over
 const int GameOverTextFontSize = 96;
 
+// Explosion properties
+const float ExplosionExpansionTime = 0.1f;
+const float ExplosionCooldownTime = 1.f;
+
 // Turret properties
 const float TurretTextureOffset = 90; // turret texture angle (90 degrees = turret barrel points down in the texture)
 const float TurretScaler = 2.f;
