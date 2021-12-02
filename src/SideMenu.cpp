@@ -1,17 +1,18 @@
 #include "../include/SideMenu.hpp"
 #include "../include/auxiliary/constants.hpp"
 
-const int menuWidth = WindowWidth / 5;
-auto menuBounds = sf::IntRect(menuWidth, 0, menuWidth, WindowHeight);
 
 SideMenu::SideMenu(TextureHolder& textures_, FontHolder& fonts_)
     : menuItems_(),
     background_(nullptr)
 {
+    const int menuWidth = (int)(WindowWidth * 0.28);
+    auto menuBounds = sf::IntRect(WindowWidth - menuWidth, 0, menuWidth, WindowHeight);
+
     sf::Texture& backgroundTexture = textures_.get(Textures::ID::SideMenuBackground);
     backgroundTexture.setRepeated(true);
 
-    background_ = std::make_unique<BackgroundSprite>(backgroundTexture, menuBounds);
+    background_ = std::make_unique<sf::Sprite>(backgroundTexture);
     background_->setPosition(menuBounds.left, menuBounds.top);
 
     for (int i = 0; i < TotalTurrets; ++i)
@@ -26,7 +27,7 @@ SideMenu::SideMenu(TextureHolder& textures_, FontHolder& fonts_)
 
 void SideMenu::drawSelf(sf::RenderTarget& target, sf::RenderStates states) const
 {
-    background_->drawSelf(target, states);  
+    target.draw(*background_.get(), states);
 
     for (auto& item : menuItems_)
     {

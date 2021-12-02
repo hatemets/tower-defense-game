@@ -4,7 +4,6 @@
 #include "Node.hpp"
 #include "MenuItem.hpp"
 #include "auxiliary/ResourceIdentifiers.hpp"
-#include "BackgroundSprite.hpp"
 #include <vector>
 #include <memory>
 
@@ -22,7 +21,8 @@ class SideMenu : public Node
         std::vector<std::unique_ptr<MenuItem>> menuItems_;
 
         // The rectangle shaped background of the sidemenu
-        std::unique_ptr<BackgroundSprite> background_;
+        std::unique_ptr<sf::Sprite> background_;
+
 };
 
 #endif

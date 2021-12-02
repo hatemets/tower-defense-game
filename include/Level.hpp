@@ -37,6 +37,7 @@ class Level : public Mode
 		virtual void createScene() final;
 		virtual void addButtons() override;
 		virtual void addBackground() override;
+        void addSideMenu();
 
 		void checkGameOver();
 		void collectRewards();
