@@ -15,7 +15,7 @@ using namespace Resources;
 using FontHolder = ResourceHolder<sf::Font, Fonts::ID>;
 
 // Mode is an abstract class used for representing one "scene" currently
-// displayed on the game window
+// displayed in the game window
 // Each Mode object must have an enum of layers
 class Mode : public Node
 {
@@ -24,6 +24,7 @@ class Mode : public Node
 		virtual ~Mode() = default;
 
 		virtual ModeState handleInput(sf::Vector2i mousePos);
+        virtual void handleInnerChange(Action action);
 
 	private:
 		virtual void loadResources() = 0;

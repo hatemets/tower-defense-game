@@ -16,6 +16,10 @@ const int TileRows = 15;
 const int TileSize = WindowWidth / TileCols;
 
 
+// TODO: Tie it to the actual turrets containers
+const int TotalTurrets = 5;
+
+
 // Primary theme color for buttons
 const std::array<int, 3> PrimaryColor = {00, 00, 80};
 

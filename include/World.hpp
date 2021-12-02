@@ -18,8 +18,8 @@ class World
 
 		void update(sf::Time deltaTime);
 		void operate();
-		void changeMode(Type newType);
 		void handleUserInput(sf::Vector2i mousePos);
+		void changeMode(Type newType);
 
 		Type getMode() const { return modeType_; }
 

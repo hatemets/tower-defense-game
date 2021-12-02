@@ -10,6 +10,7 @@
 #include "Turret.hpp"
 #include "Projectile.hpp"
 #include "GameData.hpp"
+#include "SideMenu.hpp"
 
 // Controls the turrets, enemies, map
 class Level : public Mode
@@ -18,6 +19,7 @@ class Level : public Mode
 		Level(sf::RenderWindow& window, std::shared_ptr<GameData> gameData);
 		virtual void update(sf::Time deltaTime) final;
 		virtual void drawSelf(sf::RenderTarget& target, sf::RenderStates states) const override;
+        virtual void handleInnerChange(Action action) final;
 	
 	private:
 		enum class Layers
@@ -67,6 +69,10 @@ class Level : public Mode
 		// Projectiles 
 		std::list<std::shared_ptr<Projectile>> projectiles_;
 		sf::VertexArray projectileVertices_; // combined picture of all projectiles that can be drawn as a vertex
+
+        bool isMenuOpen_;
+
+        std::unique_ptr<SideMenu> sideMenu_;
 };
 
 #endif

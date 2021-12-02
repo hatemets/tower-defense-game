@@ -3,6 +3,18 @@
 
 namespace Modes
 {
+    enum class Action
+    {
+        // Changes the whole state
+        ModeChange,
+
+        // Doesn't do anything
+        Idle,
+
+        // Changes part of the state, but not the whole state
+        SideMenuToggle
+    };
+
 	enum class Type
 	{
 		MainMenu,
@@ -24,11 +36,12 @@ namespace Modes
 	/* Struct for passing information from Modes to World */
 	struct ModeState
 	{
-		ModeState(Type type) : modeChange(true), type(type) {}
+		ModeState(Type type) : action(Action::ModeChange), type(type) {}
+		ModeState(Action action) : action(action), type() {}
 		
-		ModeState() : modeChange(false), type() {}
+		ModeState() : action(Action::Idle), type() {}
 
-		bool modeChange;
+		Action action;
 		Type type;
 	};
 

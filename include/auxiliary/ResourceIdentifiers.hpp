@@ -22,9 +22,18 @@ namespace Resources
 
 			// To main menu
 			HomeButton,
+
+            // Quit the game
 			QuitButton,
+
+            // Pause the game
 			PauseButton,
+
+            // Choose the level
 			LevelMenuButton,
+
+            // Open the sidemenu
+            SideMenuButton
 		};
 
 	}

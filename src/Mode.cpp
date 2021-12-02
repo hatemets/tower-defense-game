@@ -10,7 +10,6 @@ Mode::Mode(sf::RenderWindow& window)
 	buttons_(),
 	buttonShapes_()
 {
-	// TODO: Create a universal filepath
 	fonts_.load(Fonts::ID::SourceCodePro, "./include/fonts/SourceCodePro.ttf");
 }
 
@@ -25,9 +24,7 @@ void Mode::initializePointers(std::size_t layerCount)
 	for (std::size_t i = 0; i < layerCount; ++i)
 	{
 		auto layerNode = std::make_unique<Node>();
-
 		layers_.push_back(layerNode.get());
-
 		nodeTree_.addChild(std::move(layerNode));
 	}
 }
@@ -69,10 +66,17 @@ ModeState Mode::handleInput(sf::Vector2i mousePos)
 				return ModeState(Type::Level8);
 			case Buttons::ID::Level9Button:
 				return ModeState(Type::Level9);
+
 			case Buttons::ID::HomeButton:
 				return ModeState(Type::MainMenu);
 			case Buttons::ID::LevelMenuButton:
 				return ModeState(Type::LevelMenu);
+            case Buttons::ID::SideMenuButton:
+                {
+                    auto action = Action::SideMenuToggle;
+                    handleInnerChange(action);
+                    return ModeState(Action::SideMenuToggle);
+                }
 			default:
 				return ModeState();
 		}
@@ -82,4 +86,8 @@ ModeState Mode::handleInput(sf::Vector2i mousePos)
 	{
 		return ModeState();
 	}
+}
+
+void Mode::handleInnerChange(Action action)
+{
 }

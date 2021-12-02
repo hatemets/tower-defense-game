@@ -66,12 +66,18 @@ void World::changeMode(Type newMode)
 	}
 }
 
+
 void World::handleUserInput(sf::Vector2i mousePos)
 {
 	ModeState newMode = mode_->handleInput(mousePos);
 
-	if (newMode.modeChange)
-	{
-		changeMode(newMode.type);
-	}
+    switch (newMode.action)
+    {
+        case Modes::Action::ModeChange:
+            changeMode(newMode.type);
+            break;
+            // These cases are either already handled in mode or negligible
+        case Modes::Action::SideMenuToggle: case Modes::Action::Idle:
+            break;
+    }
 }

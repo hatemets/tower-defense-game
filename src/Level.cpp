@@ -18,12 +18,14 @@ Level::Level(sf::RenderWindow& window, std::shared_ptr<GameData> gameData)
 	maxSpawnInterval_(sf::seconds(LevelMaxSpawnIntervals[gameData->getLevel() - 1])),
 	nextSpawn_(sf::seconds(1)),
 	turrets_(),
-	projectileVertices_(sf::Points, 0)
+	projectileVertices_(sf::Points, 0),
+    isMenuOpen_(false)
 {
 	loadResources();
 	createScene();
-
 	updateTexts();
+
+    sideMenu_ = std::make_unique<SideMenu>(textures_, fonts_);
 
 	levelText_.setFont(fonts_.get(Fonts::ID::SourceCodePro));
 	levelText_.setCharacterSize(LevelTextFontSize);
@@ -74,6 +76,7 @@ void Level::loadResources()
 
 	buttonShapes_.load(Buttons::ID::HomeButton);
 	buttonShapes_.load(Buttons::ID::LevelMenuButton);
+	buttonShapes_.load(Buttons::ID::SideMenuButton);
 }
 
 
@@ -144,7 +147,7 @@ void Level::loadMap()
 void Level::addButtons()
 {
 	// Home button
-	auto homeButton = std::make_unique<Button>("X", fonts_, Fonts::ID::SourceCodePro, buttonShapes_, Buttons::ID::LevelMenuButton);
+	auto homeButton = std::make_unique<Button>("Menu", fonts_, Fonts::ID::SourceCodePro, buttonShapes_, Buttons::ID::SideMenuButton);
 	auto homeButtonSize = homeButton->getButton().getSize();
 
 	// NOTE: Added button padding y for it to stick to the upper side of the window
@@ -349,7 +352,6 @@ void Level::addBackground()
 	layers_[static_cast<std::size_t>(Layers::Background)]->addChild(std::move(background));
 }
 
-
 void Level::drawSelf(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	Mode::drawSelf(target, states);
@@ -382,9 +384,23 @@ void Level::drawSelf(sf::RenderTarget& target, sf::RenderStates states) const
 	target.draw(levelText_, states);
 	target.draw(creditsText_, states);
 
+    // Only when the isMenuOpen_ is true does it show the sidemenu
+    if (isMenuOpen_)
+    {
+        sideMenu_->drawSelf(target, states);
+    }
+
 	if (gameData_->isGameOver())
 	{
 		target.draw(gameOverText_, states);
 	}
+}
+
+void Level::handleInnerChange(Action action)
+{
+    if (action == Action::SideMenuToggle)
+    {
+        isMenuOpen_ = !isMenuOpen_;
+    }
 }
 
