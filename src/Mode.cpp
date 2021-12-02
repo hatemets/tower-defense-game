@@ -36,7 +36,7 @@ ModeState Mode::handleInput(sf::Vector2i mousePos)
 {
 	auto found = std::find_if(buttons_.begin(), buttons_.end(), [&](const Button* button)
 			{
-			return button->getButton().getGlobalBounds().contains(sf::Vector2f(mousePos));
+			return button->getButton().getGlobalBounds().contains(window_.mapPixelToCoords(mousePos));
 			});
 
 	if (found != buttons_.end())
