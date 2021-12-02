@@ -1,20 +1,5 @@
 # LIBS directory
-In this directory, you are required to place all the external libraries your project depends on. 
-Although, in principle, you can use git submodules (and place them under this directory), 
-for the sake of easily compiling your application, placing the source code of the 
-open source libraries is also fine. However, this approach is not applicable to
-large dependencies, such as QT.
 
+Currently, the only external library is SFML
 
-
-# List of External Libs
-
-1. [SFML-2.5.1-windows-gcc-7.3.0-mingw-32-bit](https://www.sfml-dev.org/download/sfml/2.5.1/)
-   SFML 2.5.1 library for Windows (compatible with i686-7.3.0-posix-dwarf-rt_v5-rev0 mingw32 g++.exe)
-2. [Project2](https://anotherproject.com/download)
-
-
-> If you are using already compiled library, place it in this folder, and set the linker options appropriately.
-> The inlcude files of the dependent library should also be placed in this folder.
-
-
+Windows lib files are in windows, and Linux ones in linux folder, respectively.
