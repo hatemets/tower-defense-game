@@ -19,6 +19,7 @@ class Level : public Mode
 		Level(sf::RenderWindow& window, std::shared_ptr<GameData> gameData);
 		virtual void update(sf::Time deltaTime) final;
 		virtual void drawSelf(sf::RenderTarget& target, sf::RenderStates states) const override;
+		virtual ModeState handleInput(sf::Vector2i mousePos);
 	
 	private:
 		enum class Layers
@@ -36,6 +37,10 @@ class Level : public Mode
 		virtual void createScene() final;
 		virtual void addButtons() override;
 		virtual void addBackground() override;
+
+		void addBuyMenu();
+		void addBuyButton(std::string name, int price, Buttons::ID buttonId, float buttonMargin);
+		void addSellMenu();
 
 		void checkGameOver();
 		void collectRewards();
@@ -73,6 +78,12 @@ class Level : public Mode
 
 		// Explosions
 		std::list<std::shared_ptr<Explosion>> explosions_;
+
+		// Buy/Sell Menus
+		std::vector<std::shared_ptr<Button>> buyMenu_;
+		std::vector<std::shared_ptr<Button>> sellMenu_;
+		std::shared_ptr<Turret> selectedTurret_;
+		std::shared_ptr<std::pair<int, int>> selectedTurretBase_;
 };
 
 #endif

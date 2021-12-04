@@ -35,6 +35,7 @@ class Map : public Node
 
         const std::vector<std::pair<int, int>> &getTurretBaseTiles() const;
         bool static isMember(int row, int col, const std::vector<std::pair<int, int>> &container);
+        bool isTurretBase(int row, int col) const { return isMember(row, col, turretBaseTiles_); }
 
         void findSafestPaths(TurretList &turrets); // this has to called everytime turrets are updated
 
@@ -51,8 +52,7 @@ class Map : public Node
         bool isSpawn(int row, int col) const { return isMember(row, col, spawnTiles_); }
         bool isRoad(int row, int col) const { return isMember(row, col, roadTiles_); }
         bool isBase(int row, int col) const { return isMember(row, col, baseTiles_); }
-        bool isTurretBase(int row, int col) const { return isMember(row, col, turretBaseTiles_); }
-
+  
         void loadTileset(const std::vector<std::pair<int, int>> &tiles_, Textures::ID style = Textures::ID::DirtPath, float scale = 1.f);
 
     private:

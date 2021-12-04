@@ -20,6 +20,18 @@ namespace Resources
 			Level8Button,
 			Level9Button,
 
+			// Buy menu
+			BuyGunTurretButton,
+			BuyDoubleGunTurretButton,
+			BuyTripleGunTurretButton,
+			BuyBombTurretButton,
+			BuyMissileTurretButton,
+			CloseBuyMenuButton,
+
+			// Sell menu
+			SellTurretButton,
+			CloseSellMenuButton,
+
 			// To main menu
 			HomeButton,
 			QuitButton,

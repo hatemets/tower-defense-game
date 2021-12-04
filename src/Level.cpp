@@ -18,7 +18,9 @@ Level::Level(sf::RenderWindow& window, std::shared_ptr<GameData> gameData)
 	maxSpawnInterval_(sf::seconds(LevelMaxSpawnIntervals[gameData->getLevel() - 1])),
 	nextSpawn_(sf::seconds(1)),
 	turrets_(),
-	projectileVertices_(sf::Points, 0)
+	projectileVertices_(sf::Points, 0),
+	selectedTurret_(nullptr),
+	selectedTurretBase_(nullptr)
 {
 	loadResources();
 	createScene();
@@ -73,6 +75,14 @@ void Level::loadResources()
 
 	buttonShapes_.load(Buttons::ID::HomeButton);
 	buttonShapes_.load(Buttons::ID::LevelMenuButton);
+	buttonShapes_.load(Buttons::ID::BuyGunTurretButton);
+	buttonShapes_.load(Buttons::ID::BuyDoubleGunTurretButton);
+	buttonShapes_.load(Buttons::ID::BuyTripleGunTurretButton);
+	buttonShapes_.load(Buttons::ID::BuyBombTurretButton);
+	buttonShapes_.load(Buttons::ID::BuyMissileTurretButton);
+	buttonShapes_.load(Buttons::ID::CloseBuyMenuButton);
+	buttonShapes_.load(Buttons::ID::SellTurretButton);
+	buttonShapes_.load(Buttons::ID::CloseSellMenuButton);
 }
 
 
@@ -81,50 +91,9 @@ void Level::createScene()
 	initializePointers(static_cast<std::size_t>(Layers::TotalCount));
 	addBackground();
 	addButtons();
+	addBuyMenu();
+	addSellMenu();
 	loadMap();
-
-	// Simulate buying turrets
-	const std::vector<std::pair<int, int>>& turretBaseTiles = map_->getTurretBaseTiles();
-
-	std::size_t turretCreateCount = std::min<std::size_t>(5, turretBaseTiles.size());
-
-	std::vector<std::pair<int, int>> turretTiles;
-
-	while (turretTiles.size() < turretCreateCount)
-	{
-		auto tile = turretBaseTiles[rand() % turretBaseTiles.size()];
-		int row = tile.first;
-		int col = tile.second;
-
-		if (!Map::isMember(row, col, turretTiles))
-		{
-			// Add a turret to the turret container
-			switch (turretTiles.size())
-			{
-				case 0:
-					turrets_.push_back(std::make_shared<GunTurret>(GunTurret{ row, col, textures_ }));
-					break;
-
-				case 1:
-					turrets_.push_back(std::make_shared<DoubleGunTurret>(DoubleGunTurret{ row, col, textures_ }));
-					break;
-
-				case 2:
-					turrets_.push_back(std::make_shared<TripleGunTurret>(TripleGunTurret{ row, col, textures_ }));
-					break;
-
-				case 3:
-					turrets_.push_back(std::make_shared<BombTurret>(BombTurret{ row, col, textures_ }));
-					break;
-
-				default:
-					turrets_.push_back(std::make_shared<MissileTurret>(MissileTurret{ row, col, textures_ }));
-					break;
-			}
-			turretTiles.push_back(tile);
-		}
-	}
-	map_->findSafestPaths(turrets_); // this has to be called everytime turrets are updated
 }
 
 
@@ -149,6 +118,56 @@ void Level::addButtons()
 	homeButton->setPosition(WindowWidth - homeButtonSize.x / 2.f, homeButtonSize.y / 2.f - ButtonPaddingY);
 	buttons_.push_back(homeButton.get());
 	layers_[static_cast<std::size_t>(Layers::HUD)]->addChild(std::move(homeButton));
+}
+
+
+void Level::addBuyMenu()
+{
+	int buttonCount = 6;
+	const float buttonMargin = 10.f;
+
+	std::stringstream ss1;
+	ss1 << "Buy Gun Turret $" << Turrets::Gun::price;
+	auto buyButton = std::make_shared<Button>(ss1.str(), fonts_, Fonts::ID::SourceCodePro, buttonShapes_, Buttons::ID::BuyGunTurretButton);
+	buyButton->setPosition(WindowWidth / 2.f, WindowHeight / 2.f - ((buttonCount - 1) / 2.f) * (buyButton->getButton().getSize().y + buttonMargin));
+	buyMenu_.push_back(buyButton);
+
+	addBuyButton("Double Gun Turret", Turrets::DoubleGun::price, Buttons::ID::BuyDoubleGunTurretButton, buttonMargin);
+	addBuyButton("Bomb Turret", Turrets::Bomb::price, Buttons::ID::BuyBombTurretButton, buttonMargin);
+	addBuyButton("Triple Gun Turret", Turrets::TripleGun::price, Buttons::ID::BuyTripleGunTurretButton, buttonMargin);
+	addBuyButton("Missile Turret", Turrets::Missile::price, Buttons::ID::BuyMissileTurretButton, buttonMargin);
+
+	buyButton = std::make_shared<Button>("Cancel", fonts_, Fonts::ID::SourceCodePro, buttonShapes_, Buttons::ID::CloseBuyMenuButton);
+	auto pos = buyMenu_[buyMenu_.size() - 1]->getButton().getPosition();
+	buyButton->setPosition(pos.x, pos.y + buyButton->getButton().getSize().y + buttonMargin);
+	buyMenu_.push_back(buyButton);
+}
+
+
+void Level::addBuyButton(std::string name, int price, Buttons::ID buttonId, float buttonMargin)
+{
+	std::stringstream ss;
+	ss << "Buy " << name << " $" << price;
+	auto buyButton = std::make_shared<Button>(ss.str(), fonts_, Fonts::ID::SourceCodePro, buttonShapes_, buttonId);
+	auto pos = buyMenu_[buyMenu_.size() - 1]->getButton().getPosition();
+	buyButton->setPosition(pos.x, pos.y + buyButton->getButton().getSize().y + buttonMargin);
+	buyMenu_.push_back(buyButton);
+}
+
+
+void Level::addSellMenu()
+{
+	int buttonCount = 2;
+	const float buttonMargin = 10.f;
+
+	auto sellButton = std::make_shared<Button>("Remove Turret", fonts_, Fonts::ID::SourceCodePro, buttonShapes_, Buttons::ID::SellTurretButton);
+	sellButton->setPosition(WindowWidth / 2.f, WindowHeight / 2.f - ((buttonCount - 1) / 2.f) * (sellButton->getButton().getSize().y + buttonMargin));
+	sellMenu_.push_back(sellButton);
+
+	sellButton = std::make_shared<Button>("Cancel", fonts_, Fonts::ID::SourceCodePro, buttonShapes_, Buttons::ID::CloseSellMenuButton);
+	auto pos = sellMenu_[sellMenu_.size() - 1]->getButton().getPosition();
+	sellButton->setPosition(pos.x, pos.y + sellButton->getButton().getSize().y + buttonMargin);
+	sellMenu_.push_back(sellButton);
 }
 
 
@@ -419,5 +438,123 @@ void Level::drawSelf(sf::RenderTarget& target, sf::RenderStates states) const
 	{
 		target.draw(gameOverText_, states);
 	}
+	else if (selectedTurret_)
+	{
+		for (auto& button : sellMenu_)
+		{
+			button->drawSelf(target, states);
+		}		
+	}
+	else if (selectedTurretBase_)
+	{
+		for (auto& button : buyMenu_)
+		{
+			button->drawSelf(target, states);
+		}		
+	}
+}
+
+
+ModeState Level::handleInput(sf::Vector2i mousePos)
+{
+	auto mouseTileCoords = window_.mapPixelToCoords(mousePos) / (float)TileSize;
+
+	if (selectedTurret_)
+	{
+		// handle sell menu click
+		auto found = std::find_if(sellMenu_.begin(), sellMenu_.end(), [&](std::shared_ptr<Button> button)
+		{
+			return button->getButton().getGlobalBounds().contains(window_.mapPixelToCoords(mousePos));
+		});
+
+		if (found != sellMenu_.end())
+		{
+			std::shared_ptr<Button> button = *found;
+			switch (button->getType())
+			{
+				case Buttons::ID::SellTurretButton:
+					turrets_.erase(std::remove(turrets_.begin(), turrets_.end(), selectedTurret_), turrets_.end());
+					map_->findSafestPaths(turrets_); // this has to be called everytime turrets are updated
+					break;
+				case Buttons::ID::CloseSellMenuButton:
+					break;
+				default:
+					break;
+			}
+			selectedTurret_ = nullptr; // remove selection
+		}
+	}
+	else if (selectedTurretBase_)
+	{
+		// handle buy menu click
+		auto found = std::find_if(buyMenu_.begin(), buyMenu_.end(), [&](std::shared_ptr<Button> button)
+		{
+			return button->getButton().getGlobalBounds().contains(window_.mapPixelToCoords(mousePos));
+		});
+
+		if (found != buyMenu_.end())
+		{
+			int row = selectedTurretBase_->first;
+			int col = selectedTurretBase_->second;
+			std::shared_ptr<Turret> turret(nullptr);
+
+			std::shared_ptr<Button> button = *found;
+			switch (button->getType())
+			{
+				case Buttons::ID::BuyGunTurretButton:
+					turret = std::make_shared<GunTurret>(GunTurret{ row, col, textures_ });
+					break;
+				case Buttons::ID::BuyDoubleGunTurretButton:
+					turret = std::make_shared<DoubleGunTurret>(DoubleGunTurret{ row, col, textures_ });
+					break;
+				case Buttons::ID::BuyTripleGunTurretButton:
+					turret = std::make_shared<TripleGunTurret>(TripleGunTurret{ row, col, textures_ });
+					break;
+				case Buttons::ID::BuyBombTurretButton:
+					turret = std::make_shared<BombTurret>(BombTurret{ row, col, textures_ });
+					break;
+				case Buttons::ID::BuyMissileTurretButton:
+					turret = std::make_shared<MissileTurret>(MissileTurret{ row, col, textures_ });
+					break;
+				case Buttons::ID::CloseBuyMenuButton:
+					break;
+				default:
+					break;
+			}
+			selectedTurretBase_ = nullptr; // remove selection
+
+			if (turret && turret->getPrice() <= gameData_->getCredits())
+			{
+				gameData_->removeCredits(turret->getPrice());
+				turrets_.push_back(turret);
+				map_->findSafestPaths(turrets_); // this has to be called everytime turrets are updated
+			}
+		}
+	}
+	else
+	{
+		// select clicked turret
+		for (auto& turret : turrets_)
+		{
+			if (Map::calculateDistance(mouseTileCoords, turret->getPosition()) <= 0.7f)
+			{
+				selectedTurret_ = turret;
+				break;
+			}
+		}
+
+		// select clicked turret base
+		if (!selectedTurret_)
+		{
+			int row = mouseTileCoords.y;
+			int col = mouseTileCoords.x;
+			if (map_->isTurretBase(row, col))
+			{
+				selectedTurretBase_ = std::make_shared<std::pair<int, int>>(row, col);
+			}
+		}
+	}
+
+	return Mode::handleInput(mousePos);
 }
 

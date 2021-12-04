@@ -21,6 +21,14 @@ std::pair<std::array<int, 3>, std::array<int, 3>> getColor(Buttons::ID id)
 		case Buttons::ID::Level7Button:
 		case Buttons::ID::Level8Button:
 		case Buttons::ID::Level9Button:
+		case Buttons::ID::BuyGunTurretButton:
+		case Buttons::ID::BuyDoubleGunTurretButton:
+		case Buttons::ID::BuyTripleGunTurretButton:
+		case Buttons::ID::BuyBombTurretButton:
+		case Buttons::ID::BuyMissileTurretButton:
+		case Buttons::ID::CloseBuyMenuButton:
+		case Buttons::ID::SellTurretButton:
+		case Buttons::ID::CloseSellMenuButton:
 		case Buttons::ID::QuitButton:
 		case Buttons::ID::PauseButton:
 		case Buttons::ID::HomeButton:
