@@ -24,26 +24,9 @@ Level::Level(sf::RenderWindow& window, std::shared_ptr<GameData> gameData)
 	loadResources();
 	createScene();
 	updateTexts();
+    addTexts();
 
     sideMenu_ = std::make_unique<SideMenu>(textures_, fonts_);
-
-	levelText_.setFont(fonts_.get(Fonts::ID::SourceCodePro));
-	levelText_.setCharacterSize(LevelTextFontSize);
-	levelText_.setFillColor(sf::Color::White);
-	levelText_.setPosition(WindowWidth / 2.f, 0.f);
-	levelText_.setOrigin(levelText_.getLocalBounds().width / 2.f, 0.f);
-
-	creditsText_.setFont(fonts_.get(Fonts::ID::SourceCodePro));
-	creditsText_.setCharacterSize(CreditsTextFontSize);
-	creditsText_.setFillColor(sf::Color::White);
-	creditsText_.setPosition(CreditsTextPaddingX, 0.f);
-
-	gameOverText_.setString("Game Over");
-	gameOverText_.setFont(fonts_.get(Fonts::ID::SourceCodePro));
-	gameOverText_.setCharacterSize(GameOverTextFontSize);
-	gameOverText_.setFillColor(sf::Color::Red);
-	gameOverText_.setPosition(WindowWidth / 2.f, WindowHeight / 2.f);
-	gameOverText_.setOrigin(gameOverText_.getLocalBounds().width / 2.f, gameOverText_.getLocalBounds().height);
 }
 
 
@@ -106,8 +89,8 @@ void Level::createScene()
 			switch (turretTiles.size())
 			{
 				case 0:
-					turrets_.push_back(std::make_shared<GunTurret>(GunTurret{ row, col, textures_ }));
-					break;
+                    turrets_.push_back(std::make_shared<GunTurret>(GunTurret{ row, col, textures_ }));
+                    break;
 
 				case 1:
 					turrets_.push_back(std::make_shared<DoubleGunTurret>(DoubleGunTurret{ row, col, textures_ }));
@@ -146,12 +129,20 @@ void Level::loadMap()
 
 void Level::addButtons()
 {
-	// Home button
-	auto homeButton = std::make_unique<Button>("Menu", fonts_, Fonts::ID::SourceCodePro, buttonShapes_, Buttons::ID::SideMenuButton);
-	auto homeButtonSize = homeButton->getButton().getSize();
-
+	// Menu button
+	auto menuButton = std::make_unique<Button>("Menu", fonts_, Fonts::ID::SourceCodePro, buttonShapes_, Buttons::ID::SideMenuButton);
+	auto menuButtonSize = menuButton->getButton().getSize();
 	// NOTE: Added button padding y for it to stick to the upper side of the window
-	homeButton->setPosition(WindowWidth - homeButtonSize.x / 2.f, homeButtonSize.y / 2.f - ButtonPaddingY);
+	menuButton->setPosition(WindowWidth - menuButtonSize.x / 2.f, menuButtonSize.y / 2.f - ButtonPaddingY);
+	buttons_.push_back(menuButton.get());
+	layers_[static_cast<std::size_t>(Layers::HUD)]->addChild(std::move(menuButton));
+
+
+	// Home button
+	auto homeButton = std::make_unique<Button>("Home", fonts_, Fonts::ID::SourceCodePro, buttonShapes_, Buttons::ID::HomeButton);
+	auto homeButtonSize = menuButton->getButton().getSize();
+    // Move the button (5 pixels margin)
+	homeButton->setPosition(menuButton->getPosition().x - menuButton->getButton().getSize().x + 5.f, menuButton->getPosition().y);
 	buttons_.push_back(homeButton.get());
 	layers_[static_cast<std::size_t>(Layers::HUD)]->addChild(std::move(homeButton));
 }
@@ -160,6 +151,7 @@ void Level::addButtons()
 void Level::update(sf::Time deltaTime)
 {
 	checkGameOver();
+
 	if (!gameData_->isGameOver())
 	{
 		collectRewards();
@@ -202,10 +194,12 @@ void Level::collectRewards()
 void Level::updateEnemies(sf::Time deltaTime)
 {
 	EnemyList newEnemies;
+
 	for (auto& enemy : enemies_)
 	{
 		enemy->spawnNewEnemies(newEnemies);
 	}
+
 	for (auto& enemy : newEnemies) 
 	{
 		enemies_.push_back(enemy);
@@ -384,17 +378,49 @@ void Level::drawSelf(sf::RenderTarget& target, sf::RenderStates states) const
 	target.draw(levelText_, states);
 	target.draw(creditsText_, states);
 
+    // NOTE: some buttons are drawn here again, since otherwise it'd be
+    // overshadowed by the sidemenu
+    auto menuBtn = std::find_if(buttons_.begin(), buttons_.end(), [](const Button* btn) { return btn->getType() == Buttons::ID::SideMenuButton; });
+    (*menuBtn)->drawSelf(target, states);
+
     // Only when the isMenuOpen_ is true does it show the sidemenu
     if (isMenuOpen_)
     {
         sideMenu_->drawSelf(target, states);
+        // draw the home button
+        auto homeBtn = std::find_if(buttons_.begin(), buttons_.end(), [](const Button* btn) { return btn->getType() == Buttons::ID::HomeButton; });
+        (*homeBtn)->drawSelf(target, states);
     }
+
 
 	if (gameData_->isGameOver())
 	{
 		target.draw(gameOverText_, states);
 	}
 }
+
+
+void Level::addTexts()
+{
+	levelText_.setFont(fonts_.get(Fonts::ID::SourceCodePro));
+	levelText_.setCharacterSize(LevelTextFontSize);
+	levelText_.setFillColor(sf::Color::White);
+	levelText_.setPosition(WindowWidth / 2.f, 0.f);
+	levelText_.setOrigin(levelText_.getLocalBounds().width / 2.f, 0.f);
+
+	creditsText_.setFont(fonts_.get(Fonts::ID::SourceCodePro));
+	creditsText_.setCharacterSize(CreditsTextFontSize);
+	creditsText_.setFillColor(sf::Color::White);
+	creditsText_.setPosition(CreditsTextPaddingX, 0.f);
+
+	gameOverText_.setString("Game Over");
+	gameOverText_.setFont(fonts_.get(Fonts::ID::SourceCodePro));
+	gameOverText_.setCharacterSize(GameOverTextFontSize);
+	gameOverText_.setFillColor(sf::Color::Red);
+	gameOverText_.setPosition(WindowWidth / 2.f, WindowHeight / 2.f);
+	gameOverText_.setOrigin(gameOverText_.getLocalBounds().width / 2.f, gameOverText_.getLocalBounds().height);
+}
+
 
 void Level::handleInnerChange(Action action)
 {

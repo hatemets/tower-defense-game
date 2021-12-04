@@ -38,6 +38,8 @@ class Level : public Mode
 		virtual void addButtons() override;
 		virtual void addBackground() override;
         void addSideMenu();
+        void addEntities();
+        void addTexts();
 
 		void checkGameOver();
 		void collectRewards();
