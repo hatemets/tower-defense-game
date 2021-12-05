@@ -9,7 +9,8 @@ World::World(sf::RenderWindow& window)
 	modeType_(Type::MainMenu),
 	gameBounds_(0.f, 0.f, window.getSize().x, window.getSize().y),
 	mode_(std::make_unique<MainMenu>(window)),
-	gameData_(std::make_shared<GameData>())
+	gameData_(std::make_shared<GameData>()),
+    running(true)
 {
 }
 
@@ -63,6 +64,9 @@ void World::changeMode(Type newMode)
 		case Type::LevelMenu:
 			mode_.reset(new LevelMenu(window_, gameData_));
 			break;
+        case Type::Quit:
+            running = false;
+            break;
 	}
 }
 

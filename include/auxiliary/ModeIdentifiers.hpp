@@ -18,6 +18,7 @@ namespace Modes
 		Level7,
 		Level8,
 		Level9,
+        Quit,
 		TotalTypes
 	};
 
@@ -25,7 +26,6 @@ namespace Modes
 	struct ModeState
 	{
 		ModeState(Type type) : modeChange(true), type(type) {}
-		
 		ModeState() : modeChange(false), type() {}
 
 		bool modeChange;
