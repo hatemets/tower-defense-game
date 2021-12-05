@@ -1,11 +1,12 @@
 #include "../include/Mode.hpp"
+#include "../include/auxiliary/constants.hpp"
 
 
 Mode::Mode(sf::RenderWindow& window)
 	: window_(window),
 	layers_(),
 	nodeTree_(),
-	windowBounds_(0.f, 0.f, window_.getSize().x, window_.getSize().y),
+	windowBounds_(0.f, 0.f, WindowWidth, WindowHeight),
 	fonts_(),
 	buttons_(),
 	buttonShapes_()

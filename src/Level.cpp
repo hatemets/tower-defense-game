@@ -16,7 +16,7 @@ Level::Level(sf::RenderWindow& window, std::shared_ptr<GameData> gameData)
 	enemies_(),
 	minSpawnInterval_(sf::seconds(LevelMinSpawnIntervals[gameData->getLevel() - 1])),
 	maxSpawnInterval_(sf::seconds(LevelMaxSpawnIntervals[gameData->getLevel() - 1])),
-	nextSpawn_(sf::seconds(1)),
+	nextSpawn_(sf::seconds(LevelFirstSpawnTime)),
 	turrets_(),
 	projectileVertices_(sf::Points, 0),
 	selectedTurret_(nullptr),
