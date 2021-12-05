@@ -174,7 +174,7 @@ void Level::addSellMenu()
 void Level::update(sf::Time deltaTime)
 {
 	checkGameOver();
-	if (!gameData_->isGameOver())
+	if (!gameData_->isGameOver() && !selectedTurret_ && !selectedTurretBase_)
 	{
 		collectRewards();
 		updateEnemies(deltaTime);
@@ -536,7 +536,7 @@ ModeState Level::handleInput(sf::Vector2i mousePos)
 		// select clicked turret
 		for (auto& turret : turrets_)
 		{
-			if (Map::calculateDistance(mouseTileCoords, turret->getPosition()) <= 0.7f)
+			if (Map::calculateDistance(mouseTileCoords, turret->getPosition()) <= 0.75f) // 0.75 > sqrt(2) / 2
 			{
 				selectedTurret_ = turret;
 				break;
