@@ -3,10 +3,7 @@
 #include <array>
 
 
-const float ButtonPaddingX = 40.f;
-const float ButtonPaddingY = 30.f;
-
-Button::Button(const std::string& text, ResourceHolder<sf::Font, Fonts::ID>& fonts, Fonts::ID fontID, ButtonHolder<Buttons::ID>& resources, Buttons::ID buttonID, float scalar)
+Button::Button(const std::string& text, ResourceHolder<sf::Font, Fonts::ID>& fonts, Fonts::ID fontID, ButtonHolder<Buttons::ID>& resources, Buttons::ID buttonID)
 	: button_(resources.get(buttonID)),
 	type_(buttonID)
 {
@@ -14,9 +11,12 @@ Button::Button(const std::string& text, ResourceHolder<sf::Font, Fonts::ID>& fon
 	text_.setString(text);
 
 
+    const float ButtonPaddingX = 40.f;
+    const float ButtonPaddingY = 30.f;
+
 	// Set the scale of the text
 	// This effectively sets the size of the button as well
-	text_.setScale(scalar, scalar);
+	text_.setScale(ButtonScalar, ButtonScalar);
 	text_.setStyle(sf::Text::Bold);
 
 	auto textBounds = text_.getLocalBounds();

@@ -11,7 +11,8 @@ using namespace Resources;
 class Button : public Node
 {
 	public:
-		explicit Button(const std::string& text, ResourceHolder<sf::Font, Fonts::ID>& fonts, Fonts::ID fontID, ButtonHolder<Buttons::ID>& resources, Buttons::ID buttonID, float scalar = 1.05f);
+		explicit Button(const std::string& text, ResourceHolder<sf::Font, Fonts::ID>& fonts, Fonts::ID fontID, ButtonHolder<Buttons::ID>& resources, Buttons::ID buttonID);
+		/* explicit Button(const std::string& text, ResourceHolder<sf::Font, Fonts::ID>& fonts, Fonts::ID fontID, ButtonHolder<Buttons::ID>& resources, Buttons::ID buttonID, float scalar = 1.05f); */
 		virtual void drawSelf(sf::RenderTarget &target, sf::RenderStates states) const final;
 
 		void setPosition(float x, float y);

@@ -20,7 +20,6 @@ const int TileSize = WindowWidth / TileCols;
 const float ButtonMargin = 20.f;
 
 
-
 // ----------------------- STYLING ---------------------------
 // -----------------------------------------------------------
 // Primary theme color for buttons
@@ -35,6 +34,8 @@ const std::array<int, 3> PrimaryColor = {180, 180, 180};
 
 /* const float ButtonPaddingX = 0.3f * ButtonWidth; */
 /* const float ButtonPaddingY = 0.15f * ButtonHeight; */
+
+const float ButtonScalar = 1.05f;
 
 // Credits
 const int NewGameCredits = 300;

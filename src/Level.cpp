@@ -115,7 +115,7 @@ void Level::addButtons()
 	auto homeButtonSize = homeButton->getButton().getSize();
 
 	// NOTE: Added button padding y for it to stick to the upper side of the window
-	homeButton->setPosition(WindowWidth - homeButtonSize.x / 2.f, homeButtonSize.y / 2.f - ButtonPaddingY);
+	homeButton->setPosition(WindowWidth - homeButtonSize.x / 2.f, homeButtonSize.y / 2.f - ButtonMargin);
 	buttons_.push_back(homeButton.get());
 	layers_[static_cast<std::size_t>(Layers::HUD)]->addChild(std::move(homeButton));
 }
