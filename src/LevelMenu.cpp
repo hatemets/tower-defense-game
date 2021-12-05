@@ -17,7 +17,8 @@ LevelMenu::LevelMenu(sf::RenderWindow& window, std::shared_ptr<GameData> gameDat
 
 void LevelMenu::loadResources()
 {
-	textures_.load(Textures::ID::LevelMenuBackground, "./include/images/GreenTile.png");
+	textures_.load(Textures::ID::LevelMenuBackground, "./include/images/LevelMenuBackground.png");
+
 	buttonShapes_.load(Buttons::ID::Home);
 	buttonShapes_.load(Buttons::ID::CheatMode);
 	buttonShapes_.load(Buttons::ID::Level1);
@@ -45,12 +46,12 @@ void LevelMenu::addBackground()
 {
 	// Set the background for the menu
 	sf::Texture& backgroundTexture = textures_.get(Textures::ID::LevelMenuBackground);
-	backgroundTexture.setRepeated(true);
+	/* backgroundTexture.setRepeated(true); */
 
-	sf::IntRect bounds(windowBounds_);
+	/* sf::IntRect bounds(windowBounds_); */
 
-	auto background = std::make_unique<BackgroundSprite>(BackgroundSprite{backgroundTexture, bounds});
-	background->setPosition(0.f, 0.f);
+	auto background = std::make_unique<BackgroundSprite>(BackgroundSprite{backgroundTexture});
+	background->setPosition(WindowWidth / 2.f, WindowHeight/ 2.f);
 	layers_[static_cast<std::size_t>(Layers::Background)]->addChild(std::move(background));
 }
 
