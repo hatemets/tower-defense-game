@@ -20,6 +20,8 @@ class Mode : public Node
 	public:
 		Mode(sf::RenderWindow& window);
 		virtual ~Mode() = default;
+    	Mode(const Mode&) = delete; // disallow copying
+    	Mode& operator=(const Mode&) = delete; // disallow assign
 
 		virtual ModeState handleInput(sf::Vector2i mousePos);
 
