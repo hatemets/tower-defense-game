@@ -3,32 +3,31 @@
 
 #include <array>
 
-// General
+// ----------------------- GENERAL --------------------------
+// ----------------------------------------------------------
 const unsigned int FramesPerSecond = 200;
 
-// NOTE: The window MUST have a resolution of 4:3
-// TODO: Write a guard for ensuring the aspect ratio
+// NOTE: The window has a resolution of 4:3
 const int WindowWidth = 800;
-const int WindowHeight = 600;
+const int WindowHeight = WindowWidth / 4 * 3;
 
 const int TileCols = 20;
-const int TileRows = 15;
+const int TileRows = TileCols / 4 * 3;
 
 const int TileSize = WindowWidth / TileCols;
 
 // The space between buttons
 const float ButtonMargin = 20.f;
 
+
+
+// ----------------------- STYLING ---------------------------
+// -----------------------------------------------------------
 // Primary theme color for buttons
 const std::array<int, 3> PrimaryColor = {00, 00, 80};
 
 // Secondary theme color for texts and the like
 const std::array<int, 3> SecondaryColor = {180, 180, 180};
-
-// Math
-const float Pi = 3.14159f;
-const float RadiansToDegrees = 180.f / Pi;
-const float DegreesToRadians = Pi / 180.f;
 
 // Buttons
 const float ButtonWidth = 1.f / 4.f * WindowWidth;
@@ -43,6 +42,17 @@ const int CreditsTextFontSize = 24;
 const float CreditsTextPaddingX = 5.f;
 const bool CheatModeEnabled = true;
 
+
+
+// ------------------------- MATH ----------------------------
+// -----------------------------------------------------------
+const float Pi = 3.14159f;
+const float RadiansToDegrees = 180.f / Pi;
+const float DegreesToRadians = Pi / 180.f;
+
+
+// ------------------------ GAMEPLAY -------------------------
+// -----------------------------------------------------------
 // Levels
 const int LevelTextFontSize = 24;
 const int MaxLevel = 5;
