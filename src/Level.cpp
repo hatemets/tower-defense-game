@@ -196,6 +196,8 @@ void Level::checkGameOver()
 			if (enemy->hasReachedBase())
 			{
 				gameData_->setGameOver();
+				selectedTurret_ = nullptr; // disable sell menu
+				selectedTurretBase_ = nullptr; // disable buy menu
 				return;
 			}
 		}
@@ -531,7 +533,7 @@ ModeState Level::handleInput(sf::Vector2i mousePos)
 			}
 		}
 	}
-	else
+	else if (!gameData_->isGameOver())
 	{
 		// select clicked turret
 		for (auto& turret : turrets_)
