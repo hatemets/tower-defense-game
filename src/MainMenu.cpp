@@ -16,7 +16,9 @@ MainMenu::MainMenu(sf::RenderWindow& window)
 void MainMenu::loadResources()
 {
 	textures_.load(Textures::ID::GrassArea, "./include/images/background1.jpg");
+
 	buttonShapes_.load(Buttons::ID::LevelMenuButton);
+	buttonShapes_.load(Buttons::ID::QuitButton);
 }
 
 
@@ -45,11 +47,15 @@ void MainMenu::addButtons()
 {
 	// Start button
 	auto startButton = std::make_unique<Button>("Play", fonts_, Fonts::ID::SourceCodePro, buttonShapes_, Buttons::ID::LevelMenuButton);
-	startButton->setPosition(WindowWidth / 2.f, WindowHeight / 2.f);
+    sf::Vector2f startBtnPos(WindowWidth / 2.f, WindowHeight / 2.f);
+	startButton->setPosition(startBtnPos.x, startBtnPos.y);
 	buttons_.push_back(startButton.get());
 	layers_[static_cast<std::size_t>(Layers::Buttons)]->addChild(std::move(startButton));
 
-	// TODO: Add quit button
+	auto quitButton = std::make_unique<Button>("Exit", fonts_, Fonts::ID::SourceCodePro, buttonShapes_, Buttons::ID::QuitButton);
+	quitButton->setPosition(startBtnPos.x, startBtnPos.y + quitButton->getButton().getSize().y + ButtonMargin);
+	buttons_.push_back(quitButton.get());
+	layers_[static_cast<std::size_t>(Layers::Buttons)]->addChild(std::move(quitButton));
 }
 
 

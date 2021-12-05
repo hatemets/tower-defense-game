@@ -16,6 +16,9 @@ const int TileRows = 15;
 
 const int TileSize = WindowWidth / TileCols;
 
+// The space between buttons
+const float ButtonMargin = 20.f;
+
 // Primary theme color for buttons
 const std::array<int, 3> PrimaryColor = {00, 00, 80};
 
@@ -31,8 +34,8 @@ const float DegreesToRadians = Pi / 180.f;
 const float ButtonWidth = 1.f / 4.f * WindowWidth;
 const float ButtonHeight = 1.f / 6.f * WindowHeight;
 
-const float ButtonPaddingX = 1.f / 4.f * ButtonWidth;
-const float ButtonPaddingY = 1.f / 8.f * ButtonHeight;
+const float ButtonPaddingX = 0.3f * ButtonWidth;
+const float ButtonPaddingY = 0.15f * ButtonHeight;
 
 // Credits
 const int NewGameCredits = 300;
