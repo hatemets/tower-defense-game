@@ -3,6 +3,9 @@
 #include <array>
 
 
+const float ButtonPaddingX = 40.f;
+const float ButtonPaddingY = 30.f;
+
 Button::Button(const std::string& text, ResourceHolder<sf::Font, Fonts::ID>& fonts, Fonts::ID fontID, ButtonHolder<Buttons::ID>& resources, Buttons::ID buttonID, float scalar)
 	: button_(resources.get(buttonID)),
 	type_(buttonID)

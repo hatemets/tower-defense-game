@@ -15,7 +15,7 @@ MainMenu::MainMenu(sf::RenderWindow& window)
 
 void MainMenu::loadResources()
 {
-	textures_.load(Textures::ID::GrassArea, "./include/images/background1.jpg");
+	textures_.load(Textures::ID::GrassArea, "./include/images/MainMenuBackground.png");
 
 	buttonShapes_.load(Buttons::ID::LevelMenu);
 	buttonShapes_.load(Buttons::ID::Quit);
@@ -47,7 +47,7 @@ void MainMenu::addButtons()
 {
 	// Start button
 	auto startButton = std::make_unique<Button>("Play", fonts_, Fonts::ID::SourceCodePro, buttonShapes_, Buttons::ID::LevelMenu);
-    sf::Vector2f startBtnPos(WindowWidth / 2.f, WindowHeight / 2.f);
+    sf::Vector2f startBtnPos(WindowWidth / 2.f, WindowHeight / 2.f + 80.f);
 	startButton->setPosition(startBtnPos.x, startBtnPos.y);
 	buttons_.push_back(startButton.get());
 	layers_[static_cast<std::size_t>(Layers::Buttons)]->addChild(std::move(startButton));
