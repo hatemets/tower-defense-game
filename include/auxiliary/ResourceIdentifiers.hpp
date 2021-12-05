@@ -8,35 +8,35 @@ namespace Resources
 		enum class ID
 		{
 			// To level menu
-			StartButton,
-			CheatModeButton,
-			Level1Button,
-			Level2Button,
-			Level3Button,
-			Level4Button,
-			Level5Button,
-			Level6Button,
-			Level7Button,
-			Level8Button,
-			Level9Button,
+			Start,
+			CheatMode,
+			Level1,
+			Level2,
+			Level3,
+			Level4,
+			Level5,
+			Level6,
+			Level7,
+			Level8,
+			Level9,
 
 			// Buy menu
-			BuyGunTurretButton,
-			BuyDoubleGunTurretButton,
-			BuyTripleGunTurretButton,
-			BuyBombTurretButton,
-			BuyMissileTurretButton,
-			CloseBuyMenuButton,
+			BuyGunTurret,
+			BuyDoubleGunTurret,
+			BuyTripleGunTurret,
+			BuyBombTurret,
+			BuyMissileTurret,
+			CloseBuyMenu,
 
 			// Sell menu
-			SellTurretButton,
-			CloseSellMenuButton,
+			SellTurret,
+			CloseSellMenu,
 
 			// To main menu
-			HomeButton,
-			QuitButton,
-			PauseButton,
-			LevelMenuButton,
+			Home,
+			Quit,
+			Pause,
+			LevelMenu,
 		};
 
 	}

@@ -48,33 +48,33 @@ ModeState Mode::handleInput(sf::Vector2i mousePos)
 
 		switch (button->getType())
 		{
-			case Buttons::ID::StartButton:
+			case Buttons::ID::Start:
 				return ModeState(Type::NewGame);
-			case Buttons::ID::CheatModeButton:
+			case Buttons::ID::CheatMode:
 				return ModeState(Type::CheatMode);
-			case Buttons::ID::Level1Button:
+			case Buttons::ID::Level1:
 				return ModeState(Type::Level1);
-			case Buttons::ID::Level2Button:
+			case Buttons::ID::Level2:
 				return ModeState(Type::Level2);
-			case Buttons::ID::Level3Button:
+			case Buttons::ID::Level3:
 				return ModeState(Type::Level3);
-			case Buttons::ID::Level4Button:
+			case Buttons::ID::Level4:
 				return ModeState(Type::Level4);
-			case Buttons::ID::Level5Button:
+			case Buttons::ID::Level5:
 				return ModeState(Type::Level5);
-			case Buttons::ID::Level6Button:
+			case Buttons::ID::Level6:
 				return ModeState(Type::Level6);
-			case Buttons::ID::Level7Button:
+			case Buttons::ID::Level7:
 				return ModeState(Type::Level7);
-			case Buttons::ID::Level8Button:
+			case Buttons::ID::Level8:
 				return ModeState(Type::Level8);
-			case Buttons::ID::Level9Button:
+			case Buttons::ID::Level9:
 				return ModeState(Type::Level9);
-			case Buttons::ID::HomeButton:
+			case Buttons::ID::Home:
 				return ModeState(Type::MainMenu);
-			case Buttons::ID::LevelMenuButton:
+			case Buttons::ID::LevelMenu:
 				return ModeState(Type::LevelMenu);
-			case Buttons::ID::QuitButton:
+			case Buttons::ID::Quit:
 				return ModeState(Type::Quit);
 			default:
 				return ModeState();

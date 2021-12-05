@@ -73,16 +73,16 @@ void Level::loadResources()
 	textures_.load(Textures::ID::Health40, "./include/images/Health40.png");
 	textures_.load(Textures::ID::Health20, "./include/images/Health20.png");
 
-	buttonShapes_.load(Buttons::ID::HomeButton);
-	buttonShapes_.load(Buttons::ID::LevelMenuButton);
-	buttonShapes_.load(Buttons::ID::BuyGunTurretButton);
-	buttonShapes_.load(Buttons::ID::BuyDoubleGunTurretButton);
-	buttonShapes_.load(Buttons::ID::BuyTripleGunTurretButton);
-	buttonShapes_.load(Buttons::ID::BuyBombTurretButton);
-	buttonShapes_.load(Buttons::ID::BuyMissileTurretButton);
-	buttonShapes_.load(Buttons::ID::CloseBuyMenuButton);
-	buttonShapes_.load(Buttons::ID::SellTurretButton);
-	buttonShapes_.load(Buttons::ID::CloseSellMenuButton);
+	buttonShapes_.load(Buttons::ID::Home);
+	buttonShapes_.load(Buttons::ID::LevelMenu);
+	buttonShapes_.load(Buttons::ID::BuyGunTurret);
+	buttonShapes_.load(Buttons::ID::BuyDoubleGunTurret);
+	buttonShapes_.load(Buttons::ID::BuyTripleGunTurret);
+	buttonShapes_.load(Buttons::ID::BuyBombTurret);
+	buttonShapes_.load(Buttons::ID::BuyMissileTurret);
+	buttonShapes_.load(Buttons::ID::CloseBuyMenu);
+	buttonShapes_.load(Buttons::ID::SellTurret);
+	buttonShapes_.load(Buttons::ID::CloseSellMenu);
 }
 
 
@@ -111,7 +111,7 @@ void Level::loadMap()
 void Level::addButtons()
 {
 	// Home button
-	auto homeButton = std::make_unique<Button>("X", fonts_, Fonts::ID::SourceCodePro, buttonShapes_, Buttons::ID::LevelMenuButton);
+	auto homeButton = std::make_unique<Button>("X", fonts_, Fonts::ID::SourceCodePro, buttonShapes_, Buttons::ID::LevelMenu);
 	auto homeButtonSize = homeButton->getButton().getSize();
 
 	// NOTE: Added button padding y for it to stick to the upper side of the window
@@ -128,16 +128,16 @@ void Level::addBuyMenu()
 
 	std::stringstream ss1;
 	ss1 << "Buy Gun Turret $" << Turrets::Gun::price;
-	auto buyButton = std::make_shared<Button>(ss1.str(), fonts_, Fonts::ID::SourceCodePro, buttonShapes_, Buttons::ID::BuyGunTurretButton);
+	auto buyButton = std::make_shared<Button>(ss1.str(), fonts_, Fonts::ID::SourceCodePro, buttonShapes_, Buttons::ID::BuyGunTurret);
 	buyButton->setPosition(WindowWidth / 2.f, WindowHeight / 2.f - ((buttonCount - 1) / 2.f) * (buyButton->getButton().getSize().y + buttonMargin));
 	buyMenu_.push_back(buyButton);
 
-	addBuyButton("Double Gun Turret", Turrets::DoubleGun::price, Buttons::ID::BuyDoubleGunTurretButton, buttonMargin);
-	addBuyButton("Bomb Turret", Turrets::Bomb::price, Buttons::ID::BuyBombTurretButton, buttonMargin);
-	addBuyButton("Triple Gun Turret", Turrets::TripleGun::price, Buttons::ID::BuyTripleGunTurretButton, buttonMargin);
-	addBuyButton("Missile Turret", Turrets::Missile::price, Buttons::ID::BuyMissileTurretButton, buttonMargin);
+	addBuyButton("Double Gun Turret", Turrets::DoubleGun::price, Buttons::ID::BuyDoubleGunTurret, buttonMargin);
+	addBuyButton("Bomb Turret", Turrets::Bomb::price, Buttons::ID::BuyBombTurret, buttonMargin);
+	addBuyButton("Triple Gun Turret", Turrets::TripleGun::price, Buttons::ID::BuyTripleGunTurret, buttonMargin);
+	addBuyButton("Missile Turret", Turrets::Missile::price, Buttons::ID::BuyMissileTurret, buttonMargin);
 
-	buyButton = std::make_shared<Button>("Cancel", fonts_, Fonts::ID::SourceCodePro, buttonShapes_, Buttons::ID::CloseBuyMenuButton);
+	buyButton = std::make_shared<Button>("Cancel", fonts_, Fonts::ID::SourceCodePro, buttonShapes_, Buttons::ID::CloseBuyMenu);
 	auto pos = buyMenu_[buyMenu_.size() - 1]->getButton().getPosition();
 	buyButton->setPosition(pos.x, pos.y + buyButton->getButton().getSize().y + buttonMargin);
 	buyMenu_.push_back(buyButton);
@@ -160,11 +160,11 @@ void Level::addSellMenu()
 	int buttonCount = 2;
 	const float buttonMargin = 10.f;
 
-	auto sellButton = std::make_shared<Button>("Remove Turret", fonts_, Fonts::ID::SourceCodePro, buttonShapes_, Buttons::ID::SellTurretButton);
+	auto sellButton = std::make_shared<Button>("Remove Turret", fonts_, Fonts::ID::SourceCodePro, buttonShapes_, Buttons::ID::SellTurret);
 	sellButton->setPosition(WindowWidth / 2.f, WindowHeight / 2.f - ((buttonCount - 1) / 2.f) * (sellButton->getButton().getSize().y + buttonMargin));
 	sellMenu_.push_back(sellButton);
 
-	sellButton = std::make_shared<Button>("Cancel", fonts_, Fonts::ID::SourceCodePro, buttonShapes_, Buttons::ID::CloseSellMenuButton);
+	sellButton = std::make_shared<Button>("Cancel", fonts_, Fonts::ID::SourceCodePro, buttonShapes_, Buttons::ID::CloseSellMenu);
 	auto pos = sellMenu_[sellMenu_.size() - 1]->getButton().getPosition();
 	sellButton->setPosition(pos.x, pos.y + sellButton->getButton().getSize().y + buttonMargin);
 	sellMenu_.push_back(sellButton);
@@ -472,11 +472,11 @@ ModeState Level::handleInput(sf::Vector2i mousePos)
 			std::shared_ptr<Button> button = *found;
 			switch (button->getType())
 			{
-				case Buttons::ID::SellTurretButton:
+				case Buttons::ID::SellTurret:
 					turrets_.erase(std::remove(turrets_.begin(), turrets_.end(), selectedTurret_), turrets_.end());
 					map_->findSafestPaths(turrets_); // this has to be called everytime turrets are updated
 					break;
-				case Buttons::ID::CloseSellMenuButton:
+				case Buttons::ID::CloseSellMenu:
 					break;
 				default:
 					break;
@@ -501,22 +501,22 @@ ModeState Level::handleInput(sf::Vector2i mousePos)
 			std::shared_ptr<Button> button = *found;
 			switch (button->getType())
 			{
-				case Buttons::ID::BuyGunTurretButton:
+				case Buttons::ID::BuyGunTurret:
 					turret = std::make_shared<GunTurret>(GunTurret{ row, col, textures_ });
 					break;
-				case Buttons::ID::BuyDoubleGunTurretButton:
+				case Buttons::ID::BuyDoubleGunTurret:
 					turret = std::make_shared<DoubleGunTurret>(DoubleGunTurret{ row, col, textures_ });
 					break;
-				case Buttons::ID::BuyTripleGunTurretButton:
+				case Buttons::ID::BuyTripleGunTurret:
 					turret = std::make_shared<TripleGunTurret>(TripleGunTurret{ row, col, textures_ });
 					break;
-				case Buttons::ID::BuyBombTurretButton:
+				case Buttons::ID::BuyBombTurret:
 					turret = std::make_shared<BombTurret>(BombTurret{ row, col, textures_ });
 					break;
-				case Buttons::ID::BuyMissileTurretButton:
+				case Buttons::ID::BuyMissileTurret:
 					turret = std::make_shared<MissileTurret>(MissileTurret{ row, col, textures_ });
 					break;
-				case Buttons::ID::CloseBuyMenuButton:
+				case Buttons::ID::CloseBuyMenu:
 					break;
 				default:
 					break;
