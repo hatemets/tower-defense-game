@@ -111,7 +111,7 @@ void Level::loadMap()
 void Level::addButtons()
 {
 	// Home button
-	auto homeButton = std::make_unique<Button>("X", fonts_, Fonts::ID::SourceCodePro, buttonShapes_, Buttons::ID::LevelMenu);
+	auto homeButton = std::make_unique<Button>("X", fonts_, Fonts::ID::SourceCodePro, buttonShapes_, Buttons::ID::LevelMenu, 2);
 	auto homeButtonSize = homeButton->getButton().getSize();
 
 	// NOTE: Added button padding y for it to stick to the upper side of the window
