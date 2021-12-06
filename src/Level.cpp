@@ -553,6 +553,7 @@ ModeState Level::handleInput(sf::Vector2i mousePos)
 		{
 			int row = mouseTileCoords.y;
 			int col = mouseTileCoords.x;
+
 			if (map_->isTurretBase(row, col))
 			{
 				selectedTurretBase_ = std::make_shared<std::pair<int, int>>(row, col);

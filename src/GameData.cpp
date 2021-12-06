@@ -11,15 +11,17 @@ GameData::GameData()
 {
     try
     {
+        isNewGame = false;
+
         std::ifstream ifs("./include/auxiliary/cache.txt");
         std::string credits{};
         std::getline(ifs, credits);
         credits_ = std::stoi(credits);
-        std::cout << credits_ << std::endl;
     }
     // New game means there is no file
     catch (std::string& err)
     {
+        isNewGame = true;
         credits_ = NewGameCredits;
     }
 }
@@ -29,16 +31,17 @@ int GameData::getMaxOpenLevel()
 {
     if (isNewGame)
     {
-        return 0;
+        return 1;
     }
 
-	for (int level = MaxLevel; level > 0; level--)
+	for (int level = TotalLevels; level > 0; level--)
 	{
 		if (LevelLimits[level - 1] <= credits_)
-		{
-			return level;
+        {
+            return level;
 		}
 	}
-    return 0;
+
+    return 1;
 }
 	

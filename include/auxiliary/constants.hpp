@@ -19,9 +19,6 @@ const int TileSize = WindowWidth / TileCols;
 // The space between buttons
 const float ButtonMargin = 20.f;
 
-// Total number of playable levels
-const int TotalLevels = 6;
-
 // ----------------------- STYLING ---------------------------
 // -----------------------------------------------------------
 // Primary theme color for buttons
@@ -52,11 +49,13 @@ const float DegreesToRadians = Pi / 180.f;
 // -----------------------------------------------------------
 // Levels
 const int LevelTextFontSize = 24;
-const int MaxLevel = 5;
-const std::array<int, MaxLevel> LevelLimits = {0, 500, 1000, 2000, 4000};
-const std::array<float, MaxLevel> LevelMinSpawnIntervals = {5.f, 4.f, 3.f, 2.f, 1.f};
-const std::array<float, MaxLevel> LevelMaxSpawnIntervals = {10.f, 8.f, 6.f, 4.f, 2.f};
-const float LevelFirstSpawnTime = 5.f;
+
+const int TotalLevels = 6;
+
+const std::array<int, TotalLevels> LevelLimits = {0, 500, 1000, 2000, 4000, 6000};
+const std::array<float, TotalLevels> LevelMinSpawnIntervals = {5.f, 4.f, 3.f, 2.f, 1.f};
+const std::array<float, TotalLevels> LevelMaxSpawnIntervals = {10.f, 8.f, 6.f, 4.f, 2.f};
+const float LevelFirstSpawnTime = 1.f;
 
 // Game Over
 const int GameOverTextFontSize = 96;

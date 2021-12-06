@@ -52,14 +52,6 @@ void LevelMenu::addBackground()
 
 void LevelMenu::addButtons()
 {
-	int maxOpenLevel = gameData_->getMaxOpenLevel();
-	int buttonCount = 2 + maxOpenLevel;
-
-	if (CheatModeEnabled)
-	{
-		buttonCount += 1;
-	}
-
 	if (CheatModeEnabled)
 	{
 		auto cheatButton = std::make_unique<Button>("Cheat Mode", fonts_, buttonShapes_, Buttons::ID::CheatMode);
