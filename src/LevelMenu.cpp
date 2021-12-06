@@ -67,16 +67,15 @@ void LevelMenu::addButtons()
 		buttonCount += 1;
 	}
 	
-	auto startButton = std::make_unique<Button>("New Game", fonts_, buttonShapes_, Buttons::ID::Start);
-	startButton->setPosition(WindowWidth / 2.f, WindowHeight / 2.f - ((buttonCount - 1) / 2.f) * (startButton->getButton().getSize().y + buttonMargin));
-	buttons_.push_back(startButton.get());
-	layers_[static_cast<std::size_t>(Layers::Buttons)]->addChild(std::move(startButton));
+	/* auto startButton = std::make_unique<Button>("New Game", fonts_, buttonShapes_, Buttons::ID::Start); */
+	/* startButton->setPosition(WindowWidth / 2.f, WindowHeight / 2.f - ((buttonCount - 1) / 2.f) * (startButton->getButton().getSize().y + buttonMargin)); */
+	/* buttons_.push_back(startButton.get()); */
+	/* layers_[static_cast<std::size_t>(Layers::Buttons)]->addChild(std::move(startButton)); */
 
 	if (CheatModeEnabled)
 	{
 		auto cheatButton = std::make_unique<Button>("Cheat Mode", fonts_, buttonShapes_, Buttons::ID::CheatMode);
-		auto pos = buttons_[buttons_.size() - 1]->getButton().getPosition();
-		cheatButton->setPosition(pos.x, pos.y + cheatButton->getButton().getSize().y + buttonMargin);
+		cheatButton->setPosition(WindowWidth / 2.f, WindowHeight / 2.f + 130.f);
 		buttons_.push_back(cheatButton.get());
 		layers_[static_cast<std::size_t>(Layers::Buttons)]->addChild(std::move(cheatButton));
 	}
@@ -94,7 +93,7 @@ void LevelMenu::addButtons()
         // Margin between the buttons
         const float margin = 30.f;
 
-        // The offset position for the level buttons
+        // The offset position for the level buttons (the position of the top mid button)
         sf::Vector2f pos(WindowWidth / 2.f, WindowHeight / 2.f - 70.f);
 
         // Two rows for level buttons
@@ -124,10 +123,10 @@ void LevelMenu::addButtons()
 		layers_[static_cast<std::size_t>(Layers::Buttons)]->addChild(std::move(levelButton));
 	}
 
-	auto homeButton = std::make_unique<Button>("Main Menu", fonts_, buttonShapes_, Buttons::ID::Home);
-	// NOTE: Position is based on the previous button
-	auto pos = buttons_[buttons_.size() - 1]->getButton().getPosition();
-	homeButton->setPosition(pos.x, pos.y + homeButton->getButton().getSize().y + buttonMargin);
+	// Home button
+	auto homeButton = std::make_unique<Button>("X", fonts_, buttonShapes_, Buttons::ID::Home, 4);
+	auto homeButtonSize = homeButton->getButton().getSize();
+	homeButton->setPosition(WindowWidth - homeButtonSize.x / 2.f, homeButtonSize.y / 2.f - ButtonMargin);
 	buttons_.push_back(homeButton.get());
 	layers_[static_cast<std::size_t>(Layers::Buttons)]->addChild(std::move(homeButton));
 }
