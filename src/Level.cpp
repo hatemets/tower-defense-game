@@ -111,7 +111,7 @@ void Level::loadMap()
 void Level::addButtons()
 {
 	// Home button
-	auto homeButton = std::make_unique<Button>("X", fonts_, Fonts::ID::SourceCodePro, buttonShapes_, Buttons::ID::LevelMenu, 2);
+	auto homeButton = std::make_unique<Button>("X", fonts_, buttonShapes_, Buttons::ID::LevelMenu, 2);
 	auto homeButtonSize = homeButton->getButton().getSize();
 
 	// NOTE: Added button padding y for it to stick to the upper side of the window
@@ -128,7 +128,7 @@ void Level::addBuyMenu()
 
 	std::stringstream ss1;
 	ss1 << "Buy Gun Turret $" << Turrets::Gun::price;
-	auto buyButton = std::make_shared<Button>(ss1.str(), fonts_, Fonts::ID::SourceCodePro, buttonShapes_, Buttons::ID::BuyGunTurret, 28);
+	auto buyButton = std::make_shared<Button>(ss1.str(), fonts_, buttonShapes_, Buttons::ID::BuyGunTurret, 28);
 	buyButton->setPosition(WindowWidth / 2.f, WindowHeight / 2.f - 30.f - ((buttonCount - 1) / 2.f) * (buyButton->getButton().getSize().y + buttonMargin));
 	buyMenu_.push_back(buyButton);
 
@@ -138,7 +138,7 @@ void Level::addBuyMenu()
 	addBuyButton("Triple Gun Turret", Turrets::TripleGun::price, Buttons::ID::BuyTripleGunTurret, buttonMargin);
 	addBuyButton("Missile Turret", Turrets::Missile::price, Buttons::ID::BuyMissileTurret, buttonMargin);
 
-	buyButton = std::make_shared<Button>("Cancel", fonts_, Fonts::ID::SourceCodePro, buttonShapes_, Buttons::ID::CloseBuyMenu);
+	buyButton = std::make_shared<Button>("Cancel", fonts_, buttonShapes_, Buttons::ID::CloseBuyMenu);
 	auto pos = buyMenu_[buyMenu_.size() - 1]->getButton().getPosition();
 	buyButton->setPosition(pos.x, pos.y + buyButton->getButton().getSize().y + buttonMargin);
 	buyMenu_.push_back(buyButton);
@@ -149,7 +149,7 @@ void Level::addBuyButton(std::string name, int price, Buttons::ID buttonId, floa
 {
 	std::stringstream ss;
 	ss << "Buy " << name << " $" << price;
-	auto buyButton = std::make_shared<Button>(ss.str(), fonts_, Fonts::ID::SourceCodePro, buttonShapes_, buttonId, 28);
+	auto buyButton = std::make_shared<Button>(ss.str(), fonts_, buttonShapes_, buttonId, 28);
 	auto pos = buyMenu_[buyMenu_.size() - 1]->getButton().getPosition();
 	buyButton->setPosition(pos.x, pos.y + buyButton->getButton().getSize().y + buttonMargin);
 	buyMenu_.push_back(buyButton);
@@ -161,11 +161,11 @@ void Level::addSellMenu()
 	int buttonCount = 2;
 	const float buttonMargin = 10.f;
 
-	auto sellButton = std::make_shared<Button>("Remove Turret", fonts_, Fonts::ID::SourceCodePro, buttonShapes_, Buttons::ID::SellTurret);
+	auto sellButton = std::make_shared<Button>("Remove Turret", fonts_, buttonShapes_, Buttons::ID::SellTurret);
 	sellButton->setPosition(WindowWidth / 2.f, WindowHeight / 2.f - ((buttonCount - 1) / 2.f) * (sellButton->getButton().getSize().y + buttonMargin));
 	sellMenu_.push_back(sellButton);
 
-	sellButton = std::make_shared<Button>("Cancel", fonts_, Fonts::ID::SourceCodePro, buttonShapes_, Buttons::ID::CloseSellMenu);
+	sellButton = std::make_shared<Button>("Cancel", fonts_, buttonShapes_, Buttons::ID::CloseSellMenu);
 	auto pos = sellMenu_[sellMenu_.size() - 1]->getButton().getPosition();
 	sellButton->setPosition(pos.x, pos.y + sellButton->getButton().getSize().y + buttonMargin);
 	sellMenu_.push_back(sellButton);

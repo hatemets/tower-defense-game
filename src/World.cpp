@@ -70,6 +70,7 @@ void World::changeMode(Type newMode)
 	}
 }
 
+
 void World::handleUserInput(sf::Vector2i mousePos)
 {
 	ModeState newMode = mode_->handleInput(mousePos);

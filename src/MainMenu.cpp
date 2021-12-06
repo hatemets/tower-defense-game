@@ -46,13 +46,13 @@ void MainMenu::addBackground()
 void MainMenu::addButtons()
 {
 	// Start button
-	auto startButton = std::make_unique<Button>("Play", fonts_, Fonts::ID::SourceCodePro, buttonShapes_, Buttons::ID::LevelMenu);
+	auto startButton = std::make_unique<Button>("Play", fonts_, buttonShapes_, Buttons::ID::LevelMenu);
     sf::Vector2f startBtnPos(WindowWidth / 2.f, WindowHeight / 2.f + 80.f);
 	startButton->setPosition(startBtnPos.x, startBtnPos.y);
 	buttons_.push_back(startButton.get());
 	layers_[static_cast<std::size_t>(Layers::Buttons)]->addChild(std::move(startButton));
 
-	auto quitButton = std::make_unique<Button>("Exit", fonts_, Fonts::ID::SourceCodePro, buttonShapes_, Buttons::ID::Quit);
+	auto quitButton = std::make_unique<Button>("Exit", fonts_, buttonShapes_, Buttons::ID::Quit);
 	quitButton->setPosition(startBtnPos.x, startBtnPos.y + quitButton->getButton().getSize().y + ButtonMargin);
 	buttons_.push_back(quitButton.get());
 	layers_[static_cast<std::size_t>(Layers::Buttons)]->addChild(std::move(quitButton));

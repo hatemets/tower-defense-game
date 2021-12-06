@@ -4,7 +4,7 @@
 
 #include <iostream>
 
-Button::Button(const std::string& text, ResourceHolder<sf::Font, Fonts::ID>& fonts, Fonts::ID fontID, ButtonHolder<Buttons::ID>& resources, Buttons::ID buttonID, int charCount)
+Button::Button(const std::string& text, ResourceHolder<sf::Font, Fonts::ID>& fonts, ButtonHolder<Buttons::ID>& resources, Buttons::ID buttonID, int charCount)
 	: button_(resources.get(buttonID)),
 	type_(buttonID),
     // Uneven or even number of characters in the string
@@ -26,7 +26,7 @@ Button::Button(const std::string& text, ResourceHolder<sf::Font, Fonts::ID>& fon
         }
     }
 
-	text_.setFont(fonts.get(fontID));
+	text_.setFont(fonts.get(Fonts::ID::SourceCodePro));
 	text_.setString(mainText);
 
 	// Set the scale of the text
