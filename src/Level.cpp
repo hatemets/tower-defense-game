@@ -128,10 +128,11 @@ void Level::addBuyMenu()
 
 	std::stringstream ss1;
 	ss1 << "Buy Gun Turret $" << Turrets::Gun::price;
-	auto buyButton = std::make_shared<Button>(ss1.str(), fonts_, Fonts::ID::SourceCodePro, buttonShapes_, Buttons::ID::BuyGunTurret);
-	buyButton->setPosition(WindowWidth / 2.f, WindowHeight / 2.f - ((buttonCount - 1) / 2.f) * (buyButton->getButton().getSize().y + buttonMargin));
+	auto buyButton = std::make_shared<Button>(ss1.str(), fonts_, Fonts::ID::SourceCodePro, buttonShapes_, Buttons::ID::BuyGunTurret, 28);
+	buyButton->setPosition(WindowWidth / 2.f, WindowHeight / 2.f - 30.f - ((buttonCount - 1) / 2.f) * (buyButton->getButton().getSize().y + buttonMargin));
 	buyMenu_.push_back(buyButton);
 
+	addBuyButton("Gun Turret", Turrets::Gun::price, Buttons::ID::BuyGunTurret, buttonMargin);
 	addBuyButton("Double Gun Turret", Turrets::DoubleGun::price, Buttons::ID::BuyDoubleGunTurret, buttonMargin);
 	addBuyButton("Bomb Turret", Turrets::Bomb::price, Buttons::ID::BuyBombTurret, buttonMargin);
 	addBuyButton("Triple Gun Turret", Turrets::TripleGun::price, Buttons::ID::BuyTripleGunTurret, buttonMargin);
@@ -148,7 +149,7 @@ void Level::addBuyButton(std::string name, int price, Buttons::ID buttonId, floa
 {
 	std::stringstream ss;
 	ss << "Buy " << name << " $" << price;
-	auto buyButton = std::make_shared<Button>(ss.str(), fonts_, Fonts::ID::SourceCodePro, buttonShapes_, buttonId);
+	auto buyButton = std::make_shared<Button>(ss.str(), fonts_, Fonts::ID::SourceCodePro, buttonShapes_, buttonId, 28);
 	auto pos = buyMenu_[buyMenu_.size() - 1]->getButton().getPosition();
 	buyButton->setPosition(pos.x, pos.y + buyButton->getButton().getSize().y + buttonMargin);
 	buyMenu_.push_back(buyButton);
