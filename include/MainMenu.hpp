@@ -12,8 +12,8 @@
 class MainMenu : public Mode
 {
 	public:
-		MainMenu(sf::RenderWindow& window);
-		virtual void update(sf::Time deltaTime) final;
+        MainMenu(sf::RenderWindow& window, std::shared_ptr<GameData> gameData);
+        virtual void update(sf::Time deltaTime) final;
 	
 	private:
 		enum class Layers

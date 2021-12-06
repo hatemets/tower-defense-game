@@ -61,7 +61,7 @@ class Level : public Mode
 		sf::Text gameOverText_;
 
 		Map* map_; ///< Hold by unique pointer elsewhere.
-		std::shared_ptr<GameData> gameData_;
+		/* std::shared_ptr<GameData> gameData_; */
 
 		// Enemies
 		std::list<std::shared_ptr<Enemy>> enemies_;

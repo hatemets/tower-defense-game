@@ -6,9 +6,8 @@
 #include <sstream>
 
 LevelMenu::LevelMenu(sf::RenderWindow& window, std::shared_ptr<GameData> gameData)
-	: Mode(window),
-	textures_(),
-	gameData_(gameData)
+	: Mode(window, gameData),
+	textures_()
 {
 	loadResources();
 	createScene();

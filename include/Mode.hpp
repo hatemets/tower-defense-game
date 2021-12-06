@@ -4,10 +4,11 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include "Node.hpp"
-#include "auxiliary/ResourceIdentifiers.hpp"
 #include "ResourceHolder.hpp"
 #include "Button.hpp"
+#include "GameData.hpp"
 #include "auxiliary/ModeIdentifiers.hpp"
+#include "auxiliary/ResourceIdentifiers.hpp"
 
 using namespace Modes;
 using namespace Resources;
@@ -18,7 +19,7 @@ using namespace Resources;
 class Mode : public Node
 {
 	public:
-		Mode(sf::RenderWindow& window);
+		Mode(sf::RenderWindow& window, std::shared_ptr<GameData> gameData);
 		virtual ~Mode() = default;
     	Mode(const Mode&) = delete; // disallow copying
     	Mode& operator=(const Mode&) = delete; // disallow assign
@@ -57,6 +58,8 @@ class Mode : public Node
 
 		// Holds all the shapes (graphics) of buttons
 		ButtonHolder<Buttons::ID> buttonShapes_;
+
+        std::shared_ptr<GameData> gameData_;
 };
 
 #endif

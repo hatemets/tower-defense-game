@@ -4,8 +4,8 @@
 #include <memory>
 #include <iostream>
 
-MainMenu::MainMenu(sf::RenderWindow& window)
-	: Mode(window),
+MainMenu::MainMenu(sf::RenderWindow& window, std::shared_ptr<GameData> gameData)
+	: Mode(window, gameData),
 	textures_()
 {
 	loadResources();

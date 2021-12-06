@@ -9,10 +9,10 @@
 #include <sstream>
 
 Level::Level(sf::RenderWindow& window, std::shared_ptr<GameData> gameData)
-	: Mode(window),
+	: Mode(window, gameData),
 	textures_(),
 	map_(nullptr),
-	gameData_(gameData),
+	/* gameData_(gameData), */
 	enemies_(),
 	minSpawnInterval_(sf::seconds(LevelMinSpawnIntervals[gameData->getLevel() - 1])),
 	maxSpawnInterval_(sf::seconds(LevelMaxSpawnIntervals[gameData->getLevel() - 1])),

@@ -2,14 +2,15 @@
 #include "../include/auxiliary/constants.hpp"
 
 
-Mode::Mode(sf::RenderWindow& window)
+Mode::Mode(sf::RenderWindow& window, std::shared_ptr<GameData> gameData)
 	: window_(window),
 	layers_(),
 	nodeTree_(),
 	windowBounds_(0.f, 0.f, WindowWidth, WindowHeight),
 	fonts_(),
 	buttons_(),
-	buttonShapes_()
+	buttonShapes_(),
+    gameData_(gameData)
 {
 	// TODO: Create a universal filepath
 	fonts_.load(Fonts::ID::SourceCodePro, "./include/fonts/SourceCodePro.ttf");

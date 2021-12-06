@@ -33,7 +33,7 @@ class LevelMenu : public Mode
 
 	private:
 		ResourceHolder<sf::Texture, Textures::ID> textures_;
-		std::shared_ptr<GameData> gameData_;
+		/* std::shared_ptr<GameData> gameData_; */
 };
 
 #endif
