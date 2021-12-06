@@ -1,6 +1,8 @@
 #ifndef MODE_IDENTIFIERS_HPP
 #define MODE_IDENTIFIERS_HPP
 
+#include <string>
+
 namespace Modes
 {
 	enum class Type
@@ -27,9 +29,13 @@ namespace Modes
 	{
 		ModeState(Type type) : modeChange(true), type(type) {}
 		ModeState() : modeChange(false), type() {}
+        ModeState(const std::string& msg) : modeChange(false), type(), message(msg) {}
+        ModeState(bool isClosing) : modeChange(false), type(), message(), closeCall(isClosing) {}
 
 		bool modeChange;
 		Type type;
+        std::string message;
+        bool closeCall;
 	};
 
 }

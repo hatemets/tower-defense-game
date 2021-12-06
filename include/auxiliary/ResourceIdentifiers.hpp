@@ -36,6 +36,7 @@ namespace Resources
 			Home,
 			Quit,
 			Pause,
+            CloseMessage,
 			LevelMenu,
 		};
 

@@ -7,6 +7,7 @@
 #include "Mode.hpp"
 #include "MainMenu.hpp"
 #include "GameData.hpp"
+#include "Message.hpp"
 #include "auxiliary/ModeIdentifiers.hpp"
 
 using namespace Modes;
@@ -36,6 +37,8 @@ class World
 
         // Whether the game is still running
         bool running;
+
+        /* std::unique_ptr<Message> message_; */
 };
 
 #endif

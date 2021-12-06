@@ -11,19 +11,28 @@ World::World(sf::RenderWindow& window)
 	mode_(std::make_unique<MainMenu>(window)),
 	gameData_(std::make_shared<GameData>()),
     running(true)
+    /* message_(nullptr) */
 {
 }
+
 
 void World::update(sf::Time deltaTime)
 {
 	mode_->update(deltaTime);
 }
 
+
 void World::operate()
 {
 	// Picks the current mode from the modes array
 	window_.draw(*mode_);
+
+    /* if (message_->isActive()) */
+    /* { */
+    /*     window_.draw(*message_); */
+    /* } */
 }
+
 
 void World::changeMode(Type newMode)
 {
@@ -73,10 +82,23 @@ void World::changeMode(Type newMode)
 
 void World::handleUserInput(sf::Vector2i mousePos)
 {
-	ModeState newMode = mode_->handleInput(mousePos);
+    ModeState newMode = mode_->handleInput(mousePos);
 
-	if (newMode.modeChange)
-	{
-		changeMode(newMode.type);
-	}
+    if (newMode.modeChange)
+    {
+        changeMode(newMode.type);
+    }
+    /* else if (newMode.message.length() > 0) */
+    /* { */
+    /*     message_->changeMessage(newMode.message); */
+
+    /*     if (!message_->isActive()) */
+    /*     { */
+    /*         message_->toggleActivation(); */
+    /*     } */
+    /* } */
+    /* else if (newMode.closeCall && message_->isActive()) */
+    /* { */
+    /*     message_->toggleActivation(); */
+    /* } */
 }
