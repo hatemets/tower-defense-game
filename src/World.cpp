@@ -11,11 +11,8 @@ World::World(sf::RenderWindow& window)
 	mode_(std::make_unique<MainMenu>(window, std::make_shared<GameData>())),
 	gameData_(std::make_shared<GameData>()),
     running(true),
-    message_(nullptr)
+    message_(std::make_unique<Message>("This level is locked"))
 {
-    // Necessary for message to function properly
-    mode_->getButtonShapes().load(Buttons::ID::CloseMessage);
-    message_ = std::make_unique<Message>("This level is locked", mode_->getFonts(), mode_->getButtonShapes());
 }
 
 
@@ -32,7 +29,7 @@ void World::operate()
 
     if (message_->isActive())
     {
-        window_.draw(*message_);
+        message_->drawSelf(window_, sf::RenderStates());
     }
 }
 
@@ -87,21 +84,27 @@ void World::handleUserInput(sf::Vector2i mousePos)
 {
     ModeState newMode = mode_->handleInput(mousePos);
 
-    if (newMode.modeChange)
+    switch (newMode.action)
     {
-        changeMode(newMode.type);
+        case Action::ModeChange:
+            changeMode(newMode.type);
+            break;
+        case Action::Idle:
+            break;
+        case Action::ShowMessage:
+            {
+                std::cout << "1" << std::endl;
+                message_->setActive(true);
+                std::cout << "2" << std::endl;
+                break;
+            }
+        case Action::CloseMessage:
+            if (message_->isActive())
+            {
+                message_->setActive(false);
+            }
+            break;
     }
-    /* else if (newMode.message.length() > 0) */
-    /* { */
-    /*     message_->changeMessage(newMode.message); */
 
-    /*     if (!message_->isActive()) */
-    /*     { */
-    /*         message_->toggleActivation(); */
-    /*     } */
-    /* } */
-    /* else if (newMode.closeCall && message_->isActive()) */
-    /* { */
-    /*     message_->toggleActivation(); */
-    /* } */
+    std::cout << "3" << std::endl;
 }

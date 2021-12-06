@@ -460,6 +460,12 @@ void Level::drawSelf(sf::RenderTarget& target, sf::RenderStates states) const
 
 ModeState Level::handleInput(sf::Vector2i mousePos)
 {
+    // Exit if X button is clicked
+    if (Mode::handleInput(mousePos).action == Action::ModeChange)
+    {
+        return Mode::handleInput(mousePos);
+    }
+
 	auto mouseTileCoords = window_.mapPixelToCoords(mousePos) / (float)TileSize;
 
 	if (selectedTurret_)

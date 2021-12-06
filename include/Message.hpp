@@ -14,20 +14,20 @@ using namespace Resources;
 class Message : public Node
 {
     public:
-        Message(const std::string& msg, ResourceHolder<sf::Font, Fonts::ID>& fonts, ButtonHolder<Buttons::ID>& buttonShapes);
-            virtual void drawSelf(sf::RenderTarget& target, sf::RenderStates states) const final;
+        Message(const std::string& msg);
+        virtual void drawSelf(sf::RenderTarget& target, sf::RenderStates states) const final;
 
         void changeMessage(const std::string& newMsg) { message_ = newMsg; text_.setString(message_); }
         const std::string& getMessage() { return message_; }
         bool isActive() { return isActive_; }
-        void toggleActivation() { isActive_ = !isActive_; }
+        void setActive(bool val) { isActive_ = val; }
 
     private:
         std::string message_;
-        std::unique_ptr<Button> button_;
-        sf::Text text_;
         sf::RectangleShape messageBox_;
         bool isActive_;
+        sf::Text text_;
+        sf::Font font_;
 };
 
 

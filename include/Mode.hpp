@@ -25,8 +25,8 @@ class Mode : public Node
     	Mode& operator=(const Mode&) = delete; // disallow assign
 
 		virtual ModeState handleInput(sf::Vector2i mousePos);
-        ResourceHolder<sf::Font, Fonts::ID>& getFonts() { return fonts_; }
-        ButtonHolder<Buttons::ID>& getButtonShapes() { return buttonShapes_; }
+        /* ResourceHolder<sf::Font, Fonts::ID>& getFonts() { return fonts_; } */
+        /* ButtonHolder<Buttons::ID>& getButtonShapes() { return buttonShapes_; } */
 
 	private:
 		virtual void loadResources() = 0;

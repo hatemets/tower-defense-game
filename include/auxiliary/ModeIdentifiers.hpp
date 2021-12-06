@@ -2,6 +2,7 @@
 #define MODE_IDENTIFIERS_HPP
 
 #include <string>
+#include <iostream>
 
 namespace Modes
 {
@@ -24,18 +25,23 @@ namespace Modes
 		TotalTypes
 	};
 
+    enum class Action
+    {
+        ModeChange,
+        CloseMessage,
+        ShowMessage,
+        Idle
+    };
+
 	/* Struct for passing information from Modes to World */
 	struct ModeState
 	{
-		ModeState(Type type) : modeChange(true), type(type) {}
-		ModeState() : modeChange(false), type() {}
-        ModeState(const std::string& msg) : modeChange(false), type(), message(msg) {}
-        ModeState(bool isClosing) : modeChange(false), type(), message(), closeCall(isClosing) {}
+		explicit ModeState(Type type) : action(Action::ModeChange), type(type) {}
+        explicit ModeState(Action action) : action(action), type() {}
+		ModeState() : action(Action::Idle), type() {}
 
-		bool modeChange;
+        Action action;
 		Type type;
-        std::string message;
-        bool closeCall;
 	};
 
 }
