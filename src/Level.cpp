@@ -12,7 +12,6 @@ Level::Level(sf::RenderWindow& window, std::shared_ptr<GameData> gameData)
 	: Mode(window, gameData),
 	textures_(),
 	map_(nullptr),
-	/* gameData_(gameData), */
 	enemies_(),
 	minSpawnInterval_(sf::seconds(LevelMinSpawnIntervals[gameData->getLevel() - 1])),
 	maxSpawnInterval_(sf::seconds(LevelMaxSpawnIntervals[gameData->getLevel() - 1])),
@@ -371,6 +370,12 @@ void Level::updateTexts()
 	std::stringstream ss1;
 	ss1 << "Level " << gameData_->getLevel();
 	ss1 << "/" << std::max(gameData_->getMaxOpenLevel(), 1);
+
+    if (levelPassed())
+    {
+        ss1 << " [Completed]";
+    }
+
 	levelText_.setString(ss1.str());
 
 	std::stringstream ss2;
@@ -562,5 +567,11 @@ ModeState Level::handleInput(sf::Vector2i mousePos)
 	}
 
 	return Mode::handleInput(mousePos);
+}
+
+
+bool Level::levelPassed()
+{
+    return gameData_->getLevel() < gameData_->getMaxOpenLevel();
 }
 

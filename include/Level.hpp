@@ -51,6 +51,7 @@ class Level : public Mode
 		void createExplosions();
 		void updateProjectiles(sf::Time deltaTime);
 		void updateTexts();
+        bool levelPassed();
 
 		void loadMap();
 
