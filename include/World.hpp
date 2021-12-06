@@ -38,7 +38,7 @@ class World
         // Whether the game is still running
         bool running;
 
-        /* std::unique_ptr<Message> message_; */
+        std::unique_ptr<Message> message_;
 };
 
 #endif

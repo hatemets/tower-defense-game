@@ -14,7 +14,7 @@ using namespace Resources;
 class Message : public Node
 {
     public:
-        Message(const std::string& msg, ResourceHolder<sf::Font, Fonts::ID>& fonts, ButtonHolder<Buttons::ID>& buttonShapes_, ButtonHolder<Buttons::ID>& resources, Buttons::ID buttonID);
+        Message(const std::string& msg, ResourceHolder<sf::Font, Fonts::ID>& fonts, ButtonHolder<Buttons::ID>& buttonShapes);
             virtual void drawSelf(sf::RenderTarget& target, sf::RenderStates states) const final;
 
         void changeMessage(const std::string& newMsg) { message_ = newMsg; text_.setString(message_); }

@@ -10,9 +10,12 @@ World::World(sf::RenderWindow& window)
 	gameBounds_(0.f, 0.f, window.getSize().x, window.getSize().y),
 	mode_(std::make_unique<MainMenu>(window, std::make_shared<GameData>())),
 	gameData_(std::make_shared<GameData>()),
-    running(true)
-    /* message_(nullptr) */
+    running(true),
+    message_(nullptr)
 {
+    // Necessary for message to function properly
+    mode_->getButtonShapes().load(Buttons::ID::CloseMessage);
+    message_ = std::make_unique<Message>("This level is locked", mode_->getFonts(), mode_->getButtonShapes());
 }
 
 
@@ -27,10 +30,10 @@ void World::operate()
 	// Picks the current mode from the modes array
 	window_.draw(*mode_);
 
-    /* if (message_->isActive()) */
-    /* { */
-    /*     window_.draw(*message_); */
-    /* } */
+    if (message_->isActive())
+    {
+        window_.draw(*message_);
+    }
 }
 
 
