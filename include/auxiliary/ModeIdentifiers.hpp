@@ -28,7 +28,6 @@ namespace Modes
     enum class Action
     {
         ModeChange,
-        CloseMessage,
         ShowMessage,
         Idle
     };

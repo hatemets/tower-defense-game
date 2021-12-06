@@ -92,19 +92,12 @@ void World::handleUserInput(sf::Vector2i mousePos)
         case Action::Idle:
             break;
         case Action::ShowMessage:
-            {
-                std::cout << "1" << std::endl;
-                message_->setActive(true);
-                std::cout << "2" << std::endl;
-                break;
-            }
-        case Action::CloseMessage:
-            if (message_->isActive())
-            {
-                message_->setActive(false);
-            }
+            message_->setActive(true);
             break;
     }
 
-    std::cout << "3" << std::endl;
+    if (newMode.action != Action::ShowMessage)
+    {
+        message_->setActive(false);
+    }
 }

@@ -58,7 +58,6 @@ ModeState Mode::handleInput(sf::Vector2i mousePos)
 				return ModeState(Type::Level1);
 			case Buttons::ID::Level2:
                 if (gameData_->getMaxOpenLevel() < 3) return ModeState(Action::ShowMessage);
-                std::cout << "err" << std::endl;
 				return ModeState(Type::Level2);
 			case Buttons::ID::Level3:
 				return ModeState(Type::Level3);
@@ -80,8 +79,6 @@ ModeState Mode::handleInput(sf::Vector2i mousePos)
 				return ModeState(Type::LevelMenu);
 			case Buttons::ID::Quit:
 				return ModeState(Type::Quit);
-            case Buttons::ID::CloseMessage:
-                return ModeState(Action::CloseMessage);
 			default:
 				return ModeState();
 		}
