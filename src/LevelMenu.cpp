@@ -80,17 +80,47 @@ void LevelMenu::addButtons()
 		buttons_.push_back(cheatButton.get());
 		layers_[static_cast<std::size_t>(Layers::Buttons)]->addChild(std::move(cheatButton));
 	}
-	
+
 	for (int level = 1; level <= TotalLevels; level++)
 	{
 		std::stringstream ss;
 		ss << "Level " << level;
 		Buttons::ID levelButtonId = static_cast<Buttons::ID>(static_cast<int>(Buttons::ID::Level1) + level - 1);
 
-		auto levelButton = std::make_unique<Button>(ss.str(), fonts_, buttonShapes_, levelButtonId);
-		auto pos = buttons_[buttons_.size() - 1]->getButton().getPosition();
-		levelButton->setPosition(pos.x, pos.y + levelButton->getButton().getSize().y + buttonMargin);
-		buttons_.push_back(levelButton.get());
+		auto levelButton = std::make_unique<Button>(ss.str(), fonts_, buttonShapes_, levelButtonId, 8);
+
+        auto size = levelButton->getButton().getSize();
+
+        // Margin between the buttons
+        const float margin = 30.f;
+
+        // The offset position for the level buttons
+        sf::Vector2f pos(WindowWidth / 2.f, WindowHeight / 2.f - 70.f);
+
+        // Two rows for level buttons
+        float y = (level % 2 == 1) ? pos.y : (pos.y + size.y + margin);
+        float x{};
+
+        switch (level)
+        {
+            case 1: case 2:
+                x = pos.x - size.x - margin;
+                break;
+            case 3: case 4:
+                x = pos.x;
+                break;
+            case 5: case 6:
+                x = pos.x + size.x + margin;
+                break;
+            default:
+                throw std::runtime_error("Level button error");
+        }
+
+        sf::Vector2f finalPosition(x, y);
+
+        levelButton->setPosition(finalPosition.x, finalPosition.y);
+        buttons_.push_back(levelButton.get());
+
 		layers_[static_cast<std::size_t>(Layers::Buttons)]->addChild(std::move(levelButton));
 	}
 

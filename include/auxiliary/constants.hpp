@@ -20,7 +20,7 @@ const int TileSize = WindowWidth / TileCols;
 const float ButtonMargin = 20.f;
 
 // Total number of playable levels
-const int TotalLevels = 7;
+const int TotalLevels = 6;
 
 // ----------------------- STYLING ---------------------------
 // -----------------------------------------------------------
