@@ -45,12 +45,7 @@ void LevelMenu::createScene()
 void LevelMenu::addBackground()
 {
 	// Set the background for the menu
-	sf::Texture& backgroundTexture = textures_.get(Textures::ID::LevelMenuBackground);
-	/* backgroundTexture.setRepeated(true); */
-
-	/* sf::IntRect bounds(windowBounds_); */
-
-	auto background = std::make_unique<BackgroundSprite>(BackgroundSprite{backgroundTexture});
+	auto background = std::make_unique<BackgroundSprite>(textures_.get(Textures::ID::LevelMenuBackground));
 	background->setPosition(WindowWidth / 2.f, WindowHeight/ 2.f);
 	layers_[static_cast<std::size_t>(Layers::Background)]->addChild(std::move(background));
 }
@@ -58,7 +53,6 @@ void LevelMenu::addBackground()
 
 void LevelMenu::addButtons()
 {
-	const float buttonMargin = 10.f;
 	int maxOpenLevel = gameData_->getMaxOpenLevel();
 	int buttonCount = 2 + maxOpenLevel;
 
@@ -66,11 +60,6 @@ void LevelMenu::addButtons()
 	{
 		buttonCount += 1;
 	}
-	
-	/* auto startButton = std::make_unique<Button>("New Game", fonts_, buttonShapes_, Buttons::ID::Start); */
-	/* startButton->setPosition(WindowWidth / 2.f, WindowHeight / 2.f - ((buttonCount - 1) / 2.f) * (startButton->getButton().getSize().y + buttonMargin)); */
-	/* buttons_.push_back(startButton.get()); */
-	/* layers_[static_cast<std::size_t>(Layers::Buttons)]->addChild(std::move(startButton)); */
 
 	if (CheatModeEnabled)
 	{
