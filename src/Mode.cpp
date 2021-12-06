@@ -57,22 +57,20 @@ ModeState Mode::handleInput(sf::Vector2i mousePos)
 			case Buttons::ID::Level1:
 				return ModeState(Type::Level1);
 			case Buttons::ID::Level2:
-                if (gameData_->getMaxOpenLevel() < 3) return ModeState(Action::ShowMessage);
+                if (gameData_->getMaxOpenLevel() < 2) return ModeState(Action::ShowMessage);
 				return ModeState(Type::Level2);
 			case Buttons::ID::Level3:
+                if (gameData_->getMaxOpenLevel() < 3) return ModeState(Action::ShowMessage);
 				return ModeState(Type::Level3);
 			case Buttons::ID::Level4:
+                if (gameData_->getMaxOpenLevel() < 4) return ModeState(Action::ShowMessage);
 				return ModeState(Type::Level4);
 			case Buttons::ID::Level5:
+                if (gameData_->getMaxOpenLevel() < 5) return ModeState(Action::ShowMessage);
 				return ModeState(Type::Level5);
 			case Buttons::ID::Level6:
+                if (gameData_->getMaxOpenLevel() < 6) return ModeState(Action::ShowMessage);
 				return ModeState(Type::Level6);
-			case Buttons::ID::Level7:
-				return ModeState(Type::Level7);
-			case Buttons::ID::Level8:
-				return ModeState(Type::Level8);
-			case Buttons::ID::Level9:
-				return ModeState(Type::Level9);
 			case Buttons::ID::Home:
 				return ModeState(Type::MainMenu);
 			case Buttons::ID::LevelMenu:
