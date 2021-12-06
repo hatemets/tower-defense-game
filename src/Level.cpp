@@ -20,7 +20,8 @@ Level::Level(sf::RenderWindow& window, std::shared_ptr<GameData> gameData)
 	turrets_(),
 	projectileVertices_(sf::Points, 0),
 	selectedTurret_(nullptr),
-	selectedTurretBase_(nullptr)
+	selectedTurretBase_(nullptr),
+    gameOverMessage_("Game Over", Message::Type::GameOver)
 {
 	loadResources();
 	createScene();
@@ -37,13 +38,6 @@ Level::Level(sf::RenderWindow& window, std::shared_ptr<GameData> gameData)
 	creditsText_.setCharacterSize(CreditsTextFontSize);
 	creditsText_.setFillColor(sf::Color::White);
 	creditsText_.setPosition(CreditsTextPaddingX, 0.f);
-
-	gameOverText_.setString("Game Over");
-	gameOverText_.setFont(fonts_.get(Fonts::ID::SourceCodePro));
-	gameOverText_.setCharacterSize(GameOverTextFontSize);
-	gameOverText_.setFillColor(sf::Color::Red);
-	gameOverText_.setPosition(WindowWidth / 2.f, WindowHeight / 2.f);
-	gameOverText_.setOrigin(gameOverText_.getLocalBounds().width / 2.f, gameOverText_.getLocalBounds().height);
 }
 
 
@@ -175,6 +169,7 @@ void Level::addSellMenu()
 void Level::update(sf::Time deltaTime)
 {
 	checkGameOver();
+
 	if (!gameData_->isGameOver() && !selectedTurret_ && !selectedTurretBase_)
 	{
 		collectRewards();
@@ -196,7 +191,7 @@ void Level::checkGameOver()
 		{
 			if (enemy->hasReachedBase())
 			{
-				gameData_->setGameOver();
+				gameData_->setGameOver(true);
 				selectedTurret_ = nullptr; // disable sell menu
 				selectedTurretBase_ = nullptr; // disable buy menu
 				return;
@@ -380,7 +375,7 @@ void Level::updateTexts()
 	levelText_.setString(ss1.str());
 
 	std::stringstream ss2;
-	ss2 << "Credits: " << gameData_->getCredits();
+	ss2 << "Gold: " << gameData_->getCredits();
 	creditsText_.setString(ss2.str());
 }
 
@@ -439,7 +434,7 @@ void Level::drawSelf(sf::RenderTarget& target, sf::RenderStates states) const
 
 	if (gameData_->isGameOver())
 	{
-		target.draw(gameOverText_, states);
+        gameOverMessage_.drawSelf(target, states);
 	}
 	else if (selectedTurret_)
 	{
@@ -479,6 +474,7 @@ ModeState Level::handleInput(sf::Vector2i mousePos)
 		if (found != sellMenu_.end())
 		{
 			std::shared_ptr<Button> button = *found;
+
 			switch (button->getType())
 			{
 				case Buttons::ID::SellTurret:
@@ -508,6 +504,7 @@ ModeState Level::handleInput(sf::Vector2i mousePos)
 			std::shared_ptr<Turret> turret(nullptr);
 
 			std::shared_ptr<Button> button = *found;
+
 			switch (button->getType())
 			{
 				case Buttons::ID::BuyGunTurret:

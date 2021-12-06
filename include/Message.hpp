@@ -26,8 +26,9 @@ class Message : public Node
 
         void changeMessage(const std::string& newMsg) { message_ = newMsg; text_.setString(message_); }
         const std::string& getMessage() { return message_; }
-        bool isActive() { return isActive_; }
+        bool isActive() const { return isActive_; }
         void setActive(bool val) { isActive_ = val; }
+        Type getType() const { return type_; }
 
     private:
         std::string message_;

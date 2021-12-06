@@ -31,12 +31,6 @@ const std::array<int, 3> SecondaryColor = {00, 00, 80};
 const std::array<int, 3> PrimaryColor = {180, 180, 180};
 
 // Buttons
-/* const float ButtonWidth = 1.f / 4.f * WindowWidth; */
-/* const float ButtonHeight = 1.f / 6.f * WindowHeight; */
-
-/* const float ButtonPaddingX = 0.3f * ButtonWidth; */
-/* const float ButtonPaddingY = 0.15f * ButtonHeight; */
-
 const float ButtonScalar = 1.05f;
 
 // Credits

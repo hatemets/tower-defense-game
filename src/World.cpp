@@ -99,5 +99,12 @@ void World::handleUserInput(sf::Vector2i mousePos)
     if (newMode.action != Action::ShowMessage)
     {
         message_->setActive(false);
+
+        if (gameData_->isGameOver())
+        {
+            // Redirect the user to main menu
+            changeMode(Modes::Type::MainMenu);
+            gameData_->setGameOver(false);
+        }
     }
 }

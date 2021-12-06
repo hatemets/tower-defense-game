@@ -11,6 +11,7 @@
 #include "Projectile.hpp"
 #include "Explosion.hpp"
 #include "GameData.hpp"
+#include "Message.hpp"
 
 // Controls the turrets, enemies, map
 class Level : public Mode
@@ -84,6 +85,8 @@ class Level : public Mode
 		std::vector<std::shared_ptr<Button>> sellMenu_;
 		std::shared_ptr<Turret> selectedTurret_;
 		std::shared_ptr<std::pair<int, int>> selectedTurretBase_;
+
+        Message gameOverMessage_;
 };
 
 #endif
