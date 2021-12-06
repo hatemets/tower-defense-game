@@ -1,12 +1,24 @@
 #include "../include/Message.hpp"
 #include <iostream>
 
-Message::Message(const std::string& msg)
+Message::Message(const std::string& msg, Type type)
     : message_(msg),
     messageBox_(sf::Vector2f(400.f, 100.f)),
-    isActive_(false)
+    isActive_(false),
+    type_(type)
 {
     auto center = sf::Vector2f(WindowWidth / 2.f, WindowHeight / 2.f);
+
+
+    /* if (type_ == Type::GameOver) */
+    /* { */
+    /*     text_.setFillColor(sf::Color::Red); */
+    /*     text_.setCharacterSize(GameOverTextFontSize); */
+    /* } */
+    /* else */
+    /* { */
+    text_.setFillColor(sf::Color::White);
+    /* } */
 
     messageBox_.setOrigin(messageBox_.getSize().x / 2.f, messageBox_.getSize().y / 2.f);
     messageBox_.setPosition(center.x, center.y);
@@ -16,7 +28,6 @@ Message::Message(const std::string& msg)
 
     text_.setString(msg);
     text_.setFont(font_);
-    text_.setFillColor(sf::Color::White);
 
     auto bounds = text_.getGlobalBounds();
     text_.setOrigin((bounds.width + bounds.left) / 2.f, (bounds.height + bounds.top) / 2.f);

@@ -14,7 +14,14 @@ using namespace Resources;
 class Message : public Node
 {
     public:
-        Message(const std::string& msg);
+        enum class Type
+        {
+            Regular,
+            GameOver
+        };
+
+    public:
+        Message(const std::string& msg, Type type = Type::Regular);
         virtual void drawSelf(sf::RenderTarget& target, sf::RenderStates states) const final;
 
         void changeMessage(const std::string& newMsg) { message_ = newMsg; text_.setString(message_); }
@@ -28,6 +35,7 @@ class Message : public Node
         bool isActive_;
         sf::Text text_;
         sf::Font font_;
+        Type type_;
 };
 
 
