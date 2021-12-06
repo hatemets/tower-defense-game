@@ -1,12 +1,27 @@
 #include "../include/GameData.hpp"
 #include "../include/auxiliary/constants.hpp"
+#include <fstream>
+#include <iostream>
 
 GameData::GameData()
     : level_(1),
-      credits_(NewGameCredits),
+      credits_(),
       isGameOver_(false),
       isNewGame(true)
 {
+    try
+    {
+        std::ifstream ifs("./include/auxiliary/cache.txt");
+        std::string credits{};
+        std::getline(ifs, credits);
+        credits_ = std::stoi(credits);
+        std::cout << credits_ << std::endl;
+    }
+    // New game means there is no file
+    catch (std::string& err)
+    {
+        credits_ = NewGameCredits;
+    }
 }
 
 
