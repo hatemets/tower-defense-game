@@ -55,7 +55,7 @@ ModeState Mode::handleInput(sf::Vector2i mousePos)
 			case Buttons::ID::CheatMode:
 				return ModeState(Type::CheatMode);
 			case Buttons::ID::Level1:
-                std::cout << gameData_->getMaxOpenLevel() << std::endl;
+                // std::cout << gameData_->getMaxOpenLevel() << std::endl;
                 if (gameData_->getMaxOpenLevel() < 1) return ModeState(Action::ShowMessage);
 				return ModeState(Type::Level1);
 			case Buttons::ID::Level2:

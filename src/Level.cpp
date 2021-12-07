@@ -31,7 +31,6 @@ Level::Level(sf::RenderWindow& window, std::shared_ptr<GameData> gameData)
 	levelText_.setCharacterSize(LevelTextFontSize);
 	levelText_.setFillColor(sf::Color::White);
 	levelText_.setPosition(WindowWidth / 2.f, 0.f);
-	levelText_.setOrigin(levelText_.getLocalBounds().width / 2.f, 0.f);
 
 	creditsText_.setFont(fonts_.get(Fonts::ID::SourceCodePro));
 	creditsText_.setCharacterSize(CreditsTextFontSize);
@@ -377,6 +376,7 @@ void Level::updateTexts()
     }
 
 	levelText_.setString(ss1.str());
+	levelText_.setOrigin(levelText_.getLocalBounds().width / 2.f, 0.f);
 
 	std::stringstream ss2;
 	ss2 << "Gold: " << gameData_->getCredits();
