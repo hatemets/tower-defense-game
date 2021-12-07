@@ -17,6 +17,11 @@ GameData::GameData()
         std::string credits{};
         std::getline(ifs, credits);
         credits_ = std::stoi(credits);
+
+        if (credits_ < NewGameCredits)
+        {
+            credits_ = NewGameCredits;
+        }
     }
     // New game means there is no file
     catch (std::string& err)
@@ -45,3 +50,12 @@ int GameData::getMaxOpenLevel()
     return 1;
 }
 	
+
+void GameData::setGameOver(bool val)
+{ 
+    isGameOver_ = val;
+    if (!isGameOver_ && credits_ < NewGameCredits)
+    {
+        credits_ = NewGameCredits;
+    }
+}

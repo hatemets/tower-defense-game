@@ -15,7 +15,7 @@ class GameData
         void setLevel(int level) { level_ = level; }
         void addCredits(int credits) { isNewGame = false; credits_ += credits; }
         void removeCredits(int credits) { isNewGame = false; credits_ -= credits; }
-        void setGameOver(bool val) { isGameOver_ = val; }
+        void setGameOver(bool val);
 
     private:
         int level_;
