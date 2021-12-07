@@ -34,8 +34,6 @@ const float ButtonScalar = 1.05f;
 const int NewGameCredits = 300;
 const int CreditsTextFontSize = 24;
 const float CreditsTextPaddingX = 5.f;
-const bool CheatModeEnabled = true;
-
 
 
 // ------------------------- MATH ----------------------------
@@ -50,9 +48,14 @@ const float DegreesToRadians = Pi / 180.f;
 // Levels
 const int LevelTextFontSize = 24;
 
+// Total number of levels
 const int TotalLevels = 6;
 
-const std::array<int, TotalLevels> LevelLimits = {0, 500, 1000, 2000, 4000, 6000};
+// Required amount of monster kills to pass each level
+const int RequiredMonsterKills = 10;
+
+// These values account for the amount of money the player initially has
+const std::array<int, TotalLevels> LevelLimits = {300, 500, 1000, 1000, 1500, 1500};
 const std::array<float, TotalLevels> LevelMinSpawnIntervals = {5.f, 4.f, 3.f, 2.f, 1.5f, 1.f};
 const std::array<float, TotalLevels> LevelMaxSpawnIntervals = {10.f, 8.f, 6.f, 4.f, 3.f, 2.f};
 const float LevelFirstSpawnTime = 3.f;

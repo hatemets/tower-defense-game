@@ -47,12 +47,9 @@ void World::changeMode(Type newMode)
 	switch (newMode)
 	{
 		case Type::NewGame:
-			/* gameData_ = std::make_shared<GameData>(); */
 			mode_.reset(new Level(window_, gameData_));
 			break;
 		case Type::CheatMode:
-			/* gameData_ = std::make_shared<GameData>(); */
-			gameData_->addCredits(1000000 - gameData_->getCredits());
 			mode_.reset(new Level(window_, gameData_));
 			break;
 		case Type::Level1:

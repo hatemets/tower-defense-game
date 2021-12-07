@@ -20,11 +20,12 @@ Level::Level(sf::RenderWindow& window, std::shared_ptr<GameData> gameData)
 	projectileVertices_(sf::Points, 0),
 	selectedTurret_(nullptr),
 	selectedTurretBase_(nullptr),
-    gameOverMessage_("Game Over", Message::Type::GameOver)
+    gameOverMessage_("Game Over", Message::Type::GameOver),
+    credits_(LevelLimits[gameData_->getLevel() - 1]),
+    monstersKilled_(0)
 {
 	loadResources();
 	createScene();
-
 	updateTexts();
 
 	levelText_.setFont(fonts_.get(Fonts::ID::SourceCodePro));
@@ -204,7 +205,8 @@ void Level::collectRewards()
 	{
 		if (!enemy->isAlive())
 		{
-			gameData_->addCredits(enemy->getReward());
+            credits_ += enemy->getReward();
+            monstersKilled_++;
 		}
 	}
 }
@@ -213,6 +215,7 @@ void Level::collectRewards()
 void Level::updateEnemies(sf::Time deltaTime)
 {
 	EnemyList newEnemies;
+
 	for (auto& enemy : enemies_)
 	{
 		enemy->spawnNewEnemies(newEnemies);
@@ -379,7 +382,7 @@ void Level::updateTexts()
 	levelText_.setOrigin(levelText_.getLocalBounds().width / 2.f, 0.f);
 
 	std::stringstream ss2;
-	ss2 << "Gold: " << gameData_->getCredits();
+	ss2 << "Gold: " << credits_;
 	creditsText_.setString(ss2.str());
 }
 
@@ -533,9 +536,9 @@ ModeState Level::handleInput(sf::Vector2i mousePos)
 			}
 			selectedTurretBase_ = nullptr; // remove selection
 
-			if (turret && turret->getPrice() <= gameData_->getCredits())
+			if (turret && turret->getPrice() <= credits_)
 			{
-				gameData_->removeCredits(turret->getPrice());
+                credits_ -= turret->getPrice();
 				turrets_.push_back(turret);
 				map_->findSafestPaths(turrets_); // this has to be called everytime turrets are updated
 			}
@@ -574,4 +577,3 @@ bool Level::levelPassed()
 {
     return gameData_->getLevel() < gameData_->getMaxOpenLevel();
 }
-

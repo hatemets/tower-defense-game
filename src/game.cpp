@@ -37,7 +37,6 @@ void Game::processEvents()
 	sf::Event event;
 
 	// Listen for events
-	// TODO: add an event listener for mouseclicks
 	while (window_.pollEvent(event))
 	{
 		switch (event.type)
@@ -60,6 +59,14 @@ void Game::processEvents()
                     }
 
                     break;
+                }
+            case sf::Event::KeyPressed:
+                {
+                    // Enter cheat mode with Q
+                    if (event.key.code == sf::Keyboard::Q)
+                    {
+                        std::cout << "Cheat mode activated" << std::endl;
+                    }
                 }
         }
     }

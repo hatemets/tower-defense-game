@@ -52,6 +52,8 @@ class Level : public Mode
 		void updateProjectiles(sf::Time deltaTime);
 		void updateTexts();
         bool levelPassed();
+        // TODO: Remove this method for production product
+        void cheat() { credits_ = 999999; }
 
 		void loadMap();
 
@@ -63,7 +65,6 @@ class Level : public Mode
 		sf::Text gameOverText_;
 
 		Map* map_; ///< Hold by unique pointer elsewhere.
-		/* std::shared_ptr<GameData> gameData_; */
 
 		// Enemies
 		std::list<std::shared_ptr<Enemy>> enemies_;
@@ -88,6 +89,9 @@ class Level : public Mode
 		std::shared_ptr<std::pair<int, int>> selectedTurretBase_;
 
         Message gameOverMessage_;
+
+        int credits_;
+        int monstersKilled_;
 };
 
 #endif
