@@ -26,17 +26,22 @@ Level::Level(sf::RenderWindow& window, std::shared_ptr<GameData> gameData)
 {
 	loadResources();
 	createScene();
+    createStats();
 	updateTexts();
+}
 
-	levelText_.setFont(fonts_.get(Fonts::ID::SourceCodePro));
-	levelText_.setCharacterSize(LevelTextFontSize);
-	levelText_.setFillColor(sf::Color::White);
-	levelText_.setPosition(WindowWidth / 2.f, 0.f);
 
-	creditsText_.setFont(fonts_.get(Fonts::ID::SourceCodePro));
-	creditsText_.setCharacterSize(CreditsTextFontSize);
-	creditsText_.setFillColor(sf::Color::White);
-	creditsText_.setPosition(CreditsTextPaddingX, 0.f);
+void Level::createStats()
+{
+    creditsText_.setFont(fonts_.get(Fonts::ID::SourceCodePro));
+    creditsText_.setCharacterSize(CreditsTextFontSize);
+    creditsText_.setFillColor(sf::Color::White);
+    creditsText_.setPosition(CreditsTextPaddingX, 0.f);
+
+    levelText_.setFont(fonts_.get(Fonts::ID::SourceCodePro));
+    levelText_.setCharacterSize(LevelTextFontSize);
+    levelText_.setFillColor(sf::Color::White);
+    levelText_.setPosition(WindowWidth / 2.f - 40.f, 0.f);
 }
 
 
@@ -378,6 +383,8 @@ void Level::updateTexts()
         ss1 << " [Completed]";
     }
 
+    ss1 << "    Score: " << monstersKilled_;
+
 	levelText_.setString(ss1.str());
 	levelText_.setOrigin(levelText_.getLocalBounds().width / 2.f, 0.f);
 
@@ -438,6 +445,7 @@ void Level::drawSelf(sf::RenderTarget& target, sf::RenderStates states) const
 
 	target.draw(levelText_, states);
 	target.draw(creditsText_, states);
+	/* target.draw(monstersKilledText_, states); */
 
 	if (gameData_->isGameOver())
 	{
@@ -575,5 +583,5 @@ ModeState Level::handleInput(sf::Vector2i mousePos)
 
 bool Level::levelPassed()
 {
-    return gameData_->getLevel() < gameData_->getMaxOpenLevel();
+    return monstersKilled_ >= RequiredMonsterKills;
 }

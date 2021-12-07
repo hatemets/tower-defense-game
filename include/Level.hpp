@@ -30,7 +30,7 @@ class Level : public Mode
 			SideMenu,
 			HUD,
 			// total count of enum values
-			TotalCount	 
+			TotalCount
 		};
 
 	private:
@@ -55,7 +55,7 @@ class Level : public Mode
 		void updateProjectiles(sf::Time deltaTime);
 		void updateTexts();
         bool levelPassed();
-
+        void createStats();
 		void loadMap();
 
 	private:
