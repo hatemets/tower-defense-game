@@ -53,8 +53,8 @@ const int LevelTextFontSize = 24;
 const int TotalLevels = 6;
 
 const std::array<int, TotalLevels> LevelLimits = {0, 500, 1000, 2000, 4000, 6000};
-const std::array<float, TotalLevels> LevelMinSpawnIntervals = {5.f, 4.f, 3.f, 2.f, 1.f};
-const std::array<float, TotalLevels> LevelMaxSpawnIntervals = {10.f, 8.f, 6.f, 4.f, 2.f};
+const std::array<float, TotalLevels> LevelMinSpawnIntervals = {5.f, 4.f, 3.f, 2.f, 1.5f, 1.f};
+const std::array<float, TotalLevels> LevelMaxSpawnIntervals = {10.f, 8.f, 6.f, 4.f, 3.f, 2.f};
 const float LevelFirstSpawnTime = 3.f;
 
 // Game Over
