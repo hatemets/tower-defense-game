@@ -93,7 +93,7 @@ namespace Projectiles
 		static constexpr float speed = 8.f;			   // tiles per second
 		static constexpr float range = 15.f;		   // tiles
 		static constexpr float explosionRadius = 1.5f; // damages enemies within N tiles
-		static constexpr int damage = 200;			   // hit points (hit points are integers)
+		static constexpr int damage = 350;			   // hit points (hit points are integers)
 		static constexpr float size = 0.2f;			   // hit diameter is 0.2 tiles
 	};
 }
@@ -110,7 +110,7 @@ namespace Enemies
 	struct Orc
 	{
 		static constexpr int hitPoints = 800;
-		static constexpr int reward = 10;
+		static constexpr int reward = 20;
 		static constexpr float speed = 2.5f;
 		static constexpr float size = 0.6f;
 	};
@@ -118,7 +118,7 @@ namespace Enemies
 	struct Goblin
 	{
 		static constexpr int hitPoints = 500;
-		static constexpr int reward = 20;
+		static constexpr int reward = 30;
 		static constexpr float speed = 3.5f;
 		static constexpr float size = 0.5f; // Goblin diameter is 0.5 tiles
 	};
@@ -126,7 +126,7 @@ namespace Enemies
 	struct Troll
 	{
 		static constexpr int hitPoints = 1500;
-		static constexpr int reward = 30;
+		static constexpr int reward = 50;
 		static constexpr float speed = 1.5f;
 		static constexpr float size = 0.7f;
 	};
@@ -134,7 +134,7 @@ namespace Enemies
 	struct Slime
 	{
 		static constexpr int hitPoints = 2000;
-		static constexpr int reward = 50;
+		static constexpr int reward = 100;
 		static constexpr float speed = 1.0f;
 		static constexpr float size = 0.6f;
 		static constexpr int babies = 5; // number of baby slimes created when dying
@@ -151,7 +151,7 @@ namespace Enemies
 	struct Kobold
 	{
 		static constexpr int hitPoints = 250;
-		static constexpr int reward = 40;
+		static constexpr int reward = 75;
 		static constexpr float speed = 4.0f;
 		static constexpr float size = 0.4f;
 	};
@@ -193,7 +193,7 @@ namespace Turrets
 
 	struct Missile
 	{
-		static constexpr int price = 1000;
+		static constexpr int price = 1500;
 		static constexpr float firerate = 0.3f;
 		static constexpr float radarRange = 12.f;
 	};
