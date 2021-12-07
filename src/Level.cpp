@@ -9,18 +9,18 @@
 #include <sstream>
 
 Level::Level(sf::RenderWindow& window, std::shared_ptr<GameData> gameData)
-	: Mode(window),
+	: Mode(window, gameData),
 	textures_(),
 	map_(nullptr),
-	gameData_(gameData),
 	enemies_(),
 	minSpawnInterval_(sf::seconds(LevelMinSpawnIntervals[gameData->getLevel() - 1])),
 	maxSpawnInterval_(sf::seconds(LevelMaxSpawnIntervals[gameData->getLevel() - 1])),
-	nextSpawn_(sf::seconds(1)),
+	nextSpawn_(sf::seconds(LevelFirstSpawnTime)),
 	turrets_(),
 	projectileVertices_(sf::Points, 0),
 	selectedTurret_(nullptr),
-	selectedTurretBase_(nullptr)
+	selectedTurretBase_(nullptr),
+    gameOverMessage_("Game Over", Message::Type::GameOver)
 {
 	loadResources();
 	createScene();
@@ -31,19 +31,11 @@ Level::Level(sf::RenderWindow& window, std::shared_ptr<GameData> gameData)
 	levelText_.setCharacterSize(LevelTextFontSize);
 	levelText_.setFillColor(sf::Color::White);
 	levelText_.setPosition(WindowWidth / 2.f, 0.f);
-	levelText_.setOrigin(levelText_.getLocalBounds().width / 2.f, 0.f);
 
 	creditsText_.setFont(fonts_.get(Fonts::ID::SourceCodePro));
 	creditsText_.setCharacterSize(CreditsTextFontSize);
 	creditsText_.setFillColor(sf::Color::White);
 	creditsText_.setPosition(CreditsTextPaddingX, 0.f);
-
-	gameOverText_.setString("Game Over");
-	gameOverText_.setFont(fonts_.get(Fonts::ID::SourceCodePro));
-	gameOverText_.setCharacterSize(GameOverTextFontSize);
-	gameOverText_.setFillColor(sf::Color::Red);
-	gameOverText_.setPosition(WindowWidth / 2.f, WindowHeight / 2.f);
-	gameOverText_.setOrigin(gameOverText_.getLocalBounds().width / 2.f, gameOverText_.getLocalBounds().height);
 }
 
 
@@ -73,16 +65,16 @@ void Level::loadResources()
 	textures_.load(Textures::ID::Health40, "./include/images/Health40.png");
 	textures_.load(Textures::ID::Health20, "./include/images/Health20.png");
 
-	buttonShapes_.load(Buttons::ID::HomeButton);
-	buttonShapes_.load(Buttons::ID::LevelMenuButton);
-	buttonShapes_.load(Buttons::ID::BuyGunTurretButton);
-	buttonShapes_.load(Buttons::ID::BuyDoubleGunTurretButton);
-	buttonShapes_.load(Buttons::ID::BuyTripleGunTurretButton);
-	buttonShapes_.load(Buttons::ID::BuyBombTurretButton);
-	buttonShapes_.load(Buttons::ID::BuyMissileTurretButton);
-	buttonShapes_.load(Buttons::ID::CloseBuyMenuButton);
-	buttonShapes_.load(Buttons::ID::SellTurretButton);
-	buttonShapes_.load(Buttons::ID::CloseSellMenuButton);
+	buttonShapes_.load(Buttons::ID::Home);
+	buttonShapes_.load(Buttons::ID::LevelMenu);
+	buttonShapes_.load(Buttons::ID::BuyGunTurret);
+	buttonShapes_.load(Buttons::ID::BuyDoubleGunTurret);
+	buttonShapes_.load(Buttons::ID::BuyTripleGunTurret);
+	buttonShapes_.load(Buttons::ID::BuyBombTurret);
+	buttonShapes_.load(Buttons::ID::BuyMissileTurret);
+	buttonShapes_.load(Buttons::ID::CloseBuyMenu);
+	buttonShapes_.load(Buttons::ID::SellTurret);
+	buttonShapes_.load(Buttons::ID::CloseSellMenu);
 }
 
 
@@ -111,11 +103,11 @@ void Level::loadMap()
 void Level::addButtons()
 {
 	// Home button
-	auto homeButton = std::make_unique<Button>("X", fonts_, Fonts::ID::SourceCodePro, buttonShapes_, Buttons::ID::LevelMenuButton);
+	auto homeButton = std::make_unique<Button>("X", fonts_, buttonShapes_, Buttons::ID::LevelMenu, 4);
 	auto homeButtonSize = homeButton->getButton().getSize();
 
 	// NOTE: Added button padding y for it to stick to the upper side of the window
-	homeButton->setPosition(WindowWidth - homeButtonSize.x / 2.f, homeButtonSize.y / 2.f - ButtonPaddingY);
+	homeButton->setPosition(WindowWidth - homeButtonSize.x / 2.f, homeButtonSize.y / 2.f - ButtonMargin);
 	buttons_.push_back(homeButton.get());
 	layers_[static_cast<std::size_t>(Layers::HUD)]->addChild(std::move(homeButton));
 }
@@ -128,16 +120,16 @@ void Level::addBuyMenu()
 
 	std::stringstream ss1;
 	ss1 << "Buy Gun Turret $" << Turrets::Gun::price;
-	auto buyButton = std::make_shared<Button>(ss1.str(), fonts_, Fonts::ID::SourceCodePro, buttonShapes_, Buttons::ID::BuyGunTurretButton);
+	auto buyButton = std::make_shared<Button>(ss1.str(), fonts_, buttonShapes_, Buttons::ID::BuyGunTurret, 28);
 	buyButton->setPosition(WindowWidth / 2.f, WindowHeight / 2.f - ((buttonCount - 1) / 2.f) * (buyButton->getButton().getSize().y + buttonMargin));
 	buyMenu_.push_back(buyButton);
 
-	addBuyButton("Double Gun Turret", Turrets::DoubleGun::price, Buttons::ID::BuyDoubleGunTurretButton, buttonMargin);
-	addBuyButton("Bomb Turret", Turrets::Bomb::price, Buttons::ID::BuyBombTurretButton, buttonMargin);
-	addBuyButton("Triple Gun Turret", Turrets::TripleGun::price, Buttons::ID::BuyTripleGunTurretButton, buttonMargin);
-	addBuyButton("Missile Turret", Turrets::Missile::price, Buttons::ID::BuyMissileTurretButton, buttonMargin);
+	addBuyButton("Double Gun Turret", Turrets::DoubleGun::price, Buttons::ID::BuyDoubleGunTurret, buttonMargin);
+	addBuyButton("Bomb Turret", Turrets::Bomb::price, Buttons::ID::BuyBombTurret, buttonMargin);
+	addBuyButton("Triple Gun Turret", Turrets::TripleGun::price, Buttons::ID::BuyTripleGunTurret, buttonMargin);
+	addBuyButton("Missile Turret", Turrets::Missile::price, Buttons::ID::BuyMissileTurret, buttonMargin);
 
-	buyButton = std::make_shared<Button>("Cancel", fonts_, Fonts::ID::SourceCodePro, buttonShapes_, Buttons::ID::CloseBuyMenuButton);
+	buyButton = std::make_shared<Button>("Cancel", fonts_, buttonShapes_, Buttons::ID::CloseBuyMenu);
 	auto pos = buyMenu_[buyMenu_.size() - 1]->getButton().getPosition();
 	buyButton->setPosition(pos.x, pos.y + buyButton->getButton().getSize().y + buttonMargin);
 	buyMenu_.push_back(buyButton);
@@ -148,7 +140,7 @@ void Level::addBuyButton(std::string name, int price, Buttons::ID buttonId, floa
 {
 	std::stringstream ss;
 	ss << "Buy " << name << " $" << price;
-	auto buyButton = std::make_shared<Button>(ss.str(), fonts_, Fonts::ID::SourceCodePro, buttonShapes_, buttonId);
+	auto buyButton = std::make_shared<Button>(ss.str(), fonts_, buttonShapes_, buttonId, 28);
 	auto pos = buyMenu_[buyMenu_.size() - 1]->getButton().getPosition();
 	buyButton->setPosition(pos.x, pos.y + buyButton->getButton().getSize().y + buttonMargin);
 	buyMenu_.push_back(buyButton);
@@ -160,11 +152,11 @@ void Level::addSellMenu()
 	int buttonCount = 2;
 	const float buttonMargin = 10.f;
 
-	auto sellButton = std::make_shared<Button>("Remove Turret", fonts_, Fonts::ID::SourceCodePro, buttonShapes_, Buttons::ID::SellTurretButton);
+	auto sellButton = std::make_shared<Button>("Remove Turret", fonts_, buttonShapes_, Buttons::ID::SellTurret);
 	sellButton->setPosition(WindowWidth / 2.f, WindowHeight / 2.f - ((buttonCount - 1) / 2.f) * (sellButton->getButton().getSize().y + buttonMargin));
 	sellMenu_.push_back(sellButton);
 
-	sellButton = std::make_shared<Button>("Cancel", fonts_, Fonts::ID::SourceCodePro, buttonShapes_, Buttons::ID::CloseSellMenuButton);
+	sellButton = std::make_shared<Button>("Cancel", fonts_, buttonShapes_, Buttons::ID::CloseSellMenu);
 	auto pos = sellMenu_[sellMenu_.size() - 1]->getButton().getPosition();
 	sellButton->setPosition(pos.x, pos.y + sellButton->getButton().getSize().y + buttonMargin);
 	sellMenu_.push_back(sellButton);
@@ -174,7 +166,8 @@ void Level::addSellMenu()
 void Level::update(sf::Time deltaTime)
 {
 	checkGameOver();
-	if (!gameData_->isGameOver())
+
+	if (!gameData_->isGameOver() && !selectedTurret_ && !selectedTurretBase_)
 	{
 		collectRewards();
 		updateEnemies(deltaTime);
@@ -195,7 +188,9 @@ void Level::checkGameOver()
 		{
 			if (enemy->hasReachedBase())
 			{
-				gameData_->setGameOver();
+				gameData_->setGameOver(true);
+				selectedTurret_ = nullptr; // disable sell menu
+				selectedTurretBase_ = nullptr; // disable buy menu
 				return;
 			}
 		}
@@ -374,10 +369,17 @@ void Level::updateTexts()
 	std::stringstream ss1;
 	ss1 << "Level " << gameData_->getLevel();
 	ss1 << "/" << std::max(gameData_->getMaxOpenLevel(), 1);
+
+    if (levelPassed())
+    {
+        ss1 << " [Completed]";
+    }
+
 	levelText_.setString(ss1.str());
+	levelText_.setOrigin(levelText_.getLocalBounds().width / 2.f, 0.f);
 
 	std::stringstream ss2;
-	ss2 << "Credits: " << gameData_->getCredits();
+	ss2 << "Gold: " << gameData_->getCredits();
 	creditsText_.setString(ss2.str());
 }
 
@@ -436,7 +438,7 @@ void Level::drawSelf(sf::RenderTarget& target, sf::RenderStates states) const
 
 	if (gameData_->isGameOver())
 	{
-		target.draw(gameOverText_, states);
+        gameOverMessage_.drawSelf(target, states);
 	}
 	else if (selectedTurret_)
 	{
@@ -457,6 +459,12 @@ void Level::drawSelf(sf::RenderTarget& target, sf::RenderStates states) const
 
 ModeState Level::handleInput(sf::Vector2i mousePos)
 {
+    // Exit if X button is clicked
+    if (Mode::handleInput(mousePos).action == Action::ModeChange)
+    {
+        return Mode::handleInput(mousePos);
+    }
+
 	auto mouseTileCoords = window_.mapPixelToCoords(mousePos) / (float)TileSize;
 
 	if (selectedTurret_)
@@ -470,13 +478,14 @@ ModeState Level::handleInput(sf::Vector2i mousePos)
 		if (found != sellMenu_.end())
 		{
 			std::shared_ptr<Button> button = *found;
+
 			switch (button->getType())
 			{
-				case Buttons::ID::SellTurretButton:
+				case Buttons::ID::SellTurret:
 					turrets_.erase(std::remove(turrets_.begin(), turrets_.end(), selectedTurret_), turrets_.end());
 					map_->findSafestPaths(turrets_); // this has to be called everytime turrets are updated
 					break;
-				case Buttons::ID::CloseSellMenuButton:
+				case Buttons::ID::CloseSellMenu:
 					break;
 				default:
 					break;
@@ -499,24 +508,25 @@ ModeState Level::handleInput(sf::Vector2i mousePos)
 			std::shared_ptr<Turret> turret(nullptr);
 
 			std::shared_ptr<Button> button = *found;
+
 			switch (button->getType())
 			{
-				case Buttons::ID::BuyGunTurretButton:
+				case Buttons::ID::BuyGunTurret:
 					turret = std::make_shared<GunTurret>(GunTurret{ row, col, textures_ });
 					break;
-				case Buttons::ID::BuyDoubleGunTurretButton:
+				case Buttons::ID::BuyDoubleGunTurret:
 					turret = std::make_shared<DoubleGunTurret>(DoubleGunTurret{ row, col, textures_ });
 					break;
-				case Buttons::ID::BuyTripleGunTurretButton:
+				case Buttons::ID::BuyTripleGunTurret:
 					turret = std::make_shared<TripleGunTurret>(TripleGunTurret{ row, col, textures_ });
 					break;
-				case Buttons::ID::BuyBombTurretButton:
+				case Buttons::ID::BuyBombTurret:
 					turret = std::make_shared<BombTurret>(BombTurret{ row, col, textures_ });
 					break;
-				case Buttons::ID::BuyMissileTurretButton:
+				case Buttons::ID::BuyMissileTurret:
 					turret = std::make_shared<MissileTurret>(MissileTurret{ row, col, textures_ });
 					break;
-				case Buttons::ID::CloseBuyMenuButton:
+				case Buttons::ID::CloseBuyMenu:
 					break;
 				default:
 					break;
@@ -531,12 +541,12 @@ ModeState Level::handleInput(sf::Vector2i mousePos)
 			}
 		}
 	}
-	else
+	else if (!gameData_->isGameOver())
 	{
 		// select clicked turret
 		for (auto& turret : turrets_)
 		{
-			if (Map::calculateDistance(mouseTileCoords, turret->getPosition()) <= 0.7f)
+			if (Map::calculateDistance(mouseTileCoords, turret->getPosition()) <= 0.75f) // 0.75 > sqrt(2) / 2
 			{
 				selectedTurret_ = turret;
 				break;
@@ -548,6 +558,7 @@ ModeState Level::handleInput(sf::Vector2i mousePos)
 		{
 			int row = mouseTileCoords.y;
 			int col = mouseTileCoords.x;
+
 			if (map_->isTurretBase(row, col))
 			{
 				selectedTurretBase_ = std::make_shared<std::pair<int, int>>(row, col);
@@ -556,5 +567,11 @@ ModeState Level::handleInput(sf::Vector2i mousePos)
 	}
 
 	return Mode::handleInput(mousePos);
+}
+
+
+bool Level::levelPassed()
+{
+    return gameData_->getLevel() < gameData_->getMaxOpenLevel();
 }
 

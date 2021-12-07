@@ -3,36 +3,32 @@
 
 #include <array>
 
-// General
+// ----------------------- GENERAL --------------------------
+// ----------------------------------------------------------
 const unsigned int FramesPerSecond = 200;
 
-// NOTE: The window MUST have a resolution of 4:3
-// TODO: Write a guard for ensuring the aspect ratio
+// NOTE: The window has a resolution of 4:3
 const int WindowWidth = 800;
-const int WindowHeight = 600;
+const int WindowHeight = WindowWidth / 4 * 3;
 
 const int TileCols = 20;
-const int TileRows = 15;
+const int TileRows = TileCols / 4 * 3;
 
 const int TileSize = WindowWidth / TileCols;
 
+// The space between buttons
+const float ButtonMargin = 20.f;
+
+// ----------------------- STYLING ---------------------------
+// -----------------------------------------------------------
 // Primary theme color for buttons
-const std::array<int, 3> PrimaryColor = {00, 00, 80};
+const std::array<int, 3> SecondaryColor = {00, 00, 80};
 
 // Secondary theme color for texts and the like
-const std::array<int, 3> SecondaryColor = {180, 180, 180};
-
-// Math
-const float Pi = 3.14159f;
-const float RadiansToDegrees = 180.f / Pi;
-const float DegreesToRadians = Pi / 180.f;
+const std::array<int, 3> PrimaryColor = {180, 180, 180};
 
 // Buttons
-const float ButtonWidth = 1.f / 4.f * WindowWidth;
-const float ButtonHeight = 1.f / 6.f * WindowHeight;
-
-const float ButtonPaddingX = 1.f / 4.f * ButtonWidth;
-const float ButtonPaddingY = 1.f / 8.f * ButtonHeight;
+const float ButtonScalar = 1.05f;
 
 // Credits
 const int NewGameCredits = 300;
@@ -40,12 +36,26 @@ const int CreditsTextFontSize = 24;
 const float CreditsTextPaddingX = 5.f;
 const bool CheatModeEnabled = true;
 
+
+
+// ------------------------- MATH ----------------------------
+// -----------------------------------------------------------
+const float Pi = 3.14159f;
+const float RadiansToDegrees = 180.f / Pi;
+const float DegreesToRadians = Pi / 180.f;
+
+
+// ------------------------ GAMEPLAY -------------------------
+// -----------------------------------------------------------
 // Levels
 const int LevelTextFontSize = 24;
-const int MaxLevel = 5;
-const std::array<int, MaxLevel> LevelLimits = {0, 500, 1000, 2000, 4000};
-const std::array<float, MaxLevel> LevelMinSpawnIntervals = {5.f, 4.f, 3.f, 2.f, 1.f};
-const std::array<float, MaxLevel> LevelMaxSpawnIntervals = {10.f, 8.f, 6.f, 4.f, 2.f};
+
+const int TotalLevels = 6;
+
+const std::array<int, TotalLevels> LevelLimits = {0, 500, 1000, 2000, 4000, 6000};
+const std::array<float, TotalLevels> LevelMinSpawnIntervals = {5.f, 4.f, 3.f, 2.f, 1.5f, 1.f};
+const std::array<float, TotalLevels> LevelMaxSpawnIntervals = {10.f, 8.f, 6.f, 4.f, 3.f, 2.f};
+const float LevelFirstSpawnTime = 3.f;
 
 // Game Over
 const int GameOverTextFontSize = 96;
@@ -83,7 +93,7 @@ namespace Projectiles
 		static constexpr float speed = 8.f;			   // tiles per second
 		static constexpr float range = 15.f;		   // tiles
 		static constexpr float explosionRadius = 1.5f; // damages enemies within N tiles
-		static constexpr int damage = 200;			   // hit points (hit points are integers)
+		static constexpr int damage = 350;			   // hit points (hit points are integers)
 		static constexpr float size = 0.2f;			   // hit diameter is 0.2 tiles
 	};
 }
@@ -100,7 +110,7 @@ namespace Enemies
 	struct Orc
 	{
 		static constexpr int hitPoints = 800;
-		static constexpr int reward = 10;
+		static constexpr int reward = 20;
 		static constexpr float speed = 2.5f;
 		static constexpr float size = 0.6f;
 	};
@@ -108,7 +118,7 @@ namespace Enemies
 	struct Goblin
 	{
 		static constexpr int hitPoints = 500;
-		static constexpr int reward = 20;
+		static constexpr int reward = 30;
 		static constexpr float speed = 3.5f;
 		static constexpr float size = 0.5f; // Goblin diameter is 0.5 tiles
 	};
@@ -116,7 +126,7 @@ namespace Enemies
 	struct Troll
 	{
 		static constexpr int hitPoints = 1500;
-		static constexpr int reward = 30;
+		static constexpr int reward = 50;
 		static constexpr float speed = 1.5f;
 		static constexpr float size = 0.7f;
 	};
@@ -124,7 +134,7 @@ namespace Enemies
 	struct Slime
 	{
 		static constexpr int hitPoints = 2000;
-		static constexpr int reward = 50;
+		static constexpr int reward = 100;
 		static constexpr float speed = 1.0f;
 		static constexpr float size = 0.6f;
 		static constexpr int babies = 5; // number of baby slimes created when dying
@@ -141,7 +151,7 @@ namespace Enemies
 	struct Kobold
 	{
 		static constexpr int hitPoints = 250;
-		static constexpr int reward = 40;
+		static constexpr int reward = 75;
 		static constexpr float speed = 4.0f;
 		static constexpr float size = 0.4f;
 	};
@@ -183,7 +193,7 @@ namespace Turrets
 
 	struct Missile
 	{
-		static constexpr int price = 1000;
+		static constexpr int price = 1500;
 		static constexpr float firerate = 0.3f;
 		static constexpr float radarRange = 12.f;
 	};

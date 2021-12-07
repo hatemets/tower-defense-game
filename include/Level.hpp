@@ -11,6 +11,7 @@
 #include "Projectile.hpp"
 #include "Explosion.hpp"
 #include "GameData.hpp"
+#include "Message.hpp"
 
 // Controls the turrets, enemies, map
 class Level : public Mode
@@ -50,6 +51,7 @@ class Level : public Mode
 		void createExplosions();
 		void updateProjectiles(sf::Time deltaTime);
 		void updateTexts();
+        bool levelPassed();
 
 		void loadMap();
 
@@ -61,7 +63,7 @@ class Level : public Mode
 		sf::Text gameOverText_;
 
 		Map* map_; ///< Hold by unique pointer elsewhere.
-		std::shared_ptr<GameData> gameData_;
+		/* std::shared_ptr<GameData> gameData_; */
 
 		// Enemies
 		std::list<std::shared_ptr<Enemy>> enemies_;
@@ -84,6 +86,8 @@ class Level : public Mode
 		std::vector<std::shared_ptr<Button>> sellMenu_;
 		std::shared_ptr<Turret> selectedTurret_;
 		std::shared_ptr<std::pair<int, int>> selectedTurretBase_;
+
+        Message gameOverMessage_;
 };
 
 #endif

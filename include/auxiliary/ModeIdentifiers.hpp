@@ -1,6 +1,9 @@
 #ifndef MODE_IDENTIFIERS_HPP
 #define MODE_IDENTIFIERS_HPP
 
+#include <string>
+#include <iostream>
+
 namespace Modes
 {
 	enum class Type
@@ -18,17 +21,25 @@ namespace Modes
 		Level7,
 		Level8,
 		Level9,
+        Quit,
 		TotalTypes
 	};
+
+    enum class Action
+    {
+        ModeChange,
+        ShowMessage,
+        Idle
+    };
 
 	/* Struct for passing information from Modes to World */
 	struct ModeState
 	{
-		ModeState(Type type) : modeChange(true), type(type) {}
-		
-		ModeState() : modeChange(false), type() {}
+		explicit ModeState(Type type) : action(Action::ModeChange), type(type) {}
+        explicit ModeState(Action action) : action(action), type() {}
+		ModeState() : action(Action::Idle), type() {}
 
-		bool modeChange;
+        Action action;
 		Type type;
 	};
 

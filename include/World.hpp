@@ -7,6 +7,7 @@
 #include "Mode.hpp"
 #include "MainMenu.hpp"
 #include "GameData.hpp"
+#include "Message.hpp"
 #include "auxiliary/ModeIdentifiers.hpp"
 
 using namespace Modes;
@@ -17,9 +18,10 @@ class World
 		World(sf::RenderWindow& window);
 
 		void update(sf::Time deltaTime);
-		void operate();
 		void changeMode(Type newType);
+		void operate();
 		void handleUserInput(sf::Vector2i mousePos);
+        bool isRunning() { return running; }
 
 		Type getMode() const { return modeType_; }
 
@@ -32,6 +34,11 @@ class World
 		std::unique_ptr<Mode> mode_;
 
 		std::shared_ptr<GameData> gameData_;
+
+        // Whether the game is still running
+        bool running;
+
+        std::unique_ptr<Message> message_;
 };
 
 #endif

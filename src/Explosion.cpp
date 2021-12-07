@@ -16,6 +16,7 @@ void Explosion::update(sf::Time deltaTime)
     time_ += deltaTime;
     float radius = explosionRadius_ * TileSize;
     int alpha = 200;
+
     if (time_.asSeconds() < ExplosionExpansionTime)
     {
         radius *= time_.asSeconds() / ExplosionExpansionTime;

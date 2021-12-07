@@ -4,8 +4,8 @@
 #include <memory>
 #include <iostream>
 
-MainMenu::MainMenu(sf::RenderWindow& window)
-	: Mode(window),
+MainMenu::MainMenu(sf::RenderWindow& window, std::shared_ptr<GameData> gameData)
+	: Mode(window, gameData),
 	textures_()
 {
 	loadResources();
@@ -15,8 +15,10 @@ MainMenu::MainMenu(sf::RenderWindow& window)
 
 void MainMenu::loadResources()
 {
-	textures_.load(Textures::ID::GrassArea, "./include/images/background1.jpg");
-	buttonShapes_.load(Buttons::ID::LevelMenuButton);
+	textures_.load(Textures::ID::GrassArea, "./include/images/MainMenuBackground.png");
+
+	buttonShapes_.load(Buttons::ID::LevelMenu);
+	buttonShapes_.load(Buttons::ID::Quit);
 }
 
 
@@ -44,12 +46,16 @@ void MainMenu::addBackground()
 void MainMenu::addButtons()
 {
 	// Start button
-	auto startButton = std::make_unique<Button>("Play", fonts_, Fonts::ID::SourceCodePro, buttonShapes_, Buttons::ID::LevelMenuButton);
-	startButton->setPosition(WindowWidth / 2.f, WindowHeight / 2.f);
+	auto startButton = std::make_unique<Button>("Play", fonts_, buttonShapes_, Buttons::ID::LevelMenu);
+    sf::Vector2f startBtnPos(WindowWidth / 2.f, WindowHeight / 2.f + 80.f);
+	startButton->setPosition(startBtnPos.x, startBtnPos.y);
 	buttons_.push_back(startButton.get());
 	layers_[static_cast<std::size_t>(Layers::Buttons)]->addChild(std::move(startButton));
 
-	// TODO: Add quit button
+	auto quitButton = std::make_unique<Button>("Exit", fonts_, buttonShapes_, Buttons::ID::Quit);
+	quitButton->setPosition(startBtnPos.x, startBtnPos.y + quitButton->getButton().getSize().y + ButtonMargin);
+	buttons_.push_back(quitButton.get());
+	layers_[static_cast<std::size_t>(Layers::Buttons)]->addChild(std::move(quitButton));
 }
 
 

@@ -45,19 +45,24 @@ void Game::processEvents()
 			case sf::Event::Closed:
 				window_.close();
 				break;
-				// NOTE: For testing purposes only
 
-			case sf::Event::MouseButtonReleased:
-				{
-					if (event.mouseButton.button == sf::Mouse::Left)
-					{
-						world_.handleUserInput(sf::Mouse::getPosition(window_));
-					}
+            case sf::Event::MouseButtonReleased:
+                {
+                    if (event.mouseButton.button == sf::Mouse::Left)
+                    {
+                        world_.handleUserInput(sf::Mouse::getPosition(window_));
+                    }
 
-					break;
-				}
-		}
-	}
+                    // Listen for exit call
+                    if (!world_.isRunning())
+                    {
+                        window_.close();
+                    }
+
+                    break;
+                }
+        }
+    }
 }
 
 // Update game with fixed timesteps

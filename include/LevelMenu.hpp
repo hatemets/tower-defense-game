@@ -9,8 +9,6 @@
 #include "Button.hpp"
 #include "GameData.hpp"
 
-// TODO: Create a menu class for LevelMenu, MainMenu and BuyMenu
-
 // Controls the turrets, enemies, map
 class LevelMenu : public Mode
 {
@@ -35,8 +33,7 @@ class LevelMenu : public Mode
 
 	private:
 		ResourceHolder<sf::Texture, Textures::ID> textures_;
-
-		std::shared_ptr<GameData> gameData_;
+		/* std::shared_ptr<GameData> gameData_; */
 };
 
 #endif

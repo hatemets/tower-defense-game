@@ -6,6 +6,12 @@ BackgroundSprite::BackgroundSprite(const sf::Texture& texture, const sf::IntRect
 }
 
 
+BackgroundSprite::BackgroundSprite(const sf::Texture& texture)
+	: tile_(texture)
+{
+}
+
+
 void BackgroundSprite::setColor(sf::Color color) 
 {
 	tile_.setColor(color);

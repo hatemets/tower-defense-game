@@ -270,22 +270,22 @@ void Map::findSafestPaths(TurretList &turrets)
 {
 	safestPathIndexes_.clear();
 
-	std::vector<std::tuple<sf::Vector2f, float, int>> turretInfos;
+	std::vector<std::tuple<sf::Vector2f, float, float>> turretInfos;
 
 	for (auto &turret : turrets)
 	{
-		int maxDamage = 0;
+		float maxDamagePerSecond = 0;
 		for (auto &projectile : turret->shoot())
 		{
-			maxDamage += projectile->getMaxDamage();
+			maxDamagePerSecond += projectile->getMaxDamage() * turret->getRateOfFire();
 		}
-		turretInfos.push_back(std::make_tuple(turret->getPosition(), turret->getRadarRange(), maxDamage));
+		turretInfos.push_back(std::make_tuple(turret->getPosition(), turret->getRadarRange(), maxDamagePerSecond));
 	}
 
-	std::vector<int> pathTotalDamages;
+	std::vector<float> pathTotalDamages;
 	for (auto &path : paths_)
 	{
-		int pathTotalDamage = 0;
+		float pathTotalDamage = 0;
 		for (auto ite = path.begin(); ite != path.end(); ite++)
 		{
 			float roadX = ite->second + 0.5f;
@@ -304,7 +304,7 @@ void Map::findSafestPaths(TurretList &turrets)
 
 	for (auto spawnTile : spawnTiles_)
 	{
-		int minTotalDamage = std::numeric_limits<int>::max();
+		float minTotalDamage = std::numeric_limits<float>::max();
 		int safestIndex = -1;
 		for (int i = 0; i < static_cast<int>(paths_.size()); i++)
 		{

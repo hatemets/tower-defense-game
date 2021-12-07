@@ -8,6 +8,7 @@ class BackgroundSprite : public Node
 {
 	public:
 		BackgroundSprite(const sf::Texture& texture, const sf::IntRect& bounds);
+		BackgroundSprite(const sf::Texture& texture);
 		void setColor(sf::Color color);
 
 	private:
