@@ -93,6 +93,7 @@ class Level : public Mode
 
         int credits_;
         int monstersKilled_;
+        bool passed_;
 };
 
 #endif

@@ -7,6 +7,7 @@
 #include <algorithm>
 #include <iostream>
 #include <sstream>
+#include <fstream>
 
 Level::Level(sf::RenderWindow& window, std::shared_ptr<GameData> gameData)
 	: Mode(window, gameData),
@@ -22,7 +23,8 @@ Level::Level(sf::RenderWindow& window, std::shared_ptr<GameData> gameData)
 	selectedTurretBase_(nullptr),
     gameOverMessage_("Game Over", Message::Type::GameOver),
     credits_(LevelLimits[gameData_->getLevel() - 1]),
-    monstersKilled_(0)
+    monstersKilled_(0),
+    passed_(false)
 {
 	loadResources();
 	createScene();
@@ -41,7 +43,7 @@ void Level::createStats()
     levelText_.setFont(fonts_.get(Fonts::ID::SourceCodePro));
     levelText_.setCharacterSize(LevelTextFontSize);
     levelText_.setFillColor(sf::Color::White);
-    levelText_.setPosition(WindowWidth / 2.f - 40.f, 0.f);
+    levelText_.setPosition(WindowWidth / 2.f + 15.f, 0.f);
 }
 
 
@@ -172,6 +174,24 @@ void Level::addSellMenu()
 void Level::update(sf::Time deltaTime)
 {
 	checkGameOver();
+
+    if (levelPassed() && !passed_)
+    {
+        passed_ = true;
+
+        std::ifstream ifs("./include/auxiliary/cache.txt");
+        std::string lvl{};
+        std::getline(ifs, lvl);
+        ifs.close();
+        int cachedLevel = std::stoi(lvl);
+
+        if (gameData_->getLevel() >= cachedLevel)
+        {
+            std::ofstream ofs("./include/auxiliary/cache.txt", std::ios::trunc);
+            ofs << gameData_->getLevel() + 1;
+            ofs.close();
+        }
+    }
 
 	if (!gameData_->isGameOver() && !selectedTurret_ && !selectedTurretBase_)
 	{

@@ -52,7 +52,7 @@ const int LevelTextFontSize = 24;
 const int TotalLevels = 6;
 
 // Required amount of monster kills to pass each level
-const int RequiredMonsterKills = 10;
+const int RequiredMonsterKills = 20;
 
 // These values account for the amount of money the player initially has
 const std::array<int, TotalLevels> LevelLimits = {300, 500, 1000, 1000, 1500, 1500};
