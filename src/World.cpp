@@ -105,3 +105,9 @@ void World::handleUserInput(sf::Vector2i mousePos)
         }
     }
 }
+
+
+void World::activateCheatMode()
+{
+    mode_->activateCheatMode();
+}

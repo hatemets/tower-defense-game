@@ -20,7 +20,7 @@ class Level : public Mode
 		Level(sf::RenderWindow& window, std::shared_ptr<GameData> gameData);
 		virtual void update(sf::Time deltaTime) final;
 		virtual void drawSelf(sf::RenderTarget& target, sf::RenderStates states) const override;
-		virtual ModeState handleInput(sf::Vector2i mousePos);
+		virtual ModeState handleInput(sf::Vector2i mousePos) override;
 	
 	private:
 		enum class Layers
@@ -39,6 +39,9 @@ class Level : public Mode
 		virtual void addButtons() override;
 		virtual void addBackground() override;
 
+        // TODO: Remove after testing
+        virtual void activateCheatMode() final { credits_ = 999999; }
+
 		void addBuyMenu();
 		void addBuyButton(std::string name, int price, Buttons::ID buttonId, float buttonMargin);
 		void addSellMenu();
@@ -52,8 +55,6 @@ class Level : public Mode
 		void updateProjectiles(sf::Time deltaTime);
 		void updateTexts();
         bool levelPassed();
-        // TODO: Remove this method for production product
-        void cheat() { credits_ = 999999; }
 
 		void loadMap();
 

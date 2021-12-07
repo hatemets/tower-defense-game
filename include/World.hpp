@@ -22,8 +22,10 @@ class World
 		void operate();
 		void handleUserInput(sf::Vector2i mousePos);
         bool isRunning() { return running; }
-
 		Type getMode() const { return modeType_; }
+
+        // TODO: Remove for production
+        void activateCheatMode();
 
 	private:
 		sf::RenderWindow& window_;

@@ -65,7 +65,7 @@ void Game::processEvents()
                     // Enter cheat mode with Q
                     if (event.key.code == sf::Keyboard::Q)
                     {
-                        std::cout << "Cheat mode activated" << std::endl;
+                        world_.activateCheatMode();
                     }
                 }
         }

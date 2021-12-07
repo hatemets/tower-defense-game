@@ -25,14 +25,15 @@ class Mode : public Node
     	Mode& operator=(const Mode&) = delete; // disallow assign
 
 		virtual ModeState handleInput(sf::Vector2i mousePos);
-        /* ResourceHolder<sf::Font, Fonts::ID>& getFonts() { return fonts_; } */
-        /* ButtonHolder<Buttons::ID>& getButtonShapes() { return buttonShapes_; } */
+
+        // TODO: Remove after testing
+        virtual void activateCheatMode() {};
 
 	private:
 		virtual void loadResources() = 0;
 		virtual void createScene() = 0;
-		virtual void addButtons() = 0;
-		virtual void addBackground() = 0;
+        virtual void addButtons() = 0;
+        virtual void addBackground() = 0;
 
 
 	protected:
