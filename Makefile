@@ -6,7 +6,7 @@ OBJ_DIR := ./obj
 SRC_DIR := ./src
 HEADER_DIR := ./include
 
-LIBS = -lsfml-graphics -lsfml-window -lsfml-system
+LIBS = -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
 
 ifeq ($(OS),Windows_NT)
 	# Windows specific definitions

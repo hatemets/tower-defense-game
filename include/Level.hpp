@@ -1,6 +1,7 @@
 #ifndef LEVEL_HPP
 #define LEVEL_HPP
 
+#include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
 #include "Node.hpp"
 #include "Map.hpp"
@@ -57,6 +58,7 @@ class Level : public Mode
         bool levelPassed();
         void createStats();
 		void loadMap();
+        void playMusic();
 
 	private:
 		ResourceHolder<sf::Texture, Textures::ID> textures_;
@@ -94,6 +96,8 @@ class Level : public Mode
         int credits_;
         int monstersKilled_;
         bool passed_;
+
+        sf::Music backgroundMusic_;
 };
 
 #endif

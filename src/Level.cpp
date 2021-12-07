@@ -24,12 +24,22 @@ Level::Level(sf::RenderWindow& window, std::shared_ptr<GameData> gameData)
     gameOverMessage_("Game Over", Message::Type::GameOver),
     credits_(LevelLimits[gameData_->getLevel() - 1]),
     monstersKilled_(0),
-    passed_(false)
+    passed_(false),
+    backgroundMusic_()
 {
 	loadResources();
 	createScene();
     createStats();
 	updateTexts();
+    playMusic();
+}
+
+
+void Level::playMusic()
+{
+    backgroundMusic_.openFromFile("./include/audio/Adventures_Himitsu.wav");
+    backgroundMusic_.play();
+    backgroundMusic_.setLoop(true);
 }
 
 
