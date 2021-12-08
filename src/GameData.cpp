@@ -24,7 +24,7 @@ int GameData::getMaxOpenLevel()
         return std::stoi(lvl);
     }
     // New game means there is no file
-    catch (std::string& err)
+    catch (...)
     {
         return 1;
     }

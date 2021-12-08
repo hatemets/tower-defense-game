@@ -193,9 +193,16 @@ void Level::update(sf::Time deltaTime)
         if (gameData_->getLevel() >= maxOpenLevel_)
         {
 			maxOpenLevel_ = gameData_->getLevel() + 1;
-            std::ofstream ofs("./include/auxiliary/cache.txt", std::ios::trunc);
-            ofs << maxOpenLevel_;
-            ofs.close();
+			try
+			{
+				std::ofstream ofs("./include/auxiliary/cache.txt", std::ios::trunc);
+            	ofs << maxOpenLevel_;
+            	ofs.close();
+			}
+			catch (...)
+			{
+				// failed to store max level to the cache file
+			}    
         }
     }
 
