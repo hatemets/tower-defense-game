@@ -7,6 +7,7 @@
 #include <algorithm>
 #include <iostream>
 #include <sstream>
+#include <fstream>
 
 Level::Level(sf::RenderWindow& window, std::shared_ptr<GameData> gameData)
 	: Mode(window, gameData),
@@ -20,22 +21,40 @@ Level::Level(sf::RenderWindow& window, std::shared_ptr<GameData> gameData)
 	projectileVertices_(sf::Points, 0),
 	selectedTurret_(nullptr),
 	selectedTurretBase_(nullptr),
-    gameOverMessage_("Game Over", Message::Type::GameOver)
+    gameOverMessage_("Game Over", Message::Type::GameOver),
+    credits_(LevelLimits[gameData_->getLevel() - 1]),
+    monstersKilled_(0),
+    passed_(false),
+	maxOpenLevel_(gameData->getMaxOpenLevel()),
+    backgroundMusic_()
 {
 	loadResources();
 	createScene();
-
+    createStats();
 	updateTexts();
+    playMusic();
+}
 
-	levelText_.setFont(fonts_.get(Fonts::ID::SourceCodePro));
-	levelText_.setCharacterSize(LevelTextFontSize);
-	levelText_.setFillColor(sf::Color::White);
-	levelText_.setPosition(WindowWidth / 2.f, 0.f);
 
-	creditsText_.setFont(fonts_.get(Fonts::ID::SourceCodePro));
-	creditsText_.setCharacterSize(CreditsTextFontSize);
-	creditsText_.setFillColor(sf::Color::White);
-	creditsText_.setPosition(CreditsTextPaddingX, 0.f);
+void Level::playMusic()
+{
+    backgroundMusic_.openFromFile("./include/audio/Adventures_Himitsu.wav");
+    backgroundMusic_.play();
+    backgroundMusic_.setLoop(true);
+}
+
+
+void Level::createStats()
+{
+    creditsText_.setFont(fonts_.get(Fonts::ID::SourceCodePro));
+    creditsText_.setCharacterSize(CreditsTextFontSize);
+    creditsText_.setFillColor(sf::Color::White);
+    creditsText_.setPosition(CreditsTextPaddingX, 0.f);
+
+    levelText_.setFont(fonts_.get(Fonts::ID::SourceCodePro));
+    levelText_.setCharacterSize(LevelTextFontSize);
+    levelText_.setFillColor(sf::Color::White);
+    levelText_.setPosition(WindowWidth / 2.f + 25.f, 0.f);
 }
 
 
@@ -167,6 +186,26 @@ void Level::update(sf::Time deltaTime)
 {
 	checkGameOver();
 
+    if (levelPassed() && !passed_)
+    {
+        passed_ = true;
+
+        if (gameData_->getLevel() >= maxOpenLevel_)
+        {
+			maxOpenLevel_ = gameData_->getLevel() + 1;
+			try
+			{
+				std::ofstream ofs("./include/auxiliary/cache.txt", std::ios::trunc);
+            	ofs << maxOpenLevel_;
+            	ofs.close();
+			}
+			catch (...)
+			{
+				// failed to store max level to the cache file
+			}    
+        }
+    }
+
 	if (!gameData_->isGameOver() && !selectedTurret_ && !selectedTurretBase_)
 	{
 		collectRewards();
@@ -204,7 +243,8 @@ void Level::collectRewards()
 	{
 		if (!enemy->isAlive())
 		{
-			gameData_->addCredits(enemy->getReward());
+            credits_ += enemy->getReward();
+            monstersKilled_++;
 		}
 	}
 }
@@ -213,6 +253,7 @@ void Level::collectRewards()
 void Level::updateEnemies(sf::Time deltaTime)
 {
 	EnemyList newEnemies;
+
 	for (auto& enemy : enemies_)
 	{
 		enemy->spawnNewEnemies(newEnemies);
@@ -368,18 +409,20 @@ void Level::updateTexts()
 {
 	std::stringstream ss1;
 	ss1 << "Level " << gameData_->getLevel();
-	ss1 << "/" << std::max(gameData_->getMaxOpenLevel(), 1);
+	ss1 << "/" << std::min(maxOpenLevel_, TotalLevels);
 
     if (levelPassed())
     {
         ss1 << " [Completed]";
     }
 
+    ss1 << "    Score: " << monstersKilled_;
+
 	levelText_.setString(ss1.str());
 	levelText_.setOrigin(levelText_.getLocalBounds().width / 2.f, 0.f);
 
 	std::stringstream ss2;
-	ss2 << "Gold: " << gameData_->getCredits();
+	ss2 << "Gold: " << credits_;
 	creditsText_.setString(ss2.str());
 }
 
@@ -435,6 +478,7 @@ void Level::drawSelf(sf::RenderTarget& target, sf::RenderStates states) const
 
 	target.draw(levelText_, states);
 	target.draw(creditsText_, states);
+	/* target.draw(monstersKilledText_, states); */
 
 	if (gameData_->isGameOver())
 	{
@@ -533,9 +577,9 @@ ModeState Level::handleInput(sf::Vector2i mousePos)
 			}
 			selectedTurretBase_ = nullptr; // remove selection
 
-			if (turret && turret->getPrice() <= gameData_->getCredits())
+			if (turret && turret->getPrice() <= credits_)
 			{
-				gameData_->removeCredits(turret->getPrice());
+                credits_ -= turret->getPrice();
 				turrets_.push_back(turret);
 				map_->findSafestPaths(turrets_); // this has to be called everytime turrets are updated
 			}
@@ -572,6 +616,5 @@ ModeState Level::handleInput(sf::Vector2i mousePos)
 
 bool Level::levelPassed()
 {
-    return gameData_->getLevel() < gameData_->getMaxOpenLevel();
+    return monstersKilled_ >= RequiredMonsterKills;
 }
-

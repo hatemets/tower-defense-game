@@ -2,6 +2,7 @@
 #define WORLD_HPP
 
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <SFML/System/NonCopyable.hpp>
 #include <memory>
 #include "Mode.hpp"
@@ -22,8 +23,13 @@ class World
 		void operate();
 		void handleUserInput(sf::Vector2i mousePos);
         bool isRunning() { return running; }
-
 		Type getMode() const { return modeType_; }
+        void playMusic();
+        void stopMusic();
+        void startMusic();
+
+        // TODO: Remove for production
+        void activateCheatMode();
 
 	private:
 		sf::RenderWindow& window_;
@@ -39,6 +45,8 @@ class World
         bool running;
 
         std::unique_ptr<Message> message_;
+
+        sf::Music backgroundMusic_;
 };
 
 #endif

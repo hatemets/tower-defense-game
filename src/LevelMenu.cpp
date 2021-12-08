@@ -52,14 +52,6 @@ void LevelMenu::addBackground()
 
 void LevelMenu::addButtons()
 {
-	if (CheatModeEnabled)
-	{
-		auto cheatButton = std::make_unique<Button>("Cheat Mode", fonts_, buttonShapes_, Buttons::ID::CheatMode);
-		cheatButton->setPosition(WindowWidth / 2.f, WindowHeight / 2.f + 130.f);
-		buttons_.push_back(cheatButton.get());
-		layers_[static_cast<std::size_t>(Layers::Buttons)]->addChild(std::move(cheatButton));
-	}
-
 	for (int level = 1; level <= TotalLevels; level++)
 	{
 		std::stringstream ss;
