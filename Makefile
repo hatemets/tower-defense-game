@@ -1,26 +1,50 @@
 CC = g++
-CFLAGS = -g -Wall --std=c++17
+CFLAGS = -g -Wall -Wno-switch --std=c++17
 
-ODIR = build
+TARGET := out
+OBJ_DIR := ./obj
+SRC_DIR := ./src
+HEADER_DIR := ./include
 
-SRC = $(wildcard test/*.cpp)
-OBJ = $(src:.cpp=.o)
+LIBS = -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
 
-all: sfml sfml-build
+ifeq ($(OS),Windows_NT)
+	# Windows specific definitions
+	IFLAGS = -I.\libs\windows\SFML-2.5.1\include
+	LFLAGS = -L.\libs\windows\SFML-2.5.1\lib
+	SRC_FILES := $(wildcard ./src/*.cpp)
+	CONST_FILES := $(wildcard ./include/auxiliary/*.hpp)
+	HPP_FILES := $(wildcard ./include/*.hpp)
+	OUT_FILE = out.exe
+	TARGET = $(OUT_FILE)
+	CLEAN = del /Q .\obj\*.o $(TARGET)
+	MKDIR_OBJ = -@if not exist .\obj mkdir .\obj
+else
+	# Linux specific definitions
+	IFLAGS = -I ./libs/linux
+	LFLAGS = -L ./libs/linux/sfml-libs
+	SRC_FILES := $(shell find $(SRC_DIR) -type f -name *.cpp)
+	CONST_FILES := $(shell find $(HEADER_DIR)/auxiliary/ -type f -name *.hpp)
+	HEADER_FILES := $(shell find $(HEADER_DIR) -type f -name *.hpp)
+	OUT_FILE = out
+	CLEAN = rm -rf $(OBJ_DIR)/*.o $(TARGET)
+	MKDIR_OBJ = @mkdir -p $(OBJ_DIR)
+endif
 
-sfml: src/main.cpp src/game.cpp src/World.cpp src/Node.cpp
-	$(CC) $(CFLAGS) -c src/main.cpp src/game.cpp src/World.cpp src/Node.cpp
+OBJ_FILES := $(patsubst $(SRC_DIR)/%,$(OBJ_DIR)/%,$(SRC_FILES:.cpp=.o))
 
+all: $(TARGET)
 
-# to compile all files
-# sfml: $(SRC)
-# 	$(CC) $(CFLAGS) -c $(SRC)
+# Link
+$(TARGET): $(OBJ_FILES)
+	$(CC) -o $(OUT_FILE) $(LFLAGS) $^ $(LIBS)
 
-
-sfml-build: main.o game.o World.o Node.o
-		$(CC) main.o game.o World.o Node.o -o out -lsfml-graphics -lsfml-window -lsfml-system
+# Compile
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp $(HPP_FILES)
+	$(MKDIR_OBJ)
+	$(CC) $(CFLAGS) $(IFLAGS) -c -o $@ $<
 
 .PHONY: clean
 
 clean:
-	rm -rf *.o out sfml
+	$(CLEAN)
