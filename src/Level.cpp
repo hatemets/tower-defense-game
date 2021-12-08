@@ -54,7 +54,7 @@ void Level::createStats()
     levelText_.setFont(fonts_.get(Fonts::ID::SourceCodePro));
     levelText_.setCharacterSize(LevelTextFontSize);
     levelText_.setFillColor(sf::Color::White);
-    levelText_.setPosition(WindowWidth / 2.f + 15.f, 0.f);
+    levelText_.setPosition(WindowWidth / 2.f + 25.f, 0.f);
 }
 
 

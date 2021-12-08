@@ -41,7 +41,7 @@ class Level : public Mode
 		virtual void addBackground() override;
 
         // TODO: Remove after testing
-        virtual void activateCheatMode() final { credits_ = 999999; }
+        virtual void activateCheatMode() final { credits_ = 9999; }
 
 		void addBuyMenu();
 		void addBuyButton(std::string name, int price, Buttons::ID buttonId, float buttonMargin);
