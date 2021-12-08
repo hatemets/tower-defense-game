@@ -96,6 +96,7 @@ class Level : public Mode
         int credits_;
         int monstersKilled_;
         bool passed_;
+		int maxOpenLevel_;
 
         sf::Music backgroundMusic_;
 };

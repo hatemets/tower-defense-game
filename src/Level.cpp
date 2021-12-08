@@ -25,6 +25,7 @@ Level::Level(sf::RenderWindow& window, std::shared_ptr<GameData> gameData)
     credits_(LevelLimits[gameData_->getLevel() - 1]),
     monstersKilled_(0),
     passed_(false),
+	maxOpenLevel_(gameData->getMaxOpenLevel()),
     backgroundMusic_()
 {
 	loadResources();
@@ -189,16 +190,11 @@ void Level::update(sf::Time deltaTime)
     {
         passed_ = true;
 
-        std::ifstream ifs("./include/auxiliary/cache.txt");
-        std::string lvl{};
-        std::getline(ifs, lvl);
-        ifs.close();
-        int cachedLevel = std::stoi(lvl);
-
-        if (gameData_->getLevel() >= cachedLevel)
+        if (gameData_->getLevel() >= maxOpenLevel_)
         {
+			maxOpenLevel_ = gameData_->getLevel() + 1;
             std::ofstream ofs("./include/auxiliary/cache.txt", std::ios::trunc);
-            ofs << gameData_->getLevel() + 1;
+            ofs << maxOpenLevel_;
             ofs.close();
         }
     }
@@ -406,7 +402,7 @@ void Level::updateTexts()
 {
 	std::stringstream ss1;
 	ss1 << "Level " << gameData_->getLevel();
-	ss1 << "/" << std::max(gameData_->getMaxOpenLevel(), 1);
+	ss1 << "/" << std::min(maxOpenLevel_, TotalLevels);
 
     if (levelPassed())
     {
