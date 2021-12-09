@@ -22,14 +22,13 @@ class Turret : public Node
 		virtual std::vector<std::shared_ptr<Projectile>> shoot() = 0;
 
 	protected:
-		virtual float rotate(sf::Time deltaTime, const EnemyList &enemies) = 0;
+        virtual float rotate(sf::Time deltaTime, const EnemyList &enemies) = 0;
 
-		std::shared_ptr<Enemy> getNearestEnemyInRadar(const EnemyList &enemies);
-		std::shared_ptr<Enemy> getStrongestEnemyInRadar(const EnemyList &enemies);
-
-		float rotateToEnemy(sf::Time deltaTime, bool estimateEnemyMovement, float projectileSpeed, std::shared_ptr<Enemy> enemy);
-		float rotateToNearestEnemyInRadar(sf::Time deltaTime, bool estimateEnemyMovement, float projectileSpeed, const EnemyList &enemies);
-		float rotateToStrongestEnemyInRadar(sf::Time deltaTime, bool estimateEnemyMovement, float projectileSpeed, const EnemyList &enemies);
+        std::shared_ptr<Enemy> getNearestEnemyInRadar(const EnemyList &enemies);
+        std::shared_ptr<Enemy> getStrongestEnemyInRadar(const EnemyList &enemies);
+        float rotateToEnemy(sf::Time deltaTime, bool estimateEnemyMovement, float projectileSpeed, std::shared_ptr<Enemy> enemy);
+        float rotateToNearestEnemyInRadar(sf::Time deltaTime, bool estimateEnemyMovement, float projectileSpeed, const EnemyList &enemies);
+        float rotateToStrongestEnemyInRadar(sf::Time deltaTime, bool estimateEnemyMovement, float projectileSpeed, const EnemyList &enemies);
 
 		sf::Vector2f getProjectileStartPosition(float barrelPositionAngle);
 

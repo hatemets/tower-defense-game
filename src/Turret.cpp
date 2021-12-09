@@ -34,8 +34,6 @@ Turret::Turret(int row, int col, int price, float rateOfFire, float radarRange,
     turretSprite_.setPosition(getTileX() * TileSize, getTileY() * TileSize);
 
     nextFire_ = sf::seconds(0); // ready to shoot immediately
-
-    addSoundPair(soundId_, "./include/audio/Uzi.wav");
 }
 
 
@@ -46,6 +44,8 @@ void Turret::addSoundPair(int id, const std::string& filename)
 
     auto sound = std::make_shared<sf::Sound>();
     sound->setBuffer(*buffer);
+    sound->setLoop(true);
+    sound->setVolume(30);
 
     auto audioPair = std::make_pair(id, std::make_pair(std::move(buffer), std::move(sound)));
     sounds_.insert(sounds_.end(), std::move(audioPair));
@@ -69,19 +69,18 @@ void Turret::update(sf::Time deltaTime, const EnemyList &enemies, ProjectileList
 
     turretSprite_.setRotation(currentAngle_ - TurretTextureOffset);
 
-    auto sound = sounds_.find(soundId_)->second.second;
+    auto sound_ = sounds_.find(soundId_)->second.second;
 
     // shoot
     if (nextFire_ <= deltaTime && isAimReady_)
     {
-        /* timeFromLastFire_.restart(); */
-        /* if (sound->getStatus() != sf::Music::SoundSource::Playing) */
-        /* { */
-        /*     std::cout << "Playing" << std::endl; */
-        /*     sound->play(); */
-        /* } */
+        timeFromLastFire_.restart();
 
-        sound->play();
+        if (sound_->getStatus() != sf::Music::SoundSource::Playing)
+        {
+            sound_->play();
+        }
+
         std::vector<std::shared_ptr<Projectile>> shotProjectiles = shoot();
 
 
@@ -102,13 +101,12 @@ void Turret::update(sf::Time deltaTime, const EnemyList &enemies, ProjectileList
     }
     else
     {
-        nextFire_ -= deltaTime;
+        if (sound_->getStatus() == sf::Music::SoundSource::Playing && timeFromLastFire_.getElapsedTime() > getFireInterval() + sf::seconds(0.1f))
+        {
+            sound_->stop();
+        }
 
-        /* if (sound->getStatus() == sf::Music::SoundSource::Playing && timeFromLastFire_.getElapsedTime() > getFireInterval()) */
-        /* { */
-        /*     std::cout << "pausing" << '\n'; */
-        /*     sound->pause(); */
-        /* } */
+        nextFire_ -= deltaTime;
     }
 }
 
@@ -247,6 +245,7 @@ sf::Vector2f Turret::getProjectileStartPosition(float barrelPositionAngle)
 GunTurret::GunTurret(int row, int col, ResourceHolder<sf::Texture, Textures::ID> &textures, SoundMap& sounds)
     : Turret(row, col, Gun::price, Gun::firerate, Gun::radarRange, textures, Textures::ID::GunTurretBase, Textures::ID::GunTurret, sounds)
 {
+    addSoundPair(soundId_, "./include/audio/Rifle.wav");
 }
 
 
@@ -272,6 +271,7 @@ std::vector<std::shared_ptr<Projectile>> GunTurret::shoot()
 DoubleGunTurret::DoubleGunTurret(int row, int col, ResourceHolder<sf::Texture, Textures::ID> &textures, SoundMap& sounds)
     : Turret(row, col, DoubleGun::price, DoubleGun::firerate, DoubleGun::radarRange, textures, Textures::ID::DoubleGunTurretBase, Textures::ID::DoubleGunTurret, sounds)
 {
+    addSoundPair(soundId_, "./include/audio/Laser.wav");
 }
 
 
@@ -300,6 +300,7 @@ std::vector<std::shared_ptr<Projectile>> DoubleGunTurret::shoot()
 TripleGunTurret::TripleGunTurret(int row, int col, ResourceHolder<sf::Texture, Textures::ID> &textures, SoundMap& sounds)
     : Turret(row, col, TripleGun::price, TripleGun::firerate, TripleGun::radarRange, textures, Textures::ID::TripleGunTurretBase, Textures::ID::TripleGunTurret, sounds)
 {
+    addSoundPair(soundId_, "./include/audio/Laser.wav");
 }
 
 
@@ -361,6 +362,7 @@ MissileTurret::MissileTurret(int row, int col, ResourceHolder<sf::Texture, Textu
 void MissileTurret::drawSelf(sf::RenderTarget &target, sf::RenderStates states) const
 {
     target.draw(turretBaseSprite_, states);
+
     if (nextFire_ <= (getFireInterval() / 2.f))
     {
         target.draw(turretSprite_, states);

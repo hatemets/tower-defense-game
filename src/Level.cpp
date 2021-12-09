@@ -37,6 +37,15 @@ Level::Level(sf::RenderWindow& window, std::shared_ptr<GameData> gameData)
 }
 
 
+void Level::pauseSounds()
+{
+    for (auto& audioPair : sounds_)
+    {
+        audioPair.second.second->pause();
+    }
+}
+
+
 void Level::playMusic()
 {
     backgroundMusic_.openFromFile("./include/audio/Adventures_Himitsu.wav");
@@ -208,7 +217,7 @@ void Level::update(sf::Time deltaTime)
         }
     }
 
-	if (!gameData_->isGameOver() && !selectedTurret_ && !selectedTurretBase_)
+	if (!gameData_->isGameOver())
 	{
 		collectRewards();
 		updateEnemies(deltaTime);
@@ -232,7 +241,7 @@ void Level::checkGameOver()
 				gameData_->setGameOver(true);
 				selectedTurret_ = nullptr; // disable sell menu
 				selectedTurretBase_ = nullptr; // disable buy menu
-                /* sounds_.clear(); */
+                sounds_.clear();
 				return;
 			}
 		}

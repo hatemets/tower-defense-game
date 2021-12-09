@@ -64,6 +64,7 @@ class Level : public Mode
         void playMusic();
         void loadSounds();
         void addSoundPair(Audio::ID id, const std::string& filename);
+        void pauseSounds();
 
 	private:
 		ResourceHolder<sf::Texture, Textures::ID> textures_;

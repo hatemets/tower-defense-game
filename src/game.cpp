@@ -66,7 +66,12 @@ void Game::processEvents()
                     // Enter cheat mode with Q
                     if (event.key.code == sf::Keyboard::Q)
                     {
+                        // moneyhack
                         world_.activateCheatMode();
+                    }
+                    else if (event.key.code == sf::Keyboard::S)
+                    {
+                        // speedhack
                     }
                 }
         }
