@@ -58,7 +58,7 @@ const int RequiredMonsterKills = 20;
 const std::array<int, TotalLevels> LevelLimits = {300, 500, 1000, 1500, 2000, 2000};
 const std::array<float, TotalLevels> LevelMinSpawnIntervals = {5.f, 4.f, 3.f, 2.f, 1.5f, 1.f};
 const std::array<float, TotalLevels> LevelMaxSpawnIntervals = {10.f, 8.f, 6.f, 4.f, 3.f, 2.f};
-const float LevelFirstSpawnTime = 0.f;
+const float LevelFirstSpawnTime = 2.f;
 
 // Game Over
 const int GameOverTextFontSize = 96;

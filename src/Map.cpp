@@ -109,6 +109,7 @@ void Map::loadFile(const std::string &fileName)
 	else
 	{
 		int row = 0;
+
 		while (!istr.eof())
 		{
 			std::string line;
