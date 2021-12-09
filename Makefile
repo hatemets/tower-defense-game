@@ -10,7 +10,7 @@ LIBS = -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lcppunit
 
 ifeq ($(OS),Windows_NT)
 	# Windows specific definitions
-	IFLAGS = -I.\libs\windows\SFML-2.5.1\include
+	IFLAGS = -I.\libs\windows\SFML-2.5.1\include -I.\libs\windows\cppunit
 	LFLAGS = -L.\libs\windows\SFML-2.5.1\lib
 	SRC_FILES := $(wildcard ./src/*.cpp)
 	CONST_FILES := $(wildcard ./include/auxiliary/*.hpp)
