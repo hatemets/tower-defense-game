@@ -2,11 +2,17 @@
 
 Project desription:
 
+
+How to run:
+1) Build the program with `make all`
+2) Run the program with `make run`
+3) Clean the object files and executable with `make clean`
+
 # Group
-- Member 1
-- Member 2
-- Member 3
-- Member 4
+- Niko Kemppi
+- Mark Heidmets
+- Kerkko Konola
+- Minh Ding
 
 # Repository organization
 Your project implementation should follow the skelaton organization in this repository.
