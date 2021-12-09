@@ -25,6 +25,7 @@ Level::Level(sf::RenderWindow& window, std::shared_ptr<GameData> gameData)
     credits_(LevelLimits[gameData_->getLevel() - 1]),
     monstersKilled_(0),
     passed_(false),
+	maxOpenLevel_(gameData->getMaxOpenLevel()),
     backgroundMusic_()
 {
 	loadResources();
@@ -53,7 +54,7 @@ void Level::createStats()
     levelText_.setFont(fonts_.get(Fonts::ID::SourceCodePro));
     levelText_.setCharacterSize(LevelTextFontSize);
     levelText_.setFillColor(sf::Color::White);
-    levelText_.setPosition(WindowWidth / 2.f + 15.f, 0.f);
+    levelText_.setPosition(WindowWidth / 2.f + 25.f, 0.f);
 }
 
 
@@ -189,17 +190,20 @@ void Level::update(sf::Time deltaTime)
     {
         passed_ = true;
 
-        std::ifstream ifs("./include/auxiliary/cache.txt");
-        std::string lvl{};
-        std::getline(ifs, lvl);
-        ifs.close();
-        int cachedLevel = std::stoi(lvl);
-
-        if (gameData_->getLevel() >= cachedLevel)
+        if (gameData_->getLevel() >= maxOpenLevel_ && maxOpenLevel_ < TotalLevels)
         {
-            std::ofstream ofs("./include/auxiliary/cache.txt", std::ios::trunc);
-            ofs << gameData_->getLevel() + 1;
-            ofs.close();
+			maxOpenLevel_ = gameData_->getLevel() + 1;
+
+			try
+			{
+				std::ofstream ofs("./include/auxiliary/cache.txt", std::ios::trunc);
+            	ofs << maxOpenLevel_;
+            	ofs.close();
+			}
+			catch (...)
+			{
+				// failed to store max level to the cache file
+			}    
         }
     }
 
@@ -406,7 +410,7 @@ void Level::updateTexts()
 {
 	std::stringstream ss1;
 	ss1 << "Level " << gameData_->getLevel();
-	ss1 << "/" << std::max(gameData_->getMaxOpenLevel(), 1);
+	ss1 << "/" << std::min(maxOpenLevel_, TotalLevels);
 
     if (levelPassed())
     {
