@@ -1,6 +1,7 @@
 #include "../include/game.hpp"
 #include <SFML/System/Time.hpp>
 
+
 Game::Game()
 	: window_(sf::VideoMode(WindowWidth, WindowHeight), "Tower Defense Game"),
 	world_(window_)

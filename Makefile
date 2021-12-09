@@ -6,7 +6,7 @@ OBJ_DIR := ./obj
 SRC_DIR := ./src
 HEADER_DIR := ./include
 
-LIBS = -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
+LIBS = -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lcppunit
 
 ifeq ($(OS),Windows_NT)
 	# Windows specific definitions
@@ -22,7 +22,7 @@ ifeq ($(OS),Windows_NT)
 	RUN_COMMAND = ./$(TARGET)
 else
 	# Linux specific definitions
-	LIB_SOURCE = "./libs/linux/sfml-libs"
+	LIB_SOURCE = "./libs/linux/lib"
 	IFLAGS = -I ./libs/linux
 	LFLAGS = -L $(LIB_SOURCE)
 	SRC_FILES := $(shell find $(SRC_DIR) -type f -name *.cpp)
