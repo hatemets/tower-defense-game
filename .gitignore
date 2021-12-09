@@ -1,4 +1,5 @@
 out
+test
 **/*.o
 **/*.exe
 **/*.out
