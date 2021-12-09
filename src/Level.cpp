@@ -190,9 +190,10 @@ void Level::update(sf::Time deltaTime)
     {
         passed_ = true;
 
-        if (gameData_->getLevel() >= maxOpenLevel_)
+        if (gameData_->getLevel() >= maxOpenLevel_ && maxOpenLevel_ < TotalLevels)
         {
 			maxOpenLevel_ = gameData_->getLevel() + 1;
+
 			try
 			{
 				std::ofstream ofs("./include/auxiliary/cache.txt", std::ios::trunc);
