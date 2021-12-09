@@ -2,18 +2,20 @@
 #define TURRET_HPP
 
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include "Enemy.hpp"
 #include "Projectile.hpp"
 
 using EnemyList = std::list<std::shared_ptr<Enemy>>;
 using ProjectileList = std::list<std::shared_ptr<Projectile>>;
+using SoundMap = std::map<int, std::pair<std::unique_ptr<sf::SoundBuffer>, std::shared_ptr<sf::Sound>>>;
 
 // The base class of turrets
 class Turret : public Node
 {
 	public:
 		Turret(int row, int col, int price, float rateOfFire, float radarRange,
-			ResourceHolder<sf::Texture, Textures::ID> &textures, Textures::ID turretBaseStyle, Textures::ID turretStyle);
+			ResourceHolder<sf::Texture, Textures::ID> &textures, Textures::ID turretBaseStyle, Textures::ID turretStyle, SoundMap& sounds);
 
 		virtual void update(sf::Time deltaTime, const EnemyList &enemies, ProjectileList &projectiles);
 		virtual void drawSelf(sf::RenderTarget &target, sf::RenderStates states) const override;
@@ -43,6 +45,7 @@ class Turret : public Node
 		float getRadarRange() const { return radarRange_; }							// radar range as tiles
 		float getCurrentAngle() const { return currentAngle_; }						// 0-359.999...
 		sf::Time getNextFire() const { return nextFire_; }							// time before can shoot again
+        void addSoundPair(int id, const std::string& filename);
 
 	protected:
 		const int row_;
@@ -56,13 +59,16 @@ class Turret : public Node
 
 		sf::Sprite turretBaseSprite_;
 		sf::Sprite turretSprite_;
+        SoundMap& sounds_;
+        sf::Clock timeFromLastFire_;
+        int soundId_;
 };
 
 
 class GunTurret : public Turret
 {
 	public:
-		GunTurret(int row, int col, ResourceHolder<sf::Texture, Textures::ID> &textures);
+		GunTurret(int row, int col, ResourceHolder<sf::Texture, Textures::ID> &textures, SoundMap& sounds);
 
 	private:
 		virtual float rotate(sf::Time deltaTime, const EnemyList &enemies) override;
@@ -73,7 +79,7 @@ class GunTurret : public Turret
 class DoubleGunTurret : public Turret
 {
 	public:
-		DoubleGunTurret(int row, int col, ResourceHolder<sf::Texture, Textures::ID> &textures);
+		DoubleGunTurret(int row, int col, ResourceHolder<sf::Texture, Textures::ID> &textures, SoundMap& sounds);
 
 	private:
 		virtual float rotate(sf::Time deltaTime, const EnemyList &enemies) override;
@@ -84,7 +90,7 @@ class DoubleGunTurret : public Turret
 class TripleGunTurret : public Turret
 {
 	public:
-		TripleGunTurret(int row, int col, ResourceHolder<sf::Texture, Textures::ID> &textures);
+		TripleGunTurret(int row, int col, ResourceHolder<sf::Texture, Textures::ID> &textures, SoundMap& sounds);
 
 	private:
 		virtual float rotate(sf::Time deltaTime, const EnemyList &enemies) override;
@@ -95,7 +101,7 @@ class TripleGunTurret : public Turret
 class BombTurret : public Turret
 {
 	public:
-		BombTurret(int row, int col, ResourceHolder<sf::Texture, Textures::ID> &textures);
+		BombTurret(int row, int col, ResourceHolder<sf::Texture, Textures::ID> &textures, SoundMap& sounds);
 
 	private:
 		virtual float rotate(sf::Time deltaTime, const EnemyList &enemies) override;
@@ -106,7 +112,7 @@ class BombTurret : public Turret
 class MissileTurret : public Turret
 {
 	public:
-		MissileTurret(int row, int col, ResourceHolder<sf::Texture, Textures::ID> &textures);
+		MissileTurret(int row, int col, ResourceHolder<sf::Texture, Textures::ID> &textures, SoundMap& sounds);
 
 		virtual void drawSelf(sf::RenderTarget &target, sf::RenderStates states) const override;
 

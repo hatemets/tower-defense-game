@@ -26,7 +26,8 @@ Level::Level(sf::RenderWindow& window, std::shared_ptr<GameData> gameData)
     monstersKilled_(0),
     passed_(false),
 	maxOpenLevel_(gameData->getMaxOpenLevel()),
-    backgroundMusic_()
+    backgroundMusic_(),
+    sounds_()
 {
 	loadResources();
 	createScene();
@@ -231,6 +232,7 @@ void Level::checkGameOver()
 				gameData_->setGameOver(true);
 				selectedTurret_ = nullptr; // disable sell menu
 				selectedTurretBase_ = nullptr; // disable buy menu
+                /* sounds_.clear(); */
 				return;
 			}
 		}
@@ -557,19 +559,19 @@ ModeState Level::handleInput(sf::Vector2i mousePos)
 			switch (button->getType())
 			{
 				case Buttons::ID::BuyGunTurret:
-					turret = std::make_shared<GunTurret>(GunTurret{ row, col, textures_ });
+					turret = std::make_shared<GunTurret>(GunTurret{ row, col, textures_, sounds_ });
 					break;
 				case Buttons::ID::BuyDoubleGunTurret:
-					turret = std::make_shared<DoubleGunTurret>(DoubleGunTurret{ row, col, textures_ });
+					turret = std::make_shared<DoubleGunTurret>(DoubleGunTurret{ row, col, textures_, sounds_ });
 					break;
 				case Buttons::ID::BuyTripleGunTurret:
-					turret = std::make_shared<TripleGunTurret>(TripleGunTurret{ row, col, textures_ });
+					turret = std::make_shared<TripleGunTurret>(TripleGunTurret{ row, col, textures_, sounds_ });
 					break;
 				case Buttons::ID::BuyBombTurret:
-					turret = std::make_shared<BombTurret>(BombTurret{ row, col, textures_ });
+					turret = std::make_shared<BombTurret>(BombTurret{ row, col, textures_, sounds_ });
 					break;
 				case Buttons::ID::BuyMissileTurret:
-					turret = std::make_shared<MissileTurret>(MissileTurret{ row, col, textures_ });
+					turret = std::make_shared<MissileTurret>(MissileTurret{ row, col, textures_, sounds_ });
 					break;
 				case Buttons::ID::CloseBuyMenu:
 					break;

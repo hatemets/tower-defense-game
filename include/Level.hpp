@@ -13,6 +13,9 @@
 #include "Explosion.hpp"
 #include "GameData.hpp"
 #include "Message.hpp"
+#include <map>
+
+using SoundMap = std::map<int, std::pair<std::unique_ptr<sf::SoundBuffer>, std::shared_ptr<sf::Sound>>>;
 
 // Controls the turrets, enemies, map
 class Level : public Mode
@@ -59,6 +62,8 @@ class Level : public Mode
         void createStats();
 		void loadMap();
         void playMusic();
+        void loadSounds();
+        void addSoundPair(Audio::ID id, const std::string& filename);
 
 	private:
 		ResourceHolder<sf::Texture, Textures::ID> textures_;
@@ -99,6 +104,8 @@ class Level : public Mode
 		int maxOpenLevel_;
 
         sf::Music backgroundMusic_;
+
+        SoundMap sounds_;
 };
 
 #endif
