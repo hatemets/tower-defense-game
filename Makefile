@@ -6,11 +6,11 @@ OBJ_DIR := ./obj
 SRC_DIR := ./src
 HEADER_DIR := ./include
 
-LIBS = -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lcppunit
 
 ifeq ($(OS),Windows_NT)
 	# Windows specific definitions
-	IFLAGS = -I.\libs\windows\SFML-2.5.1\include -I.\libs\windows\cppunit
+	LIBS = -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
+	IFLAGS = -I.\libs\windows\SFML-2.5.1\include
 	LFLAGS = -L.\libs\windows\SFML-2.5.1\lib
 	SRC_FILES := $(wildcard ./src/*.cpp)
 	CONST_FILES := $(wildcard ./include/auxiliary/*.hpp)
@@ -22,6 +22,7 @@ ifeq ($(OS),Windows_NT)
 	RUN_COMMAND = ./$(TARGET)
 else
 	# Linux specific definitions
+	LIBS = -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lcppunit
 	LIB_SOURCE = "./libs/linux/lib"
 	IFLAGS = -I ./libs/linux
 	LFLAGS = -L $(LIB_SOURCE)
