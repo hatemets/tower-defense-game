@@ -45,6 +45,8 @@ class Turret : public Node
 		float getCurrentAngle() const { return currentAngle_; }						// 0-359.999...
 		sf::Time getNextFire() const { return nextFire_; }							// time before can shoot again
         void addSoundPair(int id, const std::string& filename);
+        int getSoundId() const { return soundId_; }
+        void stopSound() { sounds_.find(soundId_)->second.second->stop(); }
 
 	protected:
 		const int row_;

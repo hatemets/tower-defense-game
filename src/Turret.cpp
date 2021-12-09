@@ -101,7 +101,7 @@ void Turret::update(sf::Time deltaTime, const EnemyList &enemies, ProjectileList
     }
     else
     {
-        if (sound_->getStatus() == sf::Music::SoundSource::Playing && timeFromLastFire_.getElapsedTime() > getFireInterval() + sf::seconds(0.1f))
+        if (sound_->getStatus() == sf::Music::SoundSource::Playing && timeFromLastFire_.getElapsedTime() > getFireInterval())
         {
             sound_->stop();
         }
@@ -329,6 +329,7 @@ std::vector<std::shared_ptr<Projectile>> TripleGunTurret::shoot()
 BombTurret::BombTurret(int row, int col, ResourceHolder<sf::Texture, Textures::ID> &textures, SoundMap& sounds)
     : Turret(row, col, Turrets::Bomb::price, Turrets::Bomb::firerate, Turrets::Bomb::radarRange, textures, Textures::ID::BombTurretBase, Textures::ID::BombTurret, sounds)
 {
+    addSoundPair(soundId_, "./include/audio/Bomb.wav");
 }
 
 
@@ -356,6 +357,8 @@ MissileTurret::MissileTurret(int row, int col, ResourceHolder<sf::Texture, Textu
       target_(nullptr),
       textures_(textures)
 {
+    addSoundPair(soundId_, "./include/audio/Explosion.wav");
+    sounds_.find(soundId_)->second.second->setLoop(false);
 }
 
 

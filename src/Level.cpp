@@ -538,17 +538,20 @@ ModeState Level::handleInput(sf::Vector2i mousePos)
 			switch (button->getType())
 			{
 				case Buttons::ID::SellTurret:
-					turrets_.erase(std::remove(turrets_.begin(), turrets_.end(), selectedTurret_), turrets_.end());
-					map_->findSafestPaths(turrets_); // this has to be called everytime turrets are updated
-					break;
-				case Buttons::ID::CloseSellMenu:
-					break;
-				default:
-					break;
-			}
-			selectedTurret_ = nullptr; // remove selection
-		}
-	}
+                    // stop the sound after selling the turret
+                    selectedTurret_->stopSound();
+
+                    turrets_.erase(std::remove(turrets_.begin(), turrets_.end(), selectedTurret_), turrets_.end());
+                    map_->findSafestPaths(turrets_); // this has to be called everytime turrets are updated
+                    break;
+                case Buttons::ID::CloseSellMenu:
+                    break;
+                default:
+                    break;
+            }
+            selectedTurret_ = nullptr; // remove selection
+        }
+    }
 	else if (selectedTurretBase_)
 	{
 		// handle buy menu click
