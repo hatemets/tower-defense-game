@@ -4,6 +4,24 @@
 #include "../include/LevelMenu.hpp"
 #include <iostream>
 
+
+bool isLevel(Type type)
+{
+    switch (type)
+    {
+        case Type::Level1:
+        case Type::Level2:
+        case Type::Level3:
+        case Type::Level4:
+        case Type::Level5:
+        case Type::Level6:
+            return true;
+        default:
+            return false;
+    }
+}
+
+
 World::World(sf::RenderWindow& window)
 	: window_(window),
 	modeType_(Type::MainMenu),
@@ -11,8 +29,30 @@ World::World(sf::RenderWindow& window)
 	mode_(std::make_unique<MainMenu>(window, std::make_shared<GameData>())),
 	gameData_(std::make_shared<GameData>()),
     running(true),
-    message_(std::make_unique<Message>("This level is locked"))
+    message_(std::make_unique<Message>("This level is locked")),
+    backgroundMusic_()
 {
+    playMusic();
+}
+
+
+void World::playMusic()
+{
+    backgroundMusic_.openFromFile("./include/audio/Miami_Sky.wav");
+    backgroundMusic_.setLoop(true);
+    startMusic();
+}
+
+
+void World::stopMusic()
+{
+    backgroundMusic_.stop();
+}
+
+
+void World::startMusic()
+{
+    backgroundMusic_.play();
 }
 
 
@@ -47,12 +87,9 @@ void World::changeMode(Type newMode)
 	switch (newMode)
 	{
 		case Type::NewGame:
-			/* gameData_ = std::make_shared<GameData>(); */
 			mode_.reset(new Level(window_, gameData_));
 			break;
 		case Type::CheatMode:
-			/* gameData_ = std::make_shared<GameData>(); */
-			gameData_->addCredits(1000000 - gameData_->getCredits());
 			mode_.reset(new Level(window_, gameData_));
 			break;
 		case Type::Level1:
@@ -61,9 +98,6 @@ void World::changeMode(Type newMode)
 		case Type::Level4:
 		case Type::Level5:
 		case Type::Level6:
-		case Type::Level7:
-		case Type::Level8:
-		case Type::Level9:
 			gameData_->setLevel(static_cast<int>(newMode) - static_cast<int>(Type::Level1) + 1);
 			mode_.reset(new Level(window_, gameData_));
 			break;
@@ -77,6 +111,15 @@ void World::changeMode(Type newMode)
             running = false;
             break;
 	}
+
+    if (isLevel(newMode))
+    {
+        backgroundMusic_.stop();
+    }
+    else if (backgroundMusic_.getStatus() == sf::Music::Status::Stopped)
+    {
+        playMusic();
+    }
 }
 
 
@@ -107,4 +150,10 @@ void World::handleUserInput(sf::Vector2i mousePos)
             gameData_->setGameOver(false);
         }
     }
+}
+
+
+void World::activateCheatMode()
+{
+    mode_->activateCheatMode();
 }

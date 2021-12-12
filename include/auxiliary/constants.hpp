@@ -34,8 +34,6 @@ const float ButtonScalar = 1.05f;
 const int NewGameCredits = 300;
 const int CreditsTextFontSize = 24;
 const float CreditsTextPaddingX = 5.f;
-const bool CheatModeEnabled = true;
-
 
 
 // ------------------------- MATH ----------------------------
@@ -50,12 +48,17 @@ const float DegreesToRadians = Pi / 180.f;
 // Levels
 const int LevelTextFontSize = 24;
 
+// Total number of levels
 const int TotalLevels = 6;
 
-const std::array<int, TotalLevels> LevelLimits = {0, 500, 1000, 2000, 4000, 6000};
+// Required amount of monster kills to pass each level
+const int RequiredMonsterKills = 20;
+
+// These values account for the amount of money the player initially has
+const std::array<int, TotalLevels> LevelLimits = {300, 500, 1000, 1500, 2000, 2000};
 const std::array<float, TotalLevels> LevelMinSpawnIntervals = {5.f, 4.f, 3.f, 2.f, 1.5f, 1.f};
 const std::array<float, TotalLevels> LevelMaxSpawnIntervals = {10.f, 8.f, 6.f, 4.f, 3.f, 2.f};
-const float LevelFirstSpawnTime = 3.f;
+const float LevelFirstSpawnTime = 2.f;
 
 // Game Over
 const int GameOverTextFontSize = 96;
@@ -125,7 +128,7 @@ namespace Enemies
 
 	struct Troll
 	{
-		static constexpr int hitPoints = 1500;
+		static constexpr int hitPoints = 1200;
 		static constexpr int reward = 50;
 		static constexpr float speed = 1.5f;
 		static constexpr float size = 0.7f;
@@ -193,7 +196,7 @@ namespace Turrets
 
 	struct Missile
 	{
-		static constexpr int price = 1500;
+		static constexpr int price = 1000;
 		static constexpr float firerate = 0.3f;
 		static constexpr float radarRange = 12.f;
 	};

@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include "../include/game.hpp"
 
+
 int main()
 {
 	try

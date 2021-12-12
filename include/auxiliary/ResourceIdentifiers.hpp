@@ -50,6 +50,16 @@ namespace Resources
 		};
 	}
 
+    namespace Audio
+    {
+        enum class ID
+        {
+            Uzi,
+            MachineGun,
+            Missile
+        };
+    }
+
 	namespace Textures
 	{
 		enum class ID

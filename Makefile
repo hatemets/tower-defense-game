@@ -2,11 +2,13 @@ CC = g++
 CFLAGS = -g -Wall -Wno-switch --std=c++17
 
 TARGET := out
+TEST_TARGET := test
 OBJ_DIR := ./obj
 SRC_DIR := ./src
+TEST_DIR := ./tests
 HEADER_DIR := ./include
 
-LIBS = -lsfml-graphics -lsfml-window -lsfml-system
+LIBS = -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
 
 ifeq ($(OS),Windows_NT)
 	# Windows specific definitions
@@ -19,16 +21,20 @@ ifeq ($(OS),Windows_NT)
 	TARGET = $(OUT_FILE)
 	CLEAN = del /Q .\obj\*.o $(TARGET)
 	MKDIR_OBJ = -@if not exist .\obj mkdir .\obj
+	RUN_COMMAND = ./$(TARGET)
 else
 	# Linux specific definitions
+	LIB_SOURCE = "./libs/linux/lib"
 	IFLAGS = -I ./libs/linux
-	LFLAGS = -L ./libs/linux/sfml-libs
+	LFLAGS = -L $(LIB_SOURCE)
 	SRC_FILES := $(shell find $(SRC_DIR) -type f -name *.cpp)
 	CONST_FILES := $(shell find $(HEADER_DIR)/auxiliary/ -type f -name *.hpp)
 	HEADER_FILES := $(shell find $(HEADER_DIR) -type f -name *.hpp)
 	OUT_FILE = out
-	CLEAN = rm -rf $(OBJ_DIR)/*.o $(TARGET)
+	CLEAN = rm -rf $(OBJ_DIR)/*.o $(TARGET) $(TEST_TARGET)
 	MKDIR_OBJ = @mkdir -p $(OBJ_DIR)
+	RUN_COMMAND = LD_LIBRARY_PATH=$(LIB_SOURCE) ./$(TARGET)
+	TEST_FILES := $(shell find $(TEST_DIR) -type f -name *.cpp)
 endif
 
 OBJ_FILES := $(patsubst $(SRC_DIR)/%,$(OBJ_DIR)/%,$(SRC_FILES:.cpp=.o))
@@ -43,6 +49,14 @@ $(TARGET): $(OBJ_FILES)
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp $(HPP_FILES)
 	$(MKDIR_OBJ)
 	$(CC) $(CFLAGS) $(IFLAGS) -c -o $@ $<
+
+run: $(TARGET)
+	$(RUN_COMMAND)
+
+
+# NOTE: Testing is only available on Linux
+test: 
+	$(CC) $(CFLAGS) $(TEST_DIR)/*.cpp -o $(TEST_TARGET)
 
 .PHONY: clean
 

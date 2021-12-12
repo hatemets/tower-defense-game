@@ -1,6 +1,7 @@
 #include "../include/game.hpp"
 #include <SFML/System/Time.hpp>
 
+
 Game::Game()
 	: window_(sf::VideoMode(WindowWidth, WindowHeight), "Tower Defense Game"),
 	world_(window_)
@@ -37,7 +38,6 @@ void Game::processEvents()
 	sf::Event event;
 
 	// Listen for events
-	// TODO: add an event listener for mouseclicks
 	while (window_.pollEvent(event))
 	{
 		switch (event.type)
@@ -60,6 +60,15 @@ void Game::processEvents()
                     }
 
                     break;
+                }
+            case sf::Event::KeyPressed:
+                {
+                    // Enter cheat mode with Q
+                    if (event.key.code == sf::Keyboard::Q)
+                    {
+                        // money hack
+                        world_.activateCheatMode();
+                    }
                 }
         }
     }

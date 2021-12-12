@@ -1,6 +1,7 @@
 #ifndef LEVEL_HPP
 #define LEVEL_HPP
 
+#include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
 #include "Node.hpp"
 #include "Map.hpp"
@@ -12,6 +13,9 @@
 #include "Explosion.hpp"
 #include "GameData.hpp"
 #include "Message.hpp"
+#include <map>
+
+using SoundMap = std::map<int, std::pair<std::unique_ptr<sf::SoundBuffer>, std::shared_ptr<sf::Sound>>>;
 
 // Controls the turrets, enemies, map
 class Level : public Mode
@@ -20,7 +24,7 @@ class Level : public Mode
 		Level(sf::RenderWindow& window, std::shared_ptr<GameData> gameData);
 		virtual void update(sf::Time deltaTime) final;
 		virtual void drawSelf(sf::RenderTarget& target, sf::RenderStates states) const override;
-		virtual ModeState handleInput(sf::Vector2i mousePos);
+		virtual ModeState handleInput(sf::Vector2i mousePos) override;
 	
 	private:
 		enum class Layers
@@ -30,7 +34,7 @@ class Level : public Mode
 			SideMenu,
 			HUD,
 			// total count of enum values
-			TotalCount	 
+			TotalCount
 		};
 
 	private:
@@ -38,6 +42,9 @@ class Level : public Mode
 		virtual void createScene() final;
 		virtual void addButtons() override;
 		virtual void addBackground() override;
+
+        // TODO: Remove after testing
+        virtual void activateCheatMode() final { credits_ = 9999; }
 
 		void addBuyMenu();
 		void addBuyButton(std::string name, int price, Buttons::ID buttonId, float buttonMargin);
@@ -52,8 +59,12 @@ class Level : public Mode
 		void updateProjectiles(sf::Time deltaTime);
 		void updateTexts();
         bool levelPassed();
-
+        void createStats();
 		void loadMap();
+        void playMusic();
+        void loadSounds();
+        void addSoundPair(Audio::ID id, const std::string& filename);
+        void pauseSounds();
 
 	private:
 		ResourceHolder<sf::Texture, Textures::ID> textures_;
@@ -63,7 +74,6 @@ class Level : public Mode
 		sf::Text gameOverText_;
 
 		Map* map_; ///< Hold by unique pointer elsewhere.
-		/* std::shared_ptr<GameData> gameData_; */
 
 		// Enemies
 		std::list<std::shared_ptr<Enemy>> enemies_;
@@ -88,6 +98,15 @@ class Level : public Mode
 		std::shared_ptr<std::pair<int, int>> selectedTurretBase_;
 
         Message gameOverMessage_;
+
+        int credits_;
+        int monstersKilled_;
+        bool passed_;
+		int maxOpenLevel_;
+
+        sf::Music backgroundMusic_;
+
+        SoundMap sounds_;
 };
 
 #endif

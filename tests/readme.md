@@ -1,18 +1,9 @@
 # Test files
 
-It is a common practice to do unit tests of each class before you integrate it into the project to validate its operation.
-In this folder, you can create your own unit test files to validate the operation of your components.
+1. GeneralTest - Validates the integrity of textfiles and constants
 
-> It might be a good idea to also take some notes about the tests since you are required to 
-  report these in the final report.
+The main bulk of testing was done in the development phase by judging the
+graphical output, and since the project is heavily graphic, it is difficult to test it otherwise in a meaningful manner.
 
-# Unit Tests
-
-## Test of MyClass
-
-**Involved Classes:**
-
-**Test File:**
-
-**Results:**
-
+As you can see, virtually all of the significant methods and variables are
+private, and thus, we have no access to them in the tests.
