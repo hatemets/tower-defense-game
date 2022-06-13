@@ -198,7 +198,7 @@ Missile::Missile(sf::Vector2f position, float direction, std::shared_ptr<Enemy> 
 
 void Missile::update(sf::Time deltaTime, const EnemyList &enemies)
 {
-	if (target_->isAlive())
+	if (target_ && target_->isAlive())
 	{
 		direction_ = Map::calculateAngle(position_, target_->getPosition());
 	}
