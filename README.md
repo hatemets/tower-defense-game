@@ -2,6 +2,9 @@
 
 Project desription:
 
+The objective of the game is to destroy arriving enemies and not let them reach the end of their path.
+The enemies are destroyed by turrets that can be bought and placed on the map. 
+The player must manage their money well and consider which turrets are worth buying.
 
 How to run:
 1) Build the program with `make all`

@@ -16,4 +16,3 @@ The document should contain the following parts:
 7. **Work log:** This might be a simplified/restructured version of the weekly meeting notes file.
 8. Detailed description of division of work and everyone's responsibilities
 9. For each week, description of what was done and roughly how many hours were used, for each project member.
-    

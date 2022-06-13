@@ -8,9 +8,10 @@ SRC_DIR := ./src
 TEST_DIR := ./tests
 HEADER_DIR := ./include
 
+LIBS = -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
+
 ifeq ($(OS),Windows_NT)
 	# Windows specific definitions
-	LIBS = -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
 	IFLAGS = -I.\libs\windows\SFML-2.5.1\include
 	LFLAGS = -L.\libs\windows\SFML-2.5.1\lib
 	SRC_FILES := $(wildcard ./src/*.cpp)
@@ -23,7 +24,6 @@ ifeq ($(OS),Windows_NT)
 	RUN_COMMAND = ./$(TARGET)
 else
 	# Linux specific definitions
-	LIBS = -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
 	LIB_SOURCE = "./libs/linux/lib"
 	IFLAGS = -I ./libs/linux
 	LFLAGS = -L $(LIB_SOURCE)

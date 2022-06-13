@@ -114,7 +114,7 @@ namespace Enemies
 	{
 		static constexpr int hitPoints = 800;
 		static constexpr int reward = 20;
-		static constexpr float speed = 2.5f;
+		static constexpr float speed = 1.5f;
 		static constexpr float size = 0.6f;
 	};
 
@@ -122,7 +122,7 @@ namespace Enemies
 	{
 		static constexpr int hitPoints = 500;
 		static constexpr int reward = 30;
-		static constexpr float speed = 3.5f;
+		static constexpr float speed = 2.5f;
 		static constexpr float size = 0.5f; // Goblin diameter is 0.5 tiles
 	};
 
@@ -130,7 +130,7 @@ namespace Enemies
 	{
 		static constexpr int hitPoints = 1200;
 		static constexpr int reward = 50;
-		static constexpr float speed = 1.5f;
+		static constexpr float speed = 1.0f;
 		static constexpr float size = 0.7f;
 	};
 
@@ -138,7 +138,7 @@ namespace Enemies
 	{
 		static constexpr int hitPoints = 2000;
 		static constexpr int reward = 100;
-		static constexpr float speed = 1.0f;
+		static constexpr float speed = 0.7f;
 		static constexpr float size = 0.6f;
 		static constexpr int babies = 5; // number of baby slimes created when dying
 	};
@@ -147,7 +147,7 @@ namespace Enemies
 	{
 		static constexpr int hitPoints = 100;
 		static constexpr int reward = 10;
-		static constexpr float speed = 1.0f;
+		static constexpr float speed = 0.6f;
 		static constexpr float size = 0.3f;
 	};
 
@@ -155,7 +155,7 @@ namespace Enemies
 	{
 		static constexpr int hitPoints = 250;
 		static constexpr int reward = 75;
-		static constexpr float speed = 4.0f;
+		static constexpr float speed = 2.0f;
 		static constexpr float size = 0.4f;
 	};
 }
